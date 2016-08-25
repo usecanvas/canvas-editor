@@ -1,13 +1,13 @@
+import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import ContentEditable from 'canvas-editor/mixins/content-editable';
-import Ember from 'ember';
 
 /**
  * A component representing a "paragraph" type canvas block.
  *
  * @class CanvasEditor.CanvasBlockParagraphComponent
- * @extends Ember.Component
+ * @extends CanvasEditor.CanvasBlockComponent
  */
-export default Ember.Component.extend(ContentEditable, {
+export default CanvasBlock.extend(ContentEditable, {
   attributeBindings: ['block.id:data-block-id'],
   classNames: ['canvas-block-paragraph']
 });

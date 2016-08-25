@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { on } = Ember;
+const { observer, on } = Ember;
 
 /**
  * A mixin for including text content in a canvas that is user-editable.
@@ -11,6 +11,24 @@ const { on } = Ember;
 export default Ember.Mixin.create({
   attributeBindings: ['contentEditable:contenteditable'],
   contentEditable: true,
+  isUpdatingBlockContent: false,
+
+  /**
+   * React to an "input" event, where the user has changed content in the DOM.
+   *
+   * @method
+   */
+  input() {
+    /*
+     * Wrap in `isUpdatingBlockContent = true` to prevent Ember rendering after
+     * we set "content".
+     */
+    this.set('isUpdatingBlockContent', true);
+    this.set('block.lastContent', this.get('block.content'));
+    this.get('block.content').replace(0, 1, [this.$().text()]);
+    this.set('isUpdatingBlockContent', false);
+    this.blockContentUpdatedLocally();
+  },
 
   /**
    * Render the contents of the associated block.
@@ -21,15 +39,19 @@ export default Ember.Mixin.create({
    * DOM events and update the underlying model based on user changes.
    *
    * @method
+   * @observer block.content.[]
    * @on didInsertElement
    */
-  renderBlockContent: on('didInsertElement', function renderBlockContent() {
-    const content = this.get('block.content').join('');
+  renderBlockContent: observer('block.content.[]', on('didInsertElement',
+    function renderBlockContent() {
+      if (this.get('isUpdatingBlockContent')) return;
 
-    if (content) {
-      this.$().text(content);
-    } else {
-      this.$().html('<br>');
-    }
-  })
+      const content = this.get('block.content').join('');
+
+      if (content) {
+        this.$().text(content);
+      } else {
+        this.$().html('<br>');
+      }
+    }))
 });

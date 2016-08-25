@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import layout from './template';
 
 export default Ember.Component.extend({
-  layout
+  attributeBindings: ['block.id:data-block-id'],
+  classNames: ['canvas-block-paragraph']
 });

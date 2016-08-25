@@ -9,5 +9,5 @@ const { computed } = Ember;
  * @extends Ember.Object
  */
 export default Ember.Object.extend({
-  blocks: computed(_ => [])
+  blocks: computed(_ => Ember.A([]))
 });

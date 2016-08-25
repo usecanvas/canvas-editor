@@ -1,4 +1,5 @@
 {{#each canvas.blocks as |block|}}
   {{component (block-component-name block)
-    block=block}}
+    block=block
+    onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')}}
 {{/each}}

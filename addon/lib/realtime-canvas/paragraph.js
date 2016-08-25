@@ -5,5 +5,6 @@ const { computed } = Ember;
 
 export default Block.extend({
   type: 'paragraph',
-  content: computed(_ => [])
+  content: computed(_ => ['']),
+  lastContent: computed(_ => [''])
 });

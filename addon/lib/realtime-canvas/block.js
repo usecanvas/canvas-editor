@@ -5,5 +5,6 @@ const { computed } = Ember;
 
 export default Ember.Object.extend({
   id: computed(_ => Base62UUID.generate()),
-  content: computed(_ => [])
+  content: computed(_ => []),
+  lastContent: computed(_ => []),
 });

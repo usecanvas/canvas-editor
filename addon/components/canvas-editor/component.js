@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import layout from './template';
 
+const { run } = Ember;
+
 /**
  * A component that allows for the editing of a canvas in realtime.
  *
@@ -21,6 +23,18 @@ export default Ember.Component.extend({
    */
   onNewBlockInsertedLocally: Ember.K,
 
+  /**
+   * Focus at the beginning of the element that represents the block with the
+   * given ID.
+   *
+   * @method focusBlock
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block to find and
+   *   focus the element for
+   */
+  focusBlock(block) {
+    this.$(`[data-block-id="${block.get('id')}"]`).focus();
+  },
+
   actions: {
     /**
      * Called when a new block was added after `prevBlock` and the canvas model
@@ -35,6 +49,7 @@ export default Ember.Component.extend({
       const index = this.get('canvas.blocks').indexOf(prevBlock) + 1;
       this.get('canvas.blocks').replace(index, 0, [newBlock]);
       this.get('onNewBlockInsertedLocally')(index, newBlock);
+      run.scheduleOnce('afterRender', this, 'focusBlock', newBlock);
     }
   }
 });

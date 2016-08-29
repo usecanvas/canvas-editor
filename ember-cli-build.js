@@ -4,7 +4,19 @@ var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
   var app = new EmberAddon(defaults, {
-    // Add options here
+    cssModules: {
+      plugins: {
+        before: [
+          require('postcss-nested')
+        ],
+        after: [
+          require('postcss-import'),
+          require('postcss-css-variables'),
+          require('postcss-calc'),
+          require('postcss-custom-media')
+        ],
+      },
+    }
   });
 
   app.import(`${app.bowerDirectory}/base62/base62.min.js`);

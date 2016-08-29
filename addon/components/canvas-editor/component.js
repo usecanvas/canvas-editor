@@ -16,10 +16,19 @@ export default Ember.Component.extend({
   layout,
 
   /**
+   * A dummy handler for an action that receives a block after it was udpated
+   * locally.
+   *
+   * @method
+   * @param {CanvasEditor.RealtimeCanvas.Block} block The updated block
+   */
+  onBlockContentUpdatedLocally: Ember.K,
+
+  /**
    * A dummy handler for an action that receives an index and a block after the
    * block was inserted locally.
    *
-   * @method onNewBlockInsertedLocally
+   * @method
    * @param {number} index The index the new block was inserted at
    * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The new block
    */
@@ -55,6 +64,17 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    /**
+     * Called when block content was updated locally.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.BLock} block The block whose content
+     *   was updated locally
+     */
+    blockContentUpdatedLocally(block) {
+      this.get('onBlockContentUpdatedLocally')(block);
+    },
+
     /**
      * Called when the user wishes to navigate down to the next block from the
      * currently focused block.

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
+import styles from './styles';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
@@ -14,7 +15,9 @@ const { run } = Ember;
  */
 export default Ember.Component.extend({
   classNames: ['canvas-editor'],
+  localClassNames: 'component',
   layout,
+  styles,
 
   /**
    * A dummy handler for an action that receives a block after it was udpated

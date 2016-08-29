@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
+import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
 
 const { run } = Ember;
@@ -25,14 +26,31 @@ export default Ember.Component.extend({
   onNewBlockInsertedLocally: Ember.K,
 
   /**
-   * Focus at the beginning of the element that represents the block with the
-   * given ID.
+   * Focus at the end of the element that represents the block with the given
+   * ID.
    *
-   * @method focusBlock
+   * @method focusBlockEnd
    * @param {CanvasEditor.CanvasRealtime.Block} block The block to find and
    *   focus the element for
    */
-  focusBlock(block) {
+  focusBlockEnd(block) {
+    const $block = this.$(`[data-block-id="${block.get('id')}"]`);
+    $block.focus();
+    const range = Rangy.createRange();
+    range.selectNodeContents($block.get(0));
+    range.collapse(false /* collapse to end */);
+    Rangy.getSelection().setSingleRange(range);
+  },
+
+  /**
+   * Focus at the beginning of the element that represents the block with the
+   * given ID.
+   *
+   * @method focusBlockStart
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block to find and
+   *   focus the element for
+   */
+  focusBlockStart(block) {
     this.$(`[data-block-id="${block.get('id')}"]`).focus();
   },
 
@@ -51,6 +69,36 @@ export default Ember.Component.extend({
       const nextBlock = this.get('canvas.blocks').objectAt(blockIndex + 1);
       if (!nextBlock) return; // `block` is the last block
       Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
+    },
+
+    /**
+     * Called when the user wishes to navigate to the end of the block before
+     * the currently focused block.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block that the user
+     *   wishes to navigate *from*
+     */
+    navigateLeft(block) {
+      const blockIndex = this.get('canvas.blocks').indexOf(block);
+      const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      if (!prevBlock) return; // `block` is the first block
+      run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
+    },
+
+    /**
+     * Called when the user wishes to navigate to the start of the block after
+     * the currently focused block.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block that the user
+     *   wishes to navigate *from*
+     */
+    navigateRight(block) {
+      const blockIndex = this.get('canvas.blocks').indexOf(block);
+      const nextBlock = this.get('canvas.blocks').objectAt(blockIndex + 1);
+      if (!nextBlock) return; // `block` is the last block
+      run.scheduleOnce('afterRender', this, 'focusBlockStart', nextBlock);
     },
 
     /**
@@ -82,7 +130,7 @@ export default Ember.Component.extend({
       const index = this.get('canvas.blocks').indexOf(prevBlock) + 1;
       this.get('canvas.blocks').replace(index, 0, [newBlock]);
       this.get('onNewBlockInsertedLocally')(index, newBlock);
-      run.scheduleOnce('afterRender', this, 'focusBlock', newBlock);
+      run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);
     }
   }
 });

@@ -93,8 +93,8 @@ const SelectionService = Ember.Object.extend({
    *
    * @method
    * @param {object} opts An object of options for use in navigation
-   * @param {JQuery.Element} [opts.$container] The parent container of the entire
-   *   editor
+   * @param {JQuery.Element} [opts.$container] The parent container of the
+   *   entire editor
    * @param {CanvasEditor.CanvasRealtime.Block} [opts.block] The block to
    *   navigate into
    * @param {ClientRect} [opts.rangeRect] The user range used to determine

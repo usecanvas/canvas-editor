@@ -36,13 +36,21 @@ export default Ember.Mixin.create(Selection, {
    */
   keyDown(evt) {
     switch (evt.originalEvent.key || evt.originalEvent.keyCode) {
-    case 'ArrowDown':
-    case 40:
-      this.navigateDown(evt);
+    case 'ArrowLeft':
+    case 37:
+      this.navigateLeft(evt);
       break;
     case 'ArrowUp':
     case 38:
       this.navigateUp(evt);
+      break;
+    case 'ArrowRight':
+    case 39:
+      this.navigateRight(evt);
+      break;
+    case 'ArrowDown':
+    case 40:
+      this.navigateDown(evt);
       break;
     case 'Enter':
     case 13:
@@ -69,6 +77,40 @@ export default Ember.Mixin.create(Selection, {
     if (distanceFromBottom > 10) return; // Navigate within this element
     evt.preventDefault();
     this.get('onNavigateDown')(this.get('block'), rangeRect);
+  },
+
+  /**
+   * Called when the user wishes to navigate their cursor left.
+   *
+   * We analyze the position of the cursor and either let the default navigation
+   * occur or manually navigate to the end of the previous block.
+   *
+   * @method
+   * @param {Event} evt The event fired
+   */
+  navigateLeft(evt) {
+    const { textBeforeSelection } =
+      TextManipulation.getManipulation(this.get('element'));
+    if (textBeforeSelection) return; // Navigate within this element
+    evt.preventDefault();
+    this.get('onNavigateLeft')(this.get('block'));
+  },
+
+  /**
+   * Called when the user wishes to navigate their cursor right.
+   *
+   * We analyze the position of the cursor and either let the default navigation
+   * occur or manually navigate to the start of the next block.
+   *
+   * @method
+   * @param {Event} evt The event fired
+   */
+  navigateRight(evt) {
+    const { textAfterSelection } =
+      TextManipulation.getManipulation(this.get('element'));
+    if (textAfterSelection) return; // Navigate within this element
+    evt.preventDefault();
+    this.get('onNavigateRight')(this.get('block'));
   },
 
   /**

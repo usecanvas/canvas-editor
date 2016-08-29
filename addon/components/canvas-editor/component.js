@@ -44,11 +44,11 @@ export default Ember.Component.extend({
    */
   focusBlockEnd(block) {
     const $block = this.$(`[data-block-id="${block.get('id')}"]`);
-    $block.focus();
     const range = Rangy.createRange();
     range.selectNodeContents($block.get(0));
     range.collapse(false /* collapse to end */);
     Rangy.getSelection().setSingleRange(range);
+    $block.focus();
   },
 
   /**
@@ -60,7 +60,11 @@ export default Ember.Component.extend({
    *   focus the element for
    */
   focusBlockStart(block) {
-    this.$(`[data-block-id="${block.get('id')}"]`).focus();
+    const $block = this.$(`[data-block-id="${block.get('id')}"]`);
+    const range = Rangy.createRange();
+    range.setStart($block.get(0), 0);
+    Rangy.getSelection().setSingleRange(range);
+    $block.focus();
   },
 
   actions: {

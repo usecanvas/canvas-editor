@@ -8,6 +8,7 @@ import Ember from 'ember';
  */
 export default Ember.Component.extend({
   classNames: ['canvas-block'],
+  localClassNames: 'component',
 
   /**
    * A dummy handler for an action that receives a block after its content has

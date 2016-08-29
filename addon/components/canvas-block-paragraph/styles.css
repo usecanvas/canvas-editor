@@ -1,0 +1,4 @@
+.canvas-block-paragraph {
+  composes: canvas-block from '../canvas-block/styles';
+  line-height: 1.618;
+}

@@ -128,6 +128,7 @@ const SelectionService = Ember.Object.extend({
     }
 
     range = new Rangy.WrappedRange(range);
+    blockElement.focus();
     this.get('selection').setSingleRange(range);
   }
 });

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import styles from './styles';
 
 /**
  * A generic component to be extended for representing canvas blocks.
@@ -7,6 +8,7 @@ import Ember from 'ember';
  * @extends Ember.Component
  */
 export default Ember.Component.extend({
+  styles,
   classNames: ['canvas-block'],
   localClassNames: 'component',
 

@@ -120,7 +120,9 @@ const SelectionService = Ember.Object.extend({
 
     let range;
     if (document.caretPositionFromPoint) {
-      range = document.caretPositionFromPoint(...point);
+      const position = document.caretPositionFromPoint(...point);
+      range = document.createRange();
+      range.setStart(position.offsetNode, position.offset);
     } else if (document.caretRangeFromPoint) {
       range = document.caretRangeFromPoint(...point);
     }

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
+import Selection from 'canvas-editor/lib/selection';
 
 const { run } = Ember;
 
@@ -36,6 +37,38 @@ export default Ember.Component.extend({
   },
 
   actions: {
+    /**
+     * Called when the user wishes to navigate down to the next block from the
+     * currently focused block.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block that the user
+     *   wishes to navigate down *from*
+     * @param {ClientRect} rangeRect The client rect for the current user range
+     */
+    navigateDown(block, rangeRect) {
+      const blockIndex = this.get('canvas.blocks').indexOf(block);
+      const nextBlock = this.get('canvas.blocks').objectAt(blockIndex + 1);
+      if (!nextBlock) return; // `block` is the last block
+      Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
+    },
+
+    /**
+     * Called when the user wishes to navigate up to the previous block from the
+     * currently focused block.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block that the user
+     *   wishes to navigate up *from*
+     * @param {ClientRect} rangeRect The client rect for the current user range
+     */
+    navigateUp(block, rangeRect) {
+      const blockIndex = this.get('canvas.blocks').indexOf(block);
+      const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      if (!prevBlock) return; // `block` is the first block
+      Selection.navigateUpToBlock(this.$(), prevBlock, rangeRect);
+    },
+
     /**
      * Called when a new block was added after `prevBlock` and the canvas model
      * needs to be updated.

@@ -1,5 +1,7 @@
 {{#each canvas.blocks as |block|}}
   {{component (block-component-name block)
     block=block
+    onNavigateDown=(action 'navigateDown')
+    onNavigateUp=(action 'navigateUp')
     onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')}}
 {{/each}}

@@ -1,7 +1,10 @@
 import Ember from 'ember';
 import Rangy from 'rangy';
 
-const { computed, get } = Ember;
+const { computed } = Ember;
+
+const DOWN_NAV_OFFSET = 1;
+const UP_NAV_OFFSET = -DOWN_NAV_OFFSET;
 
 /**
  * A service providing access to a user's selection in the DOM.
@@ -18,6 +21,7 @@ const SelectionService = Ember.Object.extend({
   },
 
   currentRange: computed(function() {
+    this.get('selection').refresh();
     return this.get('selection').getRangeAt(0);
   }).volatile(),
 
@@ -37,13 +41,25 @@ const SelectionService = Ember.Object.extend({
     return Rangy.getSelection();
   }),
 
+  /**
+   * Given a target block and a client rect for the current range, navigate
+   * down to the next focusable block.
+   *
+   * @method
+   * @param {JQuery.Element} $container The parent container of the entire
+   *   editor
+   * @param {CanvasEditor.RealtimeCanvas.Block} nextBlock The block to navigate
+   *   into
+   * @param {ClientRect} rangeRect The user range used to determine the
+   *   horizontal position of the selection upon navigation
+   */
   navigateDownToBlock($container, nextBlock, rangeRect) {
     this.navigateBlockBasedOnRect({
       $container,
       block: nextBlock,
       rangeRect,
       boundary: 'top',
-      offset: 10 });
+      offset: DOWN_NAV_OFFSET });
   },
 
   navigateUpToBlock($container, prevBlock, rangeRect) {
@@ -52,13 +68,13 @@ const SelectionService = Ember.Object.extend({
       block: prevBlock,
       rangeRect,
       boundary: 'bottom',
-      offset: -10 });
+      offset: UP_NAV_OFFSET });
   },
 
   navigateBlockBasedOnRect({ $container, block, rangeRect, boundary, offset }) {
     const blockElement =
       $container
-        .find(`[data-block-id="${get(block, 'id')}"]`)
+        .find(`[data-block-id="${block.get('id')}"]`)
         .get(0);
 
     const blockRect = blockElement.getClientRects()[0];

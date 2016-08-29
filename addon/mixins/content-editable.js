@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Selection from 'canvas-editor/mixins/selection';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
 
-const { observer, on } = Ember;
+const { computed, observer, on } = Ember;
 
 /**
  * A mixin for including text content in a canvas that is user-editable.
@@ -14,6 +14,10 @@ export default Ember.Mixin.create(Selection, {
   attributeBindings: ['contentEditable:contenteditable'],
   contentEditable: true,
   isUpdatingBlockContent: false,
+
+  elementRect: computed(function() {
+    return this.get('element').getClientRects()[0];
+  }).volatile(),
 
   /**
    * React to an "input" event, where the user has changed content in the DOM.
@@ -32,6 +36,14 @@ export default Ember.Mixin.create(Selection, {
    */
   keyDown(evt) {
     switch (evt.originalEvent.key || evt.originalEvent.keyCode) {
+    case 'ArrowDown':
+    case 40:
+      this.navigateDown(evt);
+      break;
+    case 'ArrowUp':
+    case 38:
+      this.navigateUp(evt);
+      break;
     case 'Enter':
     case 13:
       if (evt.shiftKey) return;
@@ -39,6 +51,42 @@ export default Ember.Mixin.create(Selection, {
       this.newBlockAtSplit();
       break;
     }
+  },
+
+  /**
+   * Called when the user wishes to navigate their cursor down.
+   *
+   * We analyze the position of the cursor and either let the default navigation
+   * occur or manually navigate to the next block.
+   *
+   * @method
+   * @param {Event} evt The event fired
+   */
+  navigateDown(evt) {
+    const contentBottom = this.get('elementRect.bottom');
+    const rangeRect = this.get('currentRangeRect');
+    const distanceFromBottom = contentBottom - rangeRect.bottom;
+    if (distanceFromBottom > 10) return; // Navigate within this element
+    evt.preventDefault();
+    this.get('onNavigateDown')(this.get('block'), rangeRect);
+  },
+
+  /**
+   * Called when the user wishes to navigate their cursor up.
+   *
+   * We analyze the position of the cursor and either let the default navigation
+   * occur or manually navigate to the previous block.
+   *
+   * @method
+   * @param {Event} evt The event fired
+   */
+  navigateUp(evt) {
+    const contentTop = this.get('elementRect.top');
+    const rangeRect = this.get('currentRangeRect');
+    const distanceFromTop = rangeRect.top - contentTop;
+    if (distanceFromTop > 10) return; // Navigate within this element
+    evt.preventDefault();
+    this.get('onNavigateUp')(this.get('block'), rangeRect);
   },
 
   /**

@@ -38,6 +38,7 @@
     "ember-resolver": "^2.0.3",
     "loader.js": "^4.0.1",
     "normalize.css": "^4.2.0",
+    "postcss-calc": "^5.3.1",
     "postcss-css-variables": "^0.5.2",
     "postcss-custom-media": "^5.0.1",
     "postcss-import": "^8.1.2",

@@ -3,6 +3,10 @@ import Rangy from 'rangy';
 
 const { computed } = Ember;
 
+/*
+ * These offsets are used for vertical navigation to compensate for spacing
+ * and/or padding between blocks.
+ */
 const DOWN_NAV_OFFSET = 1;
 const UP_NAV_OFFSET = -DOWN_NAV_OFFSET;
 
@@ -62,6 +66,18 @@ const SelectionService = Ember.Object.extend({
       offset: DOWN_NAV_OFFSET });
   },
 
+  /**
+   * Given a target block and a client rect for the current range, navigate
+   * up to the previous focusable block.
+   *
+   * @method
+   * @param {JQuery.Element} $container The parent container of the entire
+   *   editor
+   * @param {CanvasEditor.RealtimeCanvas.Block} prevBlock The block to navigate
+   *   into
+   * @param {ClientRect} rangeRect The user range used to determine the
+   *   horizontal position of the selection upon navigation
+   */
   navigateUpToBlock($container, prevBlock, rangeRect) {
     this.navigateBlockBasedOnRect({
       $container,
@@ -71,6 +87,23 @@ const SelectionService = Ember.Object.extend({
       offset: UP_NAV_OFFSET });
   },
 
+  /**
+   * Navigate to a specific block, using a range to determine the horizontal
+   * position of the selection upon navigation.
+   *
+   * @method
+   * @param {object} opts An object of options for use in navigation
+   * @param {JQuery.Element} [opts.$container] The parent container of the entire
+   *   editor
+   * @param {CanvasEditor.CanvasRealtime.Block} [opts.block] The block to
+   *   navigate into
+   * @param {ClientRect} [opts.rangeRect] The user range used to determine
+   *   horizontal position
+   * @param {string} [opts.boundary] The "top" or "bottom" boundary that we
+   *   are navigating into
+   * @param {number} [opts.offset] An offset used to ensure we find a point
+   *   within `block`'s element (due to padding, etc)
+   */
   navigateBlockBasedOnRect({ $container, block, rangeRect, boundary, offset }) {
     const blockElement =
       $container

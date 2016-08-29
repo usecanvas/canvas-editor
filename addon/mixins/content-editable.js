@@ -52,6 +52,10 @@ export default Ember.Mixin.create(Selection, {
     case 40:
       this.navigateDown(evt);
       break;
+    case 'Backspace':
+    case 8:
+      this.backspace(evt);
+      break;
     case 'Enter':
     case 13:
       if (evt.shiftKey) return;
@@ -59,6 +63,23 @@ export default Ember.Mixin.create(Selection, {
       this.newBlockAtSplit();
       break;
     }
+  },
+
+  /**
+   * Called when the user presses the backspace key.
+   *
+   * We analyze the text of the block and join it with the previous block (or
+   * just remove it).
+   *
+   * @method
+   * @param {Event} evt The event fired
+   */
+  backspace(evt) {
+    const { textBeforeSelection, textAfterSelection } =
+      TextManipulation.getManipulation(this.get('element'));
+    if (textBeforeSelection || !this.get('selection.isCollapsed')) return;
+    evt.preventDefault();
+    this.get('onBlockDeletedLocally')(this.get('block'), textAfterSelection);
   },
 
   /**

@@ -26,6 +26,16 @@ export default Ember.Component.extend({
 
   /**
    * A dummy handler for an action that receives an index and a block after the
+   * block was deleted locally.
+   *
+   * @method
+   * @param {number} index The index the block was deleted from
+   * @param {CanvasEditor.RealtimeCanvas.Block} block The deleted block
+   */
+  onBlockDeletedLocally: Ember.K,
+
+  /**
+   * A dummy handler for an action that receives an index and a block after the
    * block was inserted locally.
    *
    * @method
@@ -77,6 +87,27 @@ export default Ember.Component.extend({
      */
     blockContentUpdatedLocally(block) {
       this.get('onBlockContentUpdatedLocally')(block);
+    },
+
+    /**
+     * Called when the user deletes a block.
+     *
+     * If there is still text remaining, we join it with the previous block,
+     * if possible.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block that the user
+     *   deleted in
+     * @param {string} remainingContent The remaining content left in the block
+     */
+    blockDeletedLocally(block, remainingContent) {
+      const blockIndex = this.get('canvas.blocks').indexOf(block);
+      const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      if (!prevBlock) return; // `block` is the first block
+      this.get('canvas.blocks').removeObject(block);
+      prevBlock.get('content').pushObject(remainingContent);
+      this.get('onBlockDeletedLocally')(blockIndex, block);
+      this.get('onBlockContentUpdatedLocally')(prevBlock);
     },
 
     /**

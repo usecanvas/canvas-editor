@@ -108,6 +108,7 @@ export default Ember.Component.extend({
       prevBlock.get('content').pushObject(remainingContent);
       this.get('onBlockDeletedLocally')(blockIndex, block);
       this.get('onBlockContentUpdatedLocally')(prevBlock);
+      run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
     },
 
     /**

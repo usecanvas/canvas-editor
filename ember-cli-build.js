@@ -3,29 +3,7 @@
 var EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
 module.exports = function(defaults) {
-  var app = new EmberAddon(defaults, {
-    cssModules: {
-      plugins: {
-        before: [
-          require('postcss-nested')
-        ],
-        after: [
-          require('postcss-import'),
-          require('postcss-css-variables'),
-          require('postcss-calc'),
-          require('postcss-custom-media')
-        ],
-      },
-    }
-  });
-
-  app.import(`${app.bowerDirectory}/base62/base62.min.js`);
-  app.import(`${app.bowerDirectory}/rangy/rangy-core.js`);
-  app.import(`${app.bowerDirectory}/rangy/rangy-textrange.js`);
-  app.import(`${app.bowerDirectory}/uuid.js/src/uuid.js`);
-  app.import('vendor/shims/base62.js');
-  app.import('vendor/shims/rangy.js');
-  app.import('vendor/shims/uuid.js');
+  var app = new EmberAddon(defaults, {});
 
   /*
     This build file specifies the options for the dummy test app of this

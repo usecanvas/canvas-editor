@@ -11,6 +11,6 @@ const { computed } = Ember;
  */
 export default Block.extend({
   type: 'paragraph',
-  content: computed(_ => Ember.A([''])),
-  lastContent: computed(_ => Ember.A(['']))
+  content: '',
+  lastContent: ''
 });

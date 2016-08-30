@@ -25,7 +25,7 @@ export default Ember.Mixin.create(Selection, {
    * @method
    */
   input() {
-    this.setBlockContentFromInput([this.$().text()]);
+    this.setBlockContentFromInput(this.$().text());
   },
 
   /**
@@ -166,8 +166,8 @@ export default Ember.Mixin.create(Selection, {
     const { textBeforeSelection, textAfterSelection } =
       TextManipulation.getManipulation(this.get('element'));
 
-    this.setBlockContentFromInput([textBeforeSelection], false);
-    this.newBlockInsertedLocally([textAfterSelection]);
+    this.setBlockContentFromInput(textBeforeSelection, false);
+    this.newBlockInsertedLocally(textAfterSelection);
   },
 
   /**
@@ -179,14 +179,14 @@ export default Ember.Mixin.create(Selection, {
    * DOM events and update the underlying model based on user changes.
    *
    * @method
-   * @observer block.content.[]
+   * @observer block.content
    * @on didInsertElement
    */
-  renderBlockContent: observer('block.content.[]', on('didInsertElement',
+  renderBlockContent: observer('block.content', on('didInsertElement',
     function renderBlockContent() {
       if (this.get('isUpdatingBlockContent')) return;
 
-      const content = this.get('block.content').join('');
+      const content = this.get('block.content');
 
       if (content) {
         this.$().text(content);
@@ -203,13 +203,13 @@ export default Ember.Mixin.create(Selection, {
    * however, after the user hits "Return".
    *
    * @method
-   * @param {Array} content The new content for the block
+   * @param {string} content The new content for the block
    * @param {boolean} preventRerender Whehter to prevent rerenders
    */
   setBlockContentFromInput(content, preventRerender = true) {
     if (preventRerender) { this.set('isUpdatingBlockContent', true); }
     this.set('block.lastContent', this.get('block.content'));
-    this.get('block.content').replace(0, 1, content);
+    this.set('block.content', content);
     if (preventRerender) { this.set('isUpdatingBlockContent', false); }
     this.blockContentUpdatedLocally();
   }

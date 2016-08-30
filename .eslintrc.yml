@@ -89,7 +89,7 @@ rules:
   max-params: error
   max-statements:
     - error
-    - max: 12
+    - max: 20
   max-statements-per-line: 'off'
   multiline-ternary: error
   new-parens: error

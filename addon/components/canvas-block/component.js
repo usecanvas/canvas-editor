@@ -45,8 +45,7 @@ export default Ember.Component.extend({
    * @param {Array} content The content for the new block
    */
   newBlockInsertedLocally(content) {
-    const newBlock =
-      this.get('block').constructor.create({ content });
+    const newBlock = this.get('nextBlockConstructor').create({ content });
     this.get('onNewBlockInsertedLocally')(this.get('block'), newBlock);
   }
 });

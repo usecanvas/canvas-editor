@@ -1,4 +1,9 @@
 .component {
-  max-width: 640px;
-  margin: 64px auto;
+  line-height: 1.485;
+  max-width: 45rem;
+  margin: 4rem auto;
+}
+
+.component [contenteditable] {
+  outline: 0;
 }

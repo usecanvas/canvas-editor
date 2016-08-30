@@ -1,9 +1,9 @@
-.component {
+.canvas-editor {
   line-height: 1.485;
   max-width: 45rem;
   margin: 4rem auto;
 }
 
-.component [contenteditable] {
+.canvas-editor [contenteditable] {
   outline: 0;
 }

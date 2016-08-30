@@ -14,8 +14,7 @@ const { run } = Ember;
  * @extends Ember.Component
  */
 export default Ember.Component.extend({
-  classNames: ['canvas-editor'],
-  localClassNames: 'component',
+  localClassNames: ['canvas-editor'],
   layout,
   styles,
 

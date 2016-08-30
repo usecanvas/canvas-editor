@@ -2,6 +2,7 @@ import Ember from 'ember';
 import layout from './template';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
+import SelectionState from 'canvas-editor/lib/selection-state';
 
 const { run } = Ember;
 
@@ -103,12 +104,16 @@ export default Ember.Component.extend({
     blockDeletedLocally(block, remainingContent) {
       const blockIndex = this.get('canvas.blocks').indexOf(block);
       const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      const $prevBlock = this.$(`[data-block-id="${prevBlock.get('id')}"]`);
+      const selectionState = new SelectionState($prevBlock.get(0));
       if (!prevBlock) return; // `block` is the first block
+      this.focusBlockEnd(prevBlock);
+      selectionState.capture();
       this.get('canvas.blocks').removeObject(block);
       prevBlock.get('content').pushObject(remainingContent);
       this.get('onBlockDeletedLocally')(blockIndex, block);
       this.get('onBlockContentUpdatedLocally')(prevBlock);
-      run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
+      run.scheduleOnce('afterRender', selectionState, 'restore');
     },
 
     /**

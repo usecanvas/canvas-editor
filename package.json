@@ -16,7 +16,6 @@
     "node": ">= 0.10.0"
   },
   "devDependencies": {
-    "basscss": "^8.0.2",
     "broccoli-asset-rev": "^2.4.2",
     "ember-ajax": "^2.0.1",
     "ember-cli": "2.7.0",
@@ -36,12 +35,7 @@
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "loader.js": "^4.0.1",
-    "normalize.css": "^4.2.0",
-    "postcss-calc": "^5.3.1",
-    "postcss-css-variables": "^0.5.2",
-    "postcss-custom-media": "^5.0.1",
-    "postcss-import": "^8.1.2",
-    "postcss-nested": "^1.0.0"
+    "normalize.css": "^4.2.0"
   },
   "keywords": [
     "ember-addon"

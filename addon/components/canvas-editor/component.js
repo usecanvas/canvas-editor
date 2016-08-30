@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import layout from './template';
-import styles from './styles';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
+import styles from './styles';
 
 const { run } = Ember;
 

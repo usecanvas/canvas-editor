@@ -5,6 +5,10 @@
 module.exports = {
   name: 'canvas-editor',
 
+  isDevelopingAddon() {
+    return process.env.NODE_ENV !== 'production';
+  },
+
   options: {
     cssModules: {
       plugins: {

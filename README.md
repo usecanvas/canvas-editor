@@ -21,6 +21,8 @@ There are a number of callbacks that can be passed to the editor:
   `content` properties when a block's content was updated locally.
 - `onNewBlockInsertedLocally`: Receives an index and a new block object when a
   new block was inserted locally.
+- `onBlockDeletedLocally`: Receives an index and a block after the block was
+  deleted locally.
 
 ## Running Tests
 

@@ -1,0 +1,5 @@
+.canvas-block-title {
+  composes: canvas-block from '../canvas-block/styles';
+  font-size: 2rem;
+  font-weight: bold;
+}

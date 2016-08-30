@@ -1,4 +1,5 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
+import styles from './styles';
 
 /**
  * A component representing a "title" type canvas block.
@@ -7,5 +8,6 @@ import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
 export default CanvasBlockEditable.extend({
-  classNames: ['canvas-block-title']
+  localClassNames: ['canvas-block-title'],
+  styles
 });

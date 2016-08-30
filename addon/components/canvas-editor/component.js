@@ -106,11 +106,12 @@ export default Ember.Component.extend({
       const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
       const $prevBlock = this.$(`[data-block-id="${prevBlock.get('id')}"]`);
       const selectionState = new SelectionState($prevBlock.get(0));
+      const content = prevBlock.get('content');
       if (!prevBlock) return; // `block` is the first block
       this.focusBlockEnd(prevBlock);
       selectionState.capture();
       this.get('canvas.blocks').removeObject(block);
-      prevBlock.get('content').pushObject(remainingContent);
+      content.pushObject(content.popObject() + remainingContent);
       this.get('onBlockDeletedLocally')(blockIndex, block);
       this.get('onBlockContentUpdatedLocally')(prevBlock);
       run.scheduleOnce('afterRender', selectionState, 'restore');

@@ -18,6 +18,10 @@ export default Ember.Component.extend({
   layout,
   styles,
 
+  didInsertElement() {
+    this.focusBlockStart(this.get('canvas.blocks.firstObject'));
+  },
+
   /**
    * A dummy handler for an action that receives a block after it was udpated
    * locally.

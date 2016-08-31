@@ -12,5 +12,6 @@ const { computed } = Ember;
 export default Ember.Object.extend({
   id: computed(_ => Base62UUID.generate()),
   content: '',
-  lastContent: ''
+  lastContent: '',
+  meta: computed(_ => Ember.Object.create())
 });

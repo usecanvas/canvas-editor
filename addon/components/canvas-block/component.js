@@ -9,6 +9,7 @@ import styles from './styles';
  */
 export default Ember.Component.extend({
   localClassNames: 'canvas-block',
+  classNames: ['canvas-block'],
   styles,
 
   /**

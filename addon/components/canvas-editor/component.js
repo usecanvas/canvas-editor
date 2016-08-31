@@ -112,6 +112,7 @@ export default Ember.Component.extend({
       this.focusBlockEnd(prevBlock);
       selectionState.capture();
       this.get('canvas.blocks').removeObject(block);
+      prevBlock.set('lastContent', prevBlock.get('content'));
       prevBlock.set('content', prevBlock.get('content') + remainingContent);
       this.get('onBlockDeletedLocally')(blockIndex, block);
       this.get('onBlockContentUpdatedLocally')(prevBlock);

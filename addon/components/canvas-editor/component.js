@@ -96,6 +96,10 @@ export default Ember.Component.extend({
       this.get('onBlockContentUpdatedLocally')(block);
     },
 
+    blockTypeUpdatedLocally(block) {
+      this.get('onBlockTypeUpdatedLocally')(block);
+    },
+
     /**
      * Called when the user deletes a block.
      *
@@ -121,6 +125,15 @@ export default Ember.Component.extend({
       this.get('onBlockDeletedLocally')(blockIndex, block);
       this.get('onBlockContentUpdatedLocally')(prevBlock);
       run.scheduleOnce('afterRender', selectionState, 'restore');
+    },
+
+    changeToType(typeChange, block, content) {
+      switch (typeChange) {
+        case 'paragraph/unordered-list':
+          block.set('lastType', 'paragraph');
+          block.set('type', 'unordered-list');
+          block.set('content', content.slice(2));
+      }
     },
 
     /**

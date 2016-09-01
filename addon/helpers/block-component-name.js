@@ -10,8 +10,8 @@ import Ember from 'ember';
  *   single block
  * @returns {string} The name of a component for this block.
  */
-export function blockComponentName([block]/*, hash*/) {
-  return `canvas-block-${block.get('type')}`;
+export function blockComponentName([type]/*, hash*/) {
+  return `canvas-block-${type}`;
 }
 
 export default Ember.Helper.helper(blockComponentName);

@@ -4,6 +4,7 @@ import CLItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import ULItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
+import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 
 const { computed } = Ember;
 
@@ -33,6 +34,8 @@ export default Ember.Object.extend({
           blocks: json.blocks.map(block => this.createBlockFromJSON(block)),
           meta: json.meta
         });
+      } case 'url': {
+        return URLCard.create(json);
       } default: {
         throw new Error(`Unrecognized block type: "${json.type}".`);
       }

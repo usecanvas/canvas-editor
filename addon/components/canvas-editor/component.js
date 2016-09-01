@@ -70,6 +70,17 @@ export default Ember.Component.extend({
   onNewBlockInsertedLocally: Ember.K,
 
   /**
+   * A dummy handler for an action that receives a replaced block and a block
+   * to replace it.
+   *
+   * @method
+   * @param {number} index The index of the replaced block
+   * @param {CanvasEditor.RealtimeCanvas.Block} block The replaced block
+   * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The replacing block
+   */
+  onBlockReplacedLocally: Ember.K,
+
+  /**
    * Focus at the end of the element that represents the block with the given
    * ID.
    *
@@ -318,6 +329,22 @@ export default Ember.Component.extend({
       }
     },
     /* eslint-enable max-statements */
+
+    /**
+     * Called when the user replaces a block, such as converting a paragraph
+     * to a URL card.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block that the user
+     *   replaced
+     * @param {CanvasEditor.CanvasRealtime.Block} newBlock The block that the
+     *   user replaced with
+     */
+    blockReplacedLocally(block, newBlock) {
+      const index = this.get('canvas.blocks').indexOf(block);
+      this.get('canvas.blocks').replace(index, 1, newBlock);
+      this.get('onBlockReplacedLocally')(index, block, newBlock);
+    },
 
     /**
      * Called when the user wishes to navigate down to the next block from the

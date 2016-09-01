@@ -232,8 +232,9 @@ export default Ember.Component.extend({
      * @param {CanvasEditor.CanvasRealtime.Block} newBlock The new block
      */
     newBlockInsertedLocally(prevBlock, newBlock) {
-      const index = this.get('canvas.blocks').indexOf(prevBlock) + 1;
-      this.get('canvas.blocks').replace(index, 0, [newBlock]);
+      const parent = prevBlock.get('parent.blocks') || this.get('canvas.blocks');
+      const index = parent.indexOf(prevBlock) + 1;
+      parent.replace(index, 0, [newBlock]);
       this.get('onNewBlockInsertedLocally')(index, newBlock);
       run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);
     }

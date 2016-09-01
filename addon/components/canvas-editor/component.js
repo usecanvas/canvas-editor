@@ -132,10 +132,16 @@ export default Ember.Component.extend({
       switch (typeChange) {
         case 'paragraph/unordered-list':
           const blocks = this.get('canvas.blocks');
-          const group = Group.create({ type: 'group-ul', blocks: [block] });
           const idx = blocks.indexOf(block);
-          block.set('type', 'unordered-list');
-          block.set('content', content.slice(2));
+          const group = Group.create({
+            type: 'group-ul',
+            blocks: [block]
+          });
+          block.setProperties({
+            'parent': group,
+            'type': 'unordered-list',
+            'content': content.slice(2)
+          });
           blocks.replace(idx, 1, [group]);
           this.get('onBlockDeletedLocally')(idx, block);
           this.get('onNewBlockInsertedLocally')(idx, group);

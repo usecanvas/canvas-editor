@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Group from 'canvas-editor/lib/realtime-canvas/group';
 import layout from './template';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
@@ -130,9 +131,15 @@ export default Ember.Component.extend({
     changeToType(typeChange, block, content) {
       switch (typeChange) {
         case 'paragraph/unordered-list':
-          block.set('lastType', 'paragraph');
+          const blocks = this.get('canvas.blocks');
+          const group = Group.create({ type: 'group-ul', blocks: [block] });
+          const idx = blocks.indexOf(block);
           block.set('type', 'unordered-list');
           block.set('content', content.slice(2));
+          blocks.replace(idx, 1, [group]);
+          this.get('onBlockDeletedLocally')(idx, block);
+          this.get('onNewBlockInsertedLocally')(idx, group);
+
       }
     },
 

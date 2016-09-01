@@ -13,13 +13,8 @@ export default CanvasBlockEditable.extend({
 
   setBlockContentFromInput(content, preventRerender = true) {
     if (/^- /.test(content)) {
-      const block = this.get('block');
-      block.set('lastType', 'paragraph');
-      block.set('type', 'unordered-list');
-      block.set('lastContent', block.get('content'));
-      block.set('content', content.slice(2));
-      this.get('onBlockContentUpdatedLocally')(this.get('block'));
-      this.get('onBlockTypeUpdatedLocally')(this.get('block'));
+      this.get('changeToType')('paragraph/unordered-list',
+        this.get('block'), content);
     } else {
       this._super(content, preventRerender);
     }

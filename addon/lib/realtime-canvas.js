@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
+import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list';
+import UnorderedGroupList from 'canvas-editor/lib/realtime-canvas/unordered-list';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
 
 const { computed } = Ember;
@@ -19,6 +21,14 @@ export default Ember.Object.extend({
       return Paragraph.create(json);
     case 'title':
       return Title.create(json);
+    case 'unordered-list':
+      return UnorderedList.create(json);
+    case 'group-ul':
+      const group = UnorderedGroupList.create(json);
+      group.set('blocks', json.blocks.map(blockJSON => {
+        return this.createBlockFromJSON(Object.assign({ parent: group }, blockJSON));
+      }));
+      return group;
     default:
       throw new Error(`Unrecognized block type: "${json.type}".`);
     }

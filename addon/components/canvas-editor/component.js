@@ -85,6 +85,12 @@ export default Ember.Component.extend({
     $block.focus();
   },
 
+  getNavigateBlocks() {
+    return [].concat(...this.get('canvas.blocks').map(block =>
+      block.get('blocks') || block
+    ));
+  },
+
   actions: {
     /**
      * Called when block content was updated locally.
@@ -149,6 +155,7 @@ export default Ember.Component.extend({
       }
     },
 
+
     /**
      * Called when the user wishes to navigate down to the next block from the
      * currently focused block.
@@ -159,8 +166,9 @@ export default Ember.Component.extend({
      * @param {ClientRect} rangeRect The client rect for the current user range
      */
     navigateDown(block, rangeRect) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const nextBlock = this.get('canvas.blocks').objectAt(blockIndex + 1);
+      const blocks = this.getNavigateBlocks();
+      const blockIndex = blocks.indexOf(block);
+      const nextBlock = blocks.objectAt(blockIndex + 1);
       if (!nextBlock) return; // `block` is the last block
       Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
     },
@@ -174,8 +182,9 @@ export default Ember.Component.extend({
      *   wishes to navigate *from*
      */
     navigateLeft(block) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      const blocks = this.getNavigateBlocks();
+      const blockIndex = blocks.indexOf(block);
+      const prevBlock = blocks.objectAt(blockIndex - 1);
       if (!prevBlock) return; // `block` is the first block
       run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
     },
@@ -189,8 +198,9 @@ export default Ember.Component.extend({
      *   wishes to navigate *from*
      */
     navigateRight(block) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const nextBlock = this.get('canvas.blocks').objectAt(blockIndex + 1);
+      const blocks = this.getNavigateBlocks();
+      const blockIndex = blocks.indexOf(block);
+      const nextBlock = blocks.objectAt(blockIndex + 1);
       if (!nextBlock) return; // `block` is the last block
       run.scheduleOnce('afterRender', this, 'focusBlockStart', nextBlock);
     },
@@ -205,8 +215,9 @@ export default Ember.Component.extend({
      * @param {ClientRect} rangeRect The client rect for the current user range
      */
     navigateUp(block, rangeRect) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      const blocks = this.getNavigateBlocks();
+      const blockIndex = blocks.indexOf(block);
+      const prevBlock = blocks.objectAt(blockIndex - 1);
       if (!prevBlock) return; // `block` is the first block
       Selection.navigateUpToBlock(this.$(), prevBlock, rangeRect);
     },

@@ -119,17 +119,25 @@ export default Ember.Component.extend({
      * @param {string} remainingContent The remaining content left in the block
      */
     blockDeletedLocally(block, remainingContent) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      const blocks = this.getNavigateBlocks();
+      let blockIndex = blocks.indexOf(block);
+      const prevBlock = blocks.objectAt(blockIndex - 1);
       const $prevBlock = this.$(`[data-block-id="${prevBlock.get('id')}"]`);
       const selectionState = new SelectionState($prevBlock.get(0));
       if (!prevBlock) return; // `block` is the first block
       this.focusBlockEnd(prevBlock);
       selectionState.capture();
-      this.get('canvas.blocks').removeObject(block);
       prevBlock.set('lastContent', prevBlock.get('content'));
       prevBlock.set('content', prevBlock.get('content') + remainingContent);
-      this.get('onBlockDeletedLocally')(blockIndex, block);
+      block = block.get('parent.blocks.length') === 0 ? block.get('parent') : block;
+      if (block.get('parent')) {
+        blockIndex = block.get('parent.blocks').indexOf(block);
+        block.get('parent.blocks').removeObject(block);
+        this.get('onBlockDeletedLocally')(blockIndex, block);
+      } else {
+        this.get('canvas.blocks').removeObject(block);
+        this.get('onBlockDeletedLocally')(blockIndex, block);
+      }
       this.get('onBlockContentUpdatedLocally')(prevBlock);
       run.scheduleOnce('afterRender', selectionState, 'restore');
     },
@@ -143,13 +151,13 @@ export default Ember.Component.extend({
             type: 'group-ul',
             blocks: [block]
           });
+          this.get('onBlockDeletedLocally')(idx, block);
           block.setProperties({
             'parent': group,
             'type': 'unordered-list',
             'content': content.slice(2)
           });
           blocks.replace(idx, 1, [group]);
-          this.get('onBlockDeletedLocally')(idx, block);
           this.get('onNewBlockInsertedLocally')(idx, group);
 
       }

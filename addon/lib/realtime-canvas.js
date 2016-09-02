@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list';
-import UnorderedGroupList from 'canvas-editor/lib/realtime-canvas/unordered-list';
+import UnorderedGroupList from 'canvas-editor/lib/realtime-canvas/group-ul';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
 
 const { computed } = Ember;

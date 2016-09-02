@@ -12,7 +12,7 @@ export default CanvasBlockEditable.extend({
   styles,
 
   setBlockContentFromInput(content, preventRerender = true) {
-    if (/^- /.test(content)) {
+    if (/^-\s/.test(content)) {
       this.get('changeToType')('paragraph/unordered-list',
         this.get('block'), content);
     } else {

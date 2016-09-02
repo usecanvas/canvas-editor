@@ -4,11 +4,12 @@ import Block from './block';
 const { computed } = Ember;
 
 /**
- * A group in a canvas.
+ * A single block with content in a canvas.
  *
- * @class CanvasEditor.RealtimeCanvas.Group
+ * @class CanvasEditor.RealtimeCanvas.ContentBlock
  * @extends Ember.Object
  */
 export default Block.extend({
-  blocks: computed(_ => [])
+  content: '',
+  lastContent: '',
 });

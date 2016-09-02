@@ -1,4 +1,4 @@
-import Block from './block';
+import Block from './content-block';
 import Ember from 'ember';
 
 const { computed } = Ember;

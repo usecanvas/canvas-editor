@@ -159,7 +159,7 @@ export default Ember.Component.extend({
           });
           blocks.replace(idx, 1, [group]);
           this.get('onNewBlockInsertedLocally')(idx, group);
-
+          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
       }
     },
 

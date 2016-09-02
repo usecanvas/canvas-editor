@@ -1,5 +1,6 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import layout from './template';
+import styles from './styles';
 
 /**
  * A component representing a URL card.
@@ -8,5 +9,7 @@ import layout from './template';
  * @extends CanvasEditor.CanvasBlockComponent
  */
 export default CanvasBlock.extend({
-  layout
+  layout,
+  localClassNames: ['canvas-block-url'],
+  styles
 });

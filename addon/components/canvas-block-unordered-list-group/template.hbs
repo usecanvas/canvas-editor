@@ -1,7 +1,7 @@
 {{#each block.blocks as |child|}}
   {{component (block-component-name child.type)
     block=child
-    changeToType=changeToType
+    changeBlockType=changeBlockType
     onBlockDeletedLocally=onBlockDeletedLocally
     onNavigateDown=onNavigateDown
     onNavigateLeft=onNavigateLeft

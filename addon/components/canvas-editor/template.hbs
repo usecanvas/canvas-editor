@@ -1,7 +1,7 @@
 {{#each canvas.blocks as |block|}}
   {{component (block-component-name block.type)
     block=block
-    changeToType=(action 'changeToType')
+    changeBlockType=(action 'changeBlockType')
     onBlockDeletedLocally=(action 'blockDeletedLocally')
     onNavigateDown=(action 'navigateDown')
     onNavigateLeft=(action 'navigateLeft')

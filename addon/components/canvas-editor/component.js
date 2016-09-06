@@ -142,7 +142,7 @@ export default Ember.Component.extend({
       run.scheduleOnce('afterRender', selectionState, 'restore');
     },
 
-    changeToType(typeChange, block, content) {
+    changeBlockType(typeChange, block, content) {
       switch (typeChange) {
         case 'paragraph/unordered-list-member':
           const blocks = this.get('canvas.blocks');

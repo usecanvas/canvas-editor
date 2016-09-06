@@ -15,7 +15,8 @@ export default CanvasBlockEditable.extend({
     const type = getNewType(content);
 
     if (type) {
-      this.get('changeToType')(`paragraph/${type}`, this.get('block'), content);
+      this.get('changeBlockType')(
+        `paragraph/${type}`, this.get('block'), content);
     } else {
       this._super(content, preventRerender);
     }

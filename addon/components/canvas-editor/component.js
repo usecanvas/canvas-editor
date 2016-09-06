@@ -138,6 +138,7 @@ export default Ember.Component.extend({
     });
 
     group.get('blocks').replace(index, Infinity, []);
+    this.get('onBlockDeletedLocally')(index, block);
 
     const paragraph = Paragraph.create({ id: block.get('id') });
     this.get('canvas.blocks').replace(groupIndex + 1, 0, [paragraph]);

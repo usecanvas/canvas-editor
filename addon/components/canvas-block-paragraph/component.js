@@ -12,15 +12,24 @@ export default CanvasBlockEditable.extend({
   styles,
 
   setBlockContentFromInput(content, preventRerender = true) {
-    if (/^-\s/.test(content)) {
-      this.get('changeToType')('paragraph/unordered-list-member',
-        this.get('block'), content);
+    const type = getNewType(content);
+
+    if (type) {
+      this.get('changeToType')(`paragraph/${type}`, this.get('block'), content);
     } else {
       this._super(content, preventRerender);
     }
-  },
-
-  changeToList(type, content) {
-
   }
 });
+
+function getNewType(content) {
+  if (isUnorderedListMember(content)) {
+    return 'unordered-list-member';
+  }
+
+  return null;
+}
+
+function isUnorderedListMember(content) {
+  return /^-\s/.test(content);
+}

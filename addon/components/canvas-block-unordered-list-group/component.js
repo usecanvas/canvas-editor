@@ -1,14 +1,14 @@
-import Ember from 'ember';
+import BlockComponent from 'canvas-editor/components/canvas-block/component';
 import layout from './template';
 
 /**
  * A component for rendering unordered list groups.
  *
  * @class CanvasEditor.CanvasBlockUnorderedListGroupComponent
- * @extends Ember.Component
+ * @extends CanvasEditor.CanvasBlockComponent
  */
-export default Ember.Component.extend({
-  localClassNames: 'canvas-block-unordered-list-group',
+export default BlockComponent.extend({
+  classNames: ['canvas-block-unordered-list-group'],
   tagName: 'ul',
   layout
 });

@@ -9,7 +9,6 @@ import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
  * @extends CanvasEditor.CanvasBlockComponent
  */
 export default CanvasBlock.extend(ContentEditable, {
-  attributeBindings: ['block.id:data-block-id'],
   classNames: ['canvas-block-editable'],
   nextBlockConstructor: Paragraph
 });

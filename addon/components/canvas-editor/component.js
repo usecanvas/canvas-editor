@@ -103,6 +103,20 @@ export default Ember.Component.extend({
   },
 
   /**
+   * Remove a group from the canvas if it is empty.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.GroupBlock} group The group that will
+   *   be removed if empty
+   */
+  removeGroupIfEmpty(group) {
+    if (group.get('blocks.length') > 0) return;
+    const index = this.get('canvas.blocks').indexOf(group);
+    this.get('canvas.blocks').removeObject(group);
+    this.get('onBlockDeletedLocally')(index, group);
+  },
+
+  /**
    * Split a block's group at the block, replacing it with a paragraph.
    *
    * @method
@@ -127,8 +141,13 @@ export default Ember.Component.extend({
     const paragraph = Paragraph.create({ id: block.get('id') });
     this.get('canvas.blocks').replace(groupIndex + 1, 0, [paragraph]);
     this.get('onNewBlockInsertedLocally')(groupIndex + 1, paragraph);
-    this.get('canvas.blocks').replace(groupIndex + 2, 0, [newGroup]);
-    this.get('onNewBlockInsertedLocally')(groupIndex + 2, newGroup);
+
+    if (movedGroupBlocks.get('length')) {
+      this.get('canvas.blocks').replace(groupIndex + 2, 0, [newGroup]);
+      this.get('onNewBlockInsertedLocally')(groupIndex + 2, newGroup);
+    }
+
+    this.removeGroupIfEmpty(group);
     run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
   },
 
@@ -155,6 +174,7 @@ export default Ember.Component.extend({
       this.get('onBlockTypeUpdatedLocally')(block);
     },
 
+    /* eslint-disable max-statements */
     /**
      * Called when the user deletes a block.
      *
@@ -195,6 +215,7 @@ export default Ember.Component.extend({
         blockIndex = block.get('parent.blocks').indexOf(block);
         block.get('parent.blocks').removeObject(block);
         this.get('onBlockDeletedLocally')(blockIndex, block);
+        this.removeGroupIfEmpty(block.get('parent'));
       } else {
         this.get('canvas.blocks').removeObject(block);
         this.get('onBlockDeletedLocally')(blockIndex, block);
@@ -203,6 +224,7 @@ export default Ember.Component.extend({
       this.get('onBlockContentUpdatedLocally')(prevBlock);
       run.scheduleOnce('afterRender', selectionState, 'restore');
     },
+    /* eslint-enable max-statements */
 
     changeBlockType(typeChange, block, content) {
       const blocks = this.get('canvas.blocks');

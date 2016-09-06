@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Group from 'canvas-editor/lib/realtime-canvas/group';
+import Group from 'canvas-editor/lib/realtime-canvas/group-block';
 import layout from './template';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
@@ -144,18 +144,18 @@ export default Ember.Component.extend({
 
     changeToType(typeChange, block, content) {
       switch (typeChange) {
-        case 'paragraph/unordered-list':
+        case 'paragraph/unordered-list-member':
           const blocks = this.get('canvas.blocks');
           const idx = blocks.indexOf(block);
           const group = Group.create({
-            type: 'group-ul',
+            type: 'unordered-list-group',
             blocks: [block]
           });
           this.get('onBlockDeletedLocally')(idx, block);
           block.setProperties({
-            'parent': group,
-            'type': 'unordered-list',
-            'content': content.slice(2)
+            parent: group,
+            type: 'unordered-list-member',
+            content: content.slice(2)
           });
           blocks.replace(idx, 1, [group]);
           this.get('onNewBlockInsertedLocally')(idx, group);

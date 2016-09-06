@@ -1,7 +1,15 @@
+@value --editor-background-color from "canvas-editor/styles/theme";
+@value --editor-font-family from "canvas-editor/styles/theme";
+@value --editor-line-height from "canvas-editor/styles/theme";
+@value --editor-padding from "canvas-editor/styles/theme";
+@value --editor-text-color from "canvas-editor/styles/theme";
+
 .canvas-editor {
-  line-height: 1.485;
-  max-width: 45rem;
-  margin: 4rem auto;
+  background-color: --editor-background-color;
+  color: --editor-text-color;
+  font-family: --editor-font-family;
+  line-height: --editor-line-height;
+  padding: --editor-padding;
 }
 
 .canvas-editor [contenteditable] {

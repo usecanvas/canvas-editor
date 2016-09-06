@@ -12,5 +12,14 @@ export default CanvasBlockEditable.extend({
   tagName: 'li',
   localClassNames: 'canvas-block-unordered-list-member',
   styles,
-  nextBlockConstructor: UnorderedList
+  nextBlockConstructor: UnorderedList,
+
+  newBlockInsertedLocally() {
+    if (!this.get('block.content')) {
+      return this.get('changeBlockType')(
+        `${this.get('block.type')}/paragraph`, this.get('block'), '');
+    }
+
+    return this._super(...arguments);
+  }
 });

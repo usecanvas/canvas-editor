@@ -84,7 +84,7 @@ rules:
     - ignorePattern: '^import|^export'
       ignoreUrls: true
       ignoreTrailingComments: true
-  max-lines: error
+  max-lines: 'off'
   max-nested-callbacks: error
   max-params: error
   max-statements:
@@ -204,7 +204,7 @@ rules:
   prefer-arrow-callback: 'off'
   prefer-const: error
   prefer-reflect: error
-  prefer-rest-params: error
+  prefer-rest-params: 'off'
   prefer-spread: error
   prefer-template: error
   quote-props: 'off'

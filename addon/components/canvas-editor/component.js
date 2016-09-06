@@ -1,9 +1,10 @@
 import Ember from 'ember';
-import Group from 'canvas-editor/lib/realtime-canvas/group-block';
 import layout from './template';
+import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
+import UnorderedListGroup from 'canvas-editor/lib/realtime-canvas/unordered-list-group';
 import styles from './styles';
 
 const { run } = Ember;
@@ -101,6 +102,36 @@ export default Ember.Component.extend({
     })));
   },
 
+  /**
+   * Split a block's group at the block, replacing it with a paragraph.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block whose group will
+   *   be split
+   */
+  splitGroupAtMember(block) {
+    const group = block.get('parent');
+    const index = group.get('blocks').indexOf(block);
+    const groupIndex = this.get('canvas.blocks').indexOf(group);
+    const movedGroupBlocks = Ember.A(group.get('blocks').slice(index + 1));
+
+    group.get('blocks').replace(index, Infinity, []);
+
+    const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
+
+    movedGroupBlocks.forEach(movedGroupBlock => {
+      this.get('onBlockDeletedLocally')(movedGroupBlock);
+      movedGroupBlock.set('parent', newGroup);
+    });
+
+    const paragraph = Paragraph.create({ id: block.get('id') });
+    this.get('canvas.blocks').replace(groupIndex + 1, 0, [paragraph]);
+    this.get('onNewBlockInsertedLocally')(groupIndex + 1, paragraph);
+    this.get('canvas.blocks').replace(groupIndex + 2, 0, [newGroup]);
+    this.get('onNewBlockInsertedLocally')(groupIndex + 2, newGroup);
+    run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
+  },
+
   actions: {
     /**
      * Called when block content was updated locally.
@@ -174,14 +205,12 @@ export default Ember.Component.extend({
     },
 
     changeBlockType(typeChange, block, content) {
+      const blocks = this.get('canvas.blocks');
+
       switch (typeChange) {
         case 'paragraph/unordered-list-member': {
-          const blocks = this.get('canvas.blocks');
           const idx = blocks.indexOf(block);
-          const group = Group.create({
-            type: 'unordered-list-group',
-            blocks: Ember.A([block])
-          });
+          const group = UnorderedListGroup.create({ blocks: Ember.A([block]) });
           this.get('onBlockDeletedLocally')(idx, block);
           block.setProperties({
             parent: group,
@@ -191,10 +220,15 @@ export default Ember.Component.extend({
           blocks.replace(idx, 1, [group]);
           this.get('onNewBlockInsertedLocally')(idx, group);
           run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
+          break;
+        } case 'unordered-list-member/paragraph': {
+          this.splitGroupAtMember(block);
+          break;
+        } default: {
+          throw new Error(`Cannot do type change: "${typeChange}"`);
         }
       }
     },
-
 
     /**
      * Called when the user wishes to navigate down to the next block from the

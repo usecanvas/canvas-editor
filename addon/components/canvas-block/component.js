@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import styles from './styles';
 
 /**

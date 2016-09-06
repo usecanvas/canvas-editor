@@ -1,4 +1,4 @@
-{{#each block.blocks as |child|}}
+{{#each block.blocks as |child|~}}
   {{component (block-component-name child.type)
     block=child
     changeBlockType=changeBlockType
@@ -10,4 +10,4 @@
     onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
     onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
     onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
-{{/each}}
+{{~/each}}

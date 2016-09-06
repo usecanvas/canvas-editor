@@ -1,4 +1,4 @@
-@value --list-indent: 1.625em;
+@value --list-bullet-color from "canvas-editor/styles/theme";
 
 .canvas-block-unordered-list-member {
   list-style: none;
@@ -6,7 +6,7 @@
 }
 
 .canvas-block-unordered-list-member::before {
-  background: lightgray;
+  background: --list-bullet-color;
   border-radius: 50%;
   box-sizing: border-box;
   content: "";

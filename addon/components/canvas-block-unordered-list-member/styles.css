@@ -1,3 +1,19 @@
-.canvas-block-unordered-list {
-  composes: canvas-block from '../canvas-block/styles';
+@value --list-indent: 1.625em;
+
+.canvas-block-unordered-list-member {
+  list-style: none;
+  position: relative;
+}
+
+.canvas-block-unordered-list-member::before {
+  background: lightgray;
+  border-radius: 50%;
+  box-sizing: border-box;
+  content: "";
+  height: 0.5em;
+  left: -1em;
+  margin-right: 0.5em;
+  position: absolute;
+  top: 0.45em;
+  width: 0.5em;
 }

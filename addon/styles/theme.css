@@ -28,5 +28,7 @@
  * Blocks
  */
 
+@value --block-placeholder-color: --gray;
+
 /* Lists */
 @value --list-bullet-color: --gray;

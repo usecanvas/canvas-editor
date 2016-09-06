@@ -1,5 +1,17 @@
+@value --block-placeholder-color from "canvas-editor/styles/theme";
+
 .canvas-block-title {
   composes: canvas-block from '../canvas-block/styles';
   font-size: 2rem;
   font-weight: bold;
+  position: relative;
+}
+
+.is-empty::before {
+  color: --block-placeholder-color;
+  content: attr(data-placeholder);
+  display: block;
+  left: 0;
+  position: absolute;
+  top: 0;
 }

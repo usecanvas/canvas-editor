@@ -1,5 +1,8 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
+import Ember from 'ember';
 import styles from './styles';
+
+const { computed } = Ember;
 
 /**
  * A component representing a "title" type canvas block.
@@ -8,6 +11,13 @@ import styles from './styles';
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
 export default CanvasBlockEditable.extend({
+  attributeBindings: ['placeholder:data-placeholder'],
+  isEmpty: computed.not('block.content'),
   localClassNames: ['canvas-block-title'],
-  styles
+  localClassNameBindings: ['isEmpty'],
+  styles,
+
+  placeholder: computed('block.content', function() {
+    return this.get('block.content') ? '' : 'Give me a name...';
+  })
 });

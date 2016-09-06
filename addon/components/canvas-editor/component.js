@@ -92,13 +92,13 @@ export default Ember.Component.extend({
    * @returns {Array<CanvasEditor.CanvasRealtime.Block}
    */
   getNavigableBlocks() {
-    return [].concat(...this.get('canvas.blocks').map(block => {
+    return Ember.A([].concat(...this.get('canvas.blocks').map(block => {
       if (block.get('isGroup')) {
         return block.get('blocks');
       }
 
       return block;
-    }));
+    })));
   },
 
   actions: {
@@ -136,17 +136,30 @@ export default Ember.Component.extend({
      * @param {string} remainingContent The remaining content left in the block
      */
     blockDeletedLocally(block, remainingContent) {
-      const blocks = this.getNavigableBlocks();
-      let blockIndex = blocks.indexOf(block);
-      const prevBlock = blocks.objectAt(blockIndex - 1);
+      const navigableBlocks = this.getNavigableBlocks();
+      let blockIndex = navigableBlocks.indexOf(block);
+      const prevBlock = navigableBlocks.objectAt(blockIndex - 1);
+
+      if (!prevBlock) return; // `block` is the first block
+
+      /*
+       * Capture selection at the end of the previous block, so we can restore
+       * to that position once we've joined the deleted block's remaining
+       * content onto it.
+       */
       const $prevBlock = this.$(`[data-block-id="${prevBlock.get('id')}"]`);
       const selectionState = new SelectionState($prevBlock.get(0));
-      if (!prevBlock) return; // `block` is the first block
       this.focusBlockEnd(prevBlock);
       selectionState.capture();
+
       prevBlock.set('lastContent', prevBlock.get('content'));
       prevBlock.set('content', prevBlock.get('content') + remainingContent);
-      block = block.get('parent.blocks.length') === 0 ? block.get('parent') : block;
+
+      // It's not clear why we do this (cc @olivia)
+      if (block.get('parent.blocks.length') === 0) {
+        block = block.get('parent');
+      }
+
       if (block.get('parent')) {
         blockIndex = block.get('parent.blocks').indexOf(block);
         block.get('parent.blocks').removeObject(block);
@@ -155,18 +168,19 @@ export default Ember.Component.extend({
         this.get('canvas.blocks').removeObject(block);
         this.get('onBlockDeletedLocally')(blockIndex, block);
       }
+
       this.get('onBlockContentUpdatedLocally')(prevBlock);
       run.scheduleOnce('afterRender', selectionState, 'restore');
     },
 
     changeBlockType(typeChange, block, content) {
       switch (typeChange) {
-        case 'paragraph/unordered-list-member':
+        case 'paragraph/unordered-list-member': {
           const blocks = this.get('canvas.blocks');
           const idx = blocks.indexOf(block);
           const group = Group.create({
             type: 'unordered-list-group',
-            blocks: [block]
+            blocks: Ember.A([block])
           });
           this.get('onBlockDeletedLocally')(idx, block);
           block.setProperties({
@@ -177,6 +191,7 @@ export default Ember.Component.extend({
           blocks.replace(idx, 1, [group]);
           this.get('onNewBlockInsertedLocally')(idx, group);
           run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
+        }
       }
     },
 

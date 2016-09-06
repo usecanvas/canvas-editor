@@ -32,5 +32,5 @@ function getNewType(content) {
 }
 
 function isUnorderedListMember(content) {
-  return /^-\s/.test(content);
+  return (/^-\s/).test(content);
 }

@@ -1,0 +1,32 @@
+/*
+ * Color Palette
+ */
+
+@value --black: #292E31;
+@value --dark-gray: #839197;
+@value --gray: #C0CBD1;
+@value --light-gray: #E7EAEC;
+@value --extra-light-gray: #F5F7F9;
+
+@value --blue: #414EF9;
+@value --light-blue: #30A4FF;
+@value --green: #28DB67;
+@value --red: #FF2E55;
+@value --orange: #FF9600;
+
+/*
+ * Editor
+ */
+
+@value --editor-background-color: white;
+@value --editor-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+@value --editor-text-color: --black;
+@value --editor-line-height: 1.485;
+@value --editor-padding: 1rem;
+
+/*
+ * Blocks
+ */
+
+/* Lists */
+@value --list-bullet-color: --gray;

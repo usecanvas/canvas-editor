@@ -10,3 +10,8 @@ body {
 body {
   padding: 0 1rem;
 }
+
+main {
+  margin: 4rem auto;
+  max-width: 47rem;
+}

@@ -1,0 +1,13 @@
+{{#each block.blocks as |child|}}
+  {{component (block-component-name child.type)
+    block=child
+    changeBlockType=changeBlockType
+    onBlockDeletedLocally=onBlockDeletedLocally
+    onNavigateDown=onNavigateDown
+    onNavigateLeft=onNavigateLeft
+    onNavigateRight=onNavigateRight
+    onNavigateUp=onNavigateUp
+    onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
+    onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
+    onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
+{{/each}}

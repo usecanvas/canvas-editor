@@ -1,7 +1,4 @@
-import Block from './block';
-import Ember from 'ember';
-
-const { computed } = Ember;
+import Block from './content-block';
 
 /**
  * A block representing a paragraph.
@@ -10,7 +7,5 @@ const { computed } = Ember;
  * @extends CanvasEditor.RealtimeCanvas.Block
  */
 export default Block.extend({
-  type: 'title',
-  content: '',
-  lastContent: ''
+  type: 'title'
 });

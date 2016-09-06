@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import layout from './template';
+import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
+import UnorderedListGroup from 'canvas-editor/lib/realtime-canvas/unordered-list-group';
 import styles from './styles';
 
 const { run } = Ember;
@@ -32,11 +34,11 @@ export default Ember.Component.extend({
   onBlockContentUpdatedLocally: Ember.K,
 
   /**
-   * A dummy handler for an action that receives an index and a block after the
-   * block was deleted locally.
+   * A dummy handler for an action that receives an index in the block's parent
+   * and a block after the block was deleted locally.
    *
    * @method
-   * @param {number} index The index the block was deleted from
+   * @param {number} index The index the block was deleted from in its parent
    * @param {CanvasEditor.RealtimeCanvas.Block} block The deleted block
    */
   onBlockDeletedLocally: Ember.K,
@@ -46,7 +48,7 @@ export default Ember.Component.extend({
    * block was inserted locally.
    *
    * @method
-   * @param {number} index The index the new block was inserted at
+   * @param {number} index The index the new block was inserted at in its parent
    * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The new block
    */
   onNewBlockInsertedLocally: Ember.K,
@@ -84,18 +86,97 @@ export default Ember.Component.extend({
     $block.focus();
   },
 
+  /**
+   * Return the list of navigable blocks, which excludes groups.
+   *
+   * @method
+   * @returns {Array<CanvasEditor.CanvasRealtime.Block}
+   */
+  getNavigableBlocks() {
+    return Ember.A([].concat(...this.get('canvas.blocks').map(block => {
+      if (block.get('isGroup')) {
+        return block.get('blocks');
+      }
+
+      return block;
+    })));
+  },
+
+  /**
+   * Remove a group from the canvas if it is empty.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.GroupBlock} group The group that will
+   *   be removed if empty
+   */
+  removeGroupIfEmpty(group) {
+    if (group.get('blocks.length') > 0) return;
+    const index = this.get('canvas.blocks').indexOf(group);
+    this.get('canvas.blocks').removeObject(group);
+    this.get('onBlockDeletedLocally')(index, group);
+  },
+
+  /**
+   * Split a block's group at the block, replacing it with a paragraph.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block whose group will
+   *   be split
+   */
+  splitGroupAtMember(block) {
+    const group = block.get('parent');
+    const index = group.get('blocks').indexOf(block);
+    const groupIndex = this.get('canvas.blocks').indexOf(group);
+    const movedGroupBlocks = Ember.A(group.get('blocks').slice(index + 1));
+
+    const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
+
+    movedGroupBlocks.forEach(movedGroupBlock => {
+      const movedBlockIndex = group.get('blocks').indexOf(movedGroupBlock);
+      this.get('onBlockDeletedLocally')(movedBlockIndex, movedGroupBlock);
+      movedGroupBlock.set('parent', newGroup);
+    });
+
+    group.get('blocks').replace(index, Infinity, []);
+    this.get('onBlockDeletedLocally')(index, block);
+
+    const paragraph = Paragraph.create({ id: block.get('id') });
+    this.get('canvas.blocks').replace(groupIndex + 1, 0, [paragraph]);
+    this.get('onNewBlockInsertedLocally')(groupIndex + 1, paragraph);
+
+    if (movedGroupBlocks.get('length')) {
+      this.get('canvas.blocks').replace(groupIndex + 2, 0, [newGroup]);
+      this.get('onNewBlockInsertedLocally')(groupIndex + 2, newGroup);
+    }
+
+    this.removeGroupIfEmpty(group);
+    run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
+  },
+
   actions: {
     /**
      * Called when block content was updated locally.
      *
      * @method
-     * @param {CanvasEditor.CanvasRealtime.BLock} block The block whose content
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block whose content
      *   was updated locally
      */
     blockContentUpdatedLocally(block) {
       this.get('onBlockContentUpdatedLocally')(block);
     },
 
+    /**
+     * Called when block type was updated locally.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block whose type was
+     *   updated locally
+     */
+    blockTypeUpdatedLocally(block) {
+      this.get('onBlockTypeUpdatedLocally')(block);
+    },
+
+    /* eslint-disable max-statements */
     /**
      * Called when the user deletes a block.
      *
@@ -108,19 +189,71 @@ export default Ember.Component.extend({
      * @param {string} remainingContent The remaining content left in the block
      */
     blockDeletedLocally(block, remainingContent) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      const navigableBlocks = this.getNavigableBlocks();
+      let blockIndex = navigableBlocks.indexOf(block);
+      const prevBlock = navigableBlocks.objectAt(blockIndex - 1);
+
+      if (!prevBlock) return; // `block` is the first block
+
+      /*
+       * Capture selection at the end of the previous block, so we can restore
+       * to that position once we've joined the deleted block's remaining
+       * content onto it.
+       */
       const $prevBlock = this.$(`[data-block-id="${prevBlock.get('id')}"]`);
       const selectionState = new SelectionState($prevBlock.get(0));
-      if (!prevBlock) return; // `block` is the first block
       this.focusBlockEnd(prevBlock);
       selectionState.capture();
-      this.get('canvas.blocks').removeObject(block);
+
       prevBlock.set('lastContent', prevBlock.get('content'));
       prevBlock.set('content', prevBlock.get('content') + remainingContent);
-      this.get('onBlockDeletedLocally')(blockIndex, block);
+
+      // It's not clear why we do this (cc @olivia)
+      if (block.get('parent.blocks.length') === 0) {
+        block = block.get('parent');
+      }
+
+      if (block.get('parent')) {
+        blockIndex = block.get('parent.blocks').indexOf(block);
+        block.get('parent.blocks').removeObject(block);
+        this.get('onBlockDeletedLocally')(blockIndex, block);
+        this.removeGroupIfEmpty(block.get('parent'));
+      } else {
+        this.get('canvas.blocks').removeObject(block);
+        this.get('onBlockDeletedLocally')(blockIndex, block);
+      }
+
       this.get('onBlockContentUpdatedLocally')(prevBlock);
       run.scheduleOnce('afterRender', selectionState, 'restore');
+    },
+    /* eslint-enable max-statements */
+
+    changeBlockType(typeChange, block, content) {
+      const blocks = this.get('canvas.blocks');
+
+      switch (typeChange) {
+        case 'paragraph/unordered-list-member': {
+          const index = blocks.indexOf(block);
+          const group = UnorderedListGroup.create({ blocks: Ember.A([block]) });
+          this.get('onBlockDeletedLocally')(index, block);
+          block.setProperties({
+            parent: group,
+            type: 'unordered-list-member',
+            content: content.slice(2)
+          });
+
+          blocks.replace(index, 1, [group]);
+
+          this.get('onNewBlockInsertedLocally')(index, group);
+          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
+          break;
+        } case 'unordered-list-member/paragraph': {
+          this.splitGroupAtMember(block);
+          break;
+        } default: {
+          throw new Error(`Cannot do type change: "${typeChange}"`);
+        }
+      }
     },
 
     /**
@@ -133,8 +266,9 @@ export default Ember.Component.extend({
      * @param {ClientRect} rangeRect The client rect for the current user range
      */
     navigateDown(block, rangeRect) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const nextBlock = this.get('canvas.blocks').objectAt(blockIndex + 1);
+      const blocks = this.getNavigableBlocks();
+      const blockIndex = blocks.indexOf(block);
+      const nextBlock = blocks.objectAt(blockIndex + 1);
       if (!nextBlock) return; // `block` is the last block
       Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
     },
@@ -148,8 +282,9 @@ export default Ember.Component.extend({
      *   wishes to navigate *from*
      */
     navigateLeft(block) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      const blocks = this.getNavigableBlocks();
+      const blockIndex = blocks.indexOf(block);
+      const prevBlock = blocks.objectAt(blockIndex - 1);
       if (!prevBlock) return; // `block` is the first block
       run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
     },
@@ -163,8 +298,9 @@ export default Ember.Component.extend({
      *   wishes to navigate *from*
      */
     navigateRight(block) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const nextBlock = this.get('canvas.blocks').objectAt(blockIndex + 1);
+      const blocks = this.getNavigableBlocks();
+      const blockIndex = blocks.indexOf(block);
+      const nextBlock = blocks.objectAt(blockIndex + 1);
       if (!nextBlock) return; // `block` is the last block
       run.scheduleOnce('afterRender', this, 'focusBlockStart', nextBlock);
     },
@@ -179,8 +315,9 @@ export default Ember.Component.extend({
      * @param {ClientRect} rangeRect The client rect for the current user range
      */
     navigateUp(block, rangeRect) {
-      const blockIndex = this.get('canvas.blocks').indexOf(block);
-      const prevBlock = this.get('canvas.blocks').objectAt(blockIndex - 1);
+      const blocks = this.getNavigableBlocks();
+      const blockIndex = blocks.indexOf(block);
+      const prevBlock = blocks.objectAt(blockIndex - 1);
       if (!prevBlock) return; // `block` is the first block
       Selection.navigateUpToBlock(this.$(), prevBlock, rangeRect);
     },
@@ -195,8 +332,10 @@ export default Ember.Component.extend({
      * @param {CanvasEditor.CanvasRealtime.Block} newBlock The new block
      */
     newBlockInsertedLocally(prevBlock, newBlock) {
-      const index = this.get('canvas.blocks').indexOf(prevBlock) + 1;
-      this.get('canvas.blocks').replace(index, 0, [newBlock]);
+      const parent =
+        prevBlock.get('parent.blocks') || this.get('canvas.blocks');
+      const index = parent.indexOf(prevBlock) + 1;
+      parent.replace(index, 0, [newBlock]);
       this.get('onNewBlockInsertedLocally')(index, newBlock);
       run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);
     }

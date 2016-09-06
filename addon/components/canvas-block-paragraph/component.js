@@ -9,5 +9,28 @@ import styles from './styles';
  */
 export default CanvasBlockEditable.extend({
   localClassNames: 'canvas-block-paragraph',
-  styles
+  styles,
+
+  setBlockContentFromInput(content, preventRerender = true) {
+    const type = getNewType(content);
+
+    if (type) {
+      this.get('changeBlockType')(
+        `paragraph/${type}`, this.get('block'), content);
+    } else {
+      this._super(content, preventRerender);
+    }
+  }
 });
+
+function getNewType(content) {
+  if (isUnorderedListMember(content)) {
+    return 'unordered-list-member';
+  }
+
+  return null;
+}
+
+function isUnorderedListMember(content) {
+  return (/^-\s/).test(content);
+}

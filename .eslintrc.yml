@@ -10,7 +10,7 @@ rules:
     - error
     - never
   array-callback-return: error
-  arrow-body-style: error
+  arrow-body-style: 'off'
   arrow-parens:
     - error
     - as-needed
@@ -84,7 +84,7 @@ rules:
     - ignorePattern: '^import|^export'
       ignoreUrls: true
       ignoreTrailingComments: true
-  max-lines: error
+  max-lines: 'off'
   max-nested-callbacks: error
   max-params: error
   max-statements:
@@ -143,7 +143,7 @@ rules:
   no-new-require: error
   no-new-wrappers: error
   no-octal-escape: error
-  no-param-reassign: error
+  no-param-reassign: 'off'
   no-path-concat: error
   no-plusplus: error
   no-process-env: error
@@ -169,7 +169,7 @@ rules:
   no-trailing-spaces: error
   no-undef-init: error
   no-undefined: error
-  no-underscore-dangle: error
+  no-underscore-dangle: 'off'
   no-unmodified-loop-condition: error
   no-unneeded-ternary: error
   no-unsafe-negation: error
@@ -204,7 +204,7 @@ rules:
   prefer-arrow-callback: 'off'
   prefer-const: error
   prefer-reflect: error
-  prefer-rest-params: error
+  prefer-rest-params: 'off'
   prefer-spread: error
   prefer-template: error
   quote-props: 'off'

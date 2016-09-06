@@ -88,7 +88,7 @@ export default Ember.Component.extend({
   /**
    * Return the list of navigable blocks, which excludes groups.
    *
-   * @method getNavigableBlocks
+   * @method
    * @returns {Array<CanvasEditor.CanvasRealtime.Block}
    */
   getNavigableBlocks() {
@@ -106,13 +106,20 @@ export default Ember.Component.extend({
      * Called when block content was updated locally.
      *
      * @method
-     * @param {CanvasEditor.CanvasRealtime.BLock} block The block whose content
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block whose content
      *   was updated locally
      */
     blockContentUpdatedLocally(block) {
       this.get('onBlockContentUpdatedLocally')(block);
     },
 
+    /**
+     * Called when block type was updated locally.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block whose type was
+     *   updated locally
+     */
     blockTypeUpdatedLocally(block) {
       this.get('onBlockTypeUpdatedLocally')(block);
     },

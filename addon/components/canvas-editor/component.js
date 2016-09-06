@@ -34,11 +34,11 @@ export default Ember.Component.extend({
   onBlockContentUpdatedLocally: Ember.K,
 
   /**
-   * A dummy handler for an action that receives an index and a block after the
-   * block was deleted locally.
+   * A dummy handler for an action that receives an index in the block's parent
+   * and a block after the block was deleted locally.
    *
    * @method
-   * @param {number} index The index the block was deleted from
+   * @param {number} index The index the block was deleted from in its parent
    * @param {CanvasEditor.RealtimeCanvas.Block} block The deleted block
    */
   onBlockDeletedLocally: Ember.K,
@@ -48,7 +48,7 @@ export default Ember.Component.extend({
    * block was inserted locally.
    *
    * @method
-   * @param {number} index The index the new block was inserted at
+   * @param {number} index The index the new block was inserted at in its parent
    * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The new block
    */
   onNewBlockInsertedLocally: Ember.K,
@@ -129,14 +129,15 @@ export default Ember.Component.extend({
     const groupIndex = this.get('canvas.blocks').indexOf(group);
     const movedGroupBlocks = Ember.A(group.get('blocks').slice(index + 1));
 
-    group.get('blocks').replace(index, Infinity, []);
-
     const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
 
     movedGroupBlocks.forEach(movedGroupBlock => {
-      this.get('onBlockDeletedLocally')(movedGroupBlock);
+      const movedBlockIndex = group.get('blocks').indexOf(movedGroupBlock);
+      this.get('onBlockDeletedLocally')(movedBlockIndex, movedGroupBlock);
       movedGroupBlock.set('parent', newGroup);
     });
+
+    group.get('blocks').replace(index, Infinity, []);
 
     const paragraph = Paragraph.create({ id: block.get('id') });
     this.get('canvas.blocks').replace(groupIndex + 1, 0, [paragraph]);
@@ -231,16 +232,18 @@ export default Ember.Component.extend({
 
       switch (typeChange) {
         case 'paragraph/unordered-list-member': {
-          const idx = blocks.indexOf(block);
+          const index = blocks.indexOf(block);
           const group = UnorderedListGroup.create({ blocks: Ember.A([block]) });
-          this.get('onBlockDeletedLocally')(idx, block);
+          this.get('onBlockDeletedLocally')(index, block);
           block.setProperties({
             parent: group,
             type: 'unordered-list-member',
             content: content.slice(2)
           });
-          blocks.replace(idx, 1, [group]);
-          this.get('onNewBlockInsertedLocally')(idx, group);
+
+          blocks.replace(index, 1, [group]);
+
+          this.get('onNewBlockInsertedLocally')(index, group);
           run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
         } case 'unordered-list-member/paragraph': {

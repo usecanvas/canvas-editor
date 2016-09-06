@@ -132,8 +132,7 @@ export default Ember.Component.extend({
     const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
 
     movedGroupBlocks.forEach(movedGroupBlock => {
-      const movedBlockIndex = group.get('blocks').indexOf(movedGroupBlock);
-      this.get('onBlockDeletedLocally')(movedBlockIndex, movedGroupBlock);
+      this.get('onBlockDeletedLocally')(index + 1, movedGroupBlock);
       movedGroupBlock.set('parent', newGroup);
     });
 

@@ -51,7 +51,10 @@ export default Ember.Component.extend({
   newBlockInsertedLocally(content) {
     let newBlock;
     if (this.get('block.parent')) {
-      newBlock = this.get('nextBlockConstructor').create({ content, parent: this.get('block.parent') });
+      newBlock = this.get('nextBlockConstructor').create({
+        content,
+        parent: this.get('block.parent')
+      });
     } else {
       newBlock = this.get('nextBlockConstructor').create({ content });
     }

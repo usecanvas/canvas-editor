@@ -1,5 +1,5 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
-import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-group';
+import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-member';
 import styles from './styles';
 
 /**

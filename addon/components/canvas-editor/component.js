@@ -85,10 +85,20 @@ export default Ember.Component.extend({
     $block.focus();
   },
 
-  getNavigateBlocks() {
-    return [].concat(...this.get('canvas.blocks').map(block =>
-      block.get('blocks') || block
-    ));
+  /**
+   * Return the list of navigable blocks, which excludes groups.
+   *
+   * @method getNavigableBlocks
+   * @returns {Array<CanvasEditor.CanvasRealtime.Block}
+   */
+  getNavigableBlocks() {
+    return [].concat(...this.get('canvas.blocks').map(block => {
+      if (block.get('isGroup')) {
+        return block.get('blocks');
+      }
+
+      return block;
+    }));
   },
 
   actions: {
@@ -119,7 +129,7 @@ export default Ember.Component.extend({
      * @param {string} remainingContent The remaining content left in the block
      */
     blockDeletedLocally(block, remainingContent) {
-      const blocks = this.getNavigateBlocks();
+      const blocks = this.getNavigableBlocks();
       let blockIndex = blocks.indexOf(block);
       const prevBlock = blocks.objectAt(blockIndex - 1);
       const $prevBlock = this.$(`[data-block-id="${prevBlock.get('id')}"]`);
@@ -174,7 +184,7 @@ export default Ember.Component.extend({
      * @param {ClientRect} rangeRect The client rect for the current user range
      */
     navigateDown(block, rangeRect) {
-      const blocks = this.getNavigateBlocks();
+      const blocks = this.getNavigableBlocks();
       const blockIndex = blocks.indexOf(block);
       const nextBlock = blocks.objectAt(blockIndex + 1);
       if (!nextBlock) return; // `block` is the last block
@@ -190,7 +200,7 @@ export default Ember.Component.extend({
      *   wishes to navigate *from*
      */
     navigateLeft(block) {
-      const blocks = this.getNavigateBlocks();
+      const blocks = this.getNavigableBlocks();
       const blockIndex = blocks.indexOf(block);
       const prevBlock = blocks.objectAt(blockIndex - 1);
       if (!prevBlock) return; // `block` is the first block
@@ -206,7 +216,7 @@ export default Ember.Component.extend({
      *   wishes to navigate *from*
      */
     navigateRight(block) {
-      const blocks = this.getNavigateBlocks();
+      const blocks = this.getNavigableBlocks();
       const blockIndex = blocks.indexOf(block);
       const nextBlock = blocks.objectAt(blockIndex + 1);
       if (!nextBlock) return; // `block` is the last block
@@ -223,7 +233,7 @@ export default Ember.Component.extend({
      * @param {ClientRect} rangeRect The client rect for the current user range
      */
     navigateUp(block, rangeRect) {
-      const blocks = this.getNavigateBlocks();
+      const blocks = this.getNavigableBlocks();
       const blockIndex = blocks.indexOf(block);
       const prevBlock = blocks.objectAt(blockIndex - 1);
       if (!prevBlock) return; // `block` is the first block

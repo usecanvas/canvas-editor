@@ -10,5 +10,6 @@ const { computed } = Ember;
  * @extends CanvasEditor.RealtimeCanvas.Block
  */
 export default Block.extend({
-  blocks: computed(_ => [])
+  blocks: computed(_ => []),
+  isGroup: true
 });

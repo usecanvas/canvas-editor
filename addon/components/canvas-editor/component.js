@@ -189,8 +189,8 @@ export default Ember.Component.extend({
      */
     blockDeletedLocally(block, remainingContent) {
       const navigableBlocks = this.getNavigableBlocks();
-      let blockIndex = navigableBlocks.indexOf(block);
-      const prevBlock = navigableBlocks.objectAt(blockIndex - 1);
+      const navigableIndex = navigableBlocks.indexOf(block);
+      const prevBlock = navigableBlocks.objectAt(navigableIndex - 1);
 
       if (!prevBlock) return; // `block` is the first block
 
@@ -213,13 +213,14 @@ export default Ember.Component.extend({
       }
 
       if (block.get('parent')) {
-        blockIndex = block.get('parent.blocks').indexOf(block);
+        const index = block.get('parent.blocks').indexOf(block);
         block.get('parent.blocks').removeObject(block);
-        this.get('onBlockDeletedLocally')(blockIndex, block);
+        this.get('onBlockDeletedLocally')(index, block);
         this.removeGroupIfEmpty(block.get('parent'));
       } else {
+        const index = this.get('canvas.blocks').indexOf(block);
         this.get('canvas.blocks').removeObject(block);
-        this.get('onBlockDeletedLocally')(blockIndex, block);
+        this.get('onBlockDeletedLocally')(index, block);
       }
 
       this.get('onBlockContentUpdatedLocally')(prevBlock);

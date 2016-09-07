@@ -40,7 +40,6 @@
     "ember-addon"
   ],
   "dependencies": {
-    "canvas-colors": "^1.0.1",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-htmlbars": "^1.0.3",
     "ember-css-modules": "0.4.3"

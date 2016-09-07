@@ -230,13 +230,9 @@ export default class SelectionState {
       return innerLength;
     }
 
-    const characterNodes = ['BR', 'HR', 'IMG'];
-
     if (node.nodeType === Node.TEXT_NODE) {
       return node.data.length;
     } else if (node.classList.contains(canvasBlockClass)) {
-      return 1;
-    } else if (characterNodes.indexOf(node.nodeName) > -1) {
       return 1;
     }
     return 0;

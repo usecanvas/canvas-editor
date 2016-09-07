@@ -122,8 +122,9 @@ export default Ember.Component.extend({
    * @method
    * @param {CanvasEditor.CanvasRealtime.Block} block The block whose group will
    *   be split
+   * @param {string} content The content for the new block created for the split
    */
-  splitGroupAtMember(block) {
+  splitGroupAtMember(block, content) {
     const group = block.get('parent');
     const index = group.get('blocks').indexOf(block);
     const groupIndex = this.get('canvas.blocks').indexOf(group);
@@ -139,7 +140,7 @@ export default Ember.Component.extend({
     group.get('blocks').replace(index, Infinity, []);
     this.get('onBlockDeletedLocally')(index, block);
 
-    const paragraph = Paragraph.create({ id: block.get('id') });
+    const paragraph = Paragraph.create({ id: block.get('id'), content });
     this.get('canvas.blocks').replace(groupIndex + 1, 0, [paragraph]);
     this.get('onNewBlockInsertedLocally')(groupIndex + 1, paragraph);
 
@@ -248,7 +249,7 @@ export default Ember.Component.extend({
           run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
         } case 'unordered-list-member/paragraph': {
-          this.splitGroupAtMember(block);
+          this.splitGroupAtMember(block, content);
           break;
         } default: {
           throw new Error(`Cannot do type change: "${typeChange}"`);

@@ -14,10 +14,10 @@ export default CanvasBlockEditable.extend({
   styles,
   nextBlockConstructor: UnorderedList,
 
-  newBlockInsertedLocally() {
+  newBlockInsertedLocally(content) {
     if (!this.get('block.content')) {
       return this.get('changeBlockType')(
-        `${this.get('block.type')}/paragraph`, this.get('block'), '');
+        `${this.get('block.type')}/paragraph`, this.get('block'), content);
     }
 
     return this._super(...arguments);

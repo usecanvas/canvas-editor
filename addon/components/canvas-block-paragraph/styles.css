@@ -1,3 +1,0 @@
-.canvas-block-paragraph {
-  composes: canvas-block-editable from '../canvas-block-editable/styles';
-}

@@ -1,5 +1,5 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
-import styles from './styles';
+import styles from 'canvas-editor/components/canvas-block-editable/styles';
 
 /**
  * A component representing a "paragraph" type canvas block.

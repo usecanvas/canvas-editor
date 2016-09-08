@@ -1,7 +1,3 @@
-.canvas-block {
-  white-space: pre-wrap;
-}
-
 .canvas-block + .canvas-block {
   margin: 2rem 0;
 }

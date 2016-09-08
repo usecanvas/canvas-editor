@@ -1,0 +1,4 @@
+.canvas-block-editable {
+  composes: canvas-block from '../canvas-block/styles';
+  white-space: pre-wrap;
+}

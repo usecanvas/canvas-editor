@@ -258,7 +258,10 @@ export default Ember.Component.extend({
           const group = block.get('parent');
           const index = group.get('blocks').indexOf(block);
           const newBlock =
-            ChecklistItem.createFromMarkdown(content, { id: block.get('id') });
+            ChecklistItem.createFromMarkdown(content, {
+              id: block.get('id'),
+              parent: group
+            });
           this.get('onBlockDeletedLocally')(index, block);
           this.get('onNewBlockInsertedLocally')(index, newBlock);
           group.get('blocks').replace(index, 1, [newBlock]);

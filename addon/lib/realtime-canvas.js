@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
-import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
-import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
-import UnorderedGroupList from 'canvas-editor/lib/realtime-canvas/list';
+import CLItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
+import ULItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
+import List from 'canvas-editor/lib/realtime-canvas/list';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
 
 const { computed } = Ember;
@@ -25,16 +25,14 @@ export default Ember.Object.extend({
       } case 'title': {
         return Title.create(json);
       } case 'unordered-list-item': {
-        return UnorderedList.create(json);
+        return ULItem.create(json);
       } case 'checklist-item': {
-        return ChecklistItem.create(json);
+        return CLItem.create(json);
       } case 'list': {
-        const group = UnorderedGroupList.create(json);
-        group.set('blocks', json.blocks.map(blockJSON => {
-          return this.createBlockFromJSON(
-            Object.assign({ parent: group }, blockJSON));
-        }));
-        return group;
+        return List.create({
+          blocks: json.blocks.map(block => this.createBlockFromJSON(block)),
+          meta: json.meta
+        });
       } default: {
         throw new Error(`Unrecognized block type: "${json.type}".`);
       }

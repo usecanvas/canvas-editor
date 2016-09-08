@@ -4,7 +4,7 @@ import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
-import UnorderedListGroup from 'canvas-editor/lib/realtime-canvas/unordered-list-group';
+import List from 'canvas-editor/lib/realtime-canvas/list';
 import styles from './styles';
 
 const { run } = Ember;
@@ -233,13 +233,13 @@ export default Ember.Component.extend({
       const blocks = this.get('canvas.blocks');
 
       switch (typeChange) {
-        case 'paragraph/unordered-list-member': {
+        case 'paragraph/unordered-list-item': {
           const index = blocks.indexOf(block);
-          const group = UnorderedListGroup.create({ blocks: Ember.A([block]) });
+          const group = List.create({ blocks: Ember.A([block]) });
           this.get('onBlockDeletedLocally')(index, block);
           block.setProperties({
             parent: group,
-            type: 'unordered-list-member',
+            type: 'unordered-list-item',
             content: content.slice(2)
           });
 
@@ -248,7 +248,7 @@ export default Ember.Component.extend({
           this.get('onNewBlockInsertedLocally')(index, group);
           run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
-        } case 'unordered-list-member/paragraph': {
+        } case 'unordered-list-item/paragraph': {
           this.splitGroupAtMember(block, content);
           break;
         } default: {

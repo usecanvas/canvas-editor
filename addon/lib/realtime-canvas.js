@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
-import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-member';
-import UnorderedGroupList from 'canvas-editor/lib/realtime-canvas/unordered-list-group';
+import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
+import UnorderedGroupList from 'canvas-editor/lib/realtime-canvas/list';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
 
 const { computed } = Ember;
@@ -21,9 +21,9 @@ export default Ember.Object.extend({
         return Paragraph.create(json);
       } case 'title': {
         return Title.create(json);
-      } case 'unordered-list-member': {
+      } case 'unordered-list-item': {
         return UnorderedList.create(json);
-      } case 'unordered-list-group': {
+      } case 'list': {
         const group = UnorderedGroupList.create(json);
         group.set('blocks', json.blocks.map(blockJSON => {
           return this.createBlockFromJSON(

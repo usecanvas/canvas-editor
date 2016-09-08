@@ -24,13 +24,13 @@ export default CanvasBlockEditable.extend({
 });
 
 function getNewType(content) {
-  if (isUnorderedListMember(content)) {
-    return 'unordered-list-member';
+  if (isUnorderedListItem(content)) {
+    return 'unordered-list-item';
   }
 
   return null;
 }
 
-function isUnorderedListMember(content) {
+function isUnorderedListItem(content) {
   return (/^-\s/).test(content);
 }

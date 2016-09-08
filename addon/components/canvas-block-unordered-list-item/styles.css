@@ -1,11 +1,11 @@
 @value --list-bullet-color from "canvas-editor/styles/theme";
 
-.canvas-block-unordered-list-member {
+.canvas-block-unordered-list-item {
   list-style: none;
   position: relative;
 }
 
-.canvas-block-unordered-list-member::before {
+.canvas-block-unordered-list-item::before {
   background: --list-bullet-color;
   border-radius: 50%;
   box-sizing: border-box;

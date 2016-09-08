@@ -147,12 +147,11 @@ export default Ember.Component.extend({
     const groupIndex = this.get('canvas.blocks').indexOf(group);
     const movedGroupBlocks = Ember.A(group.get('blocks').slice(index + 1));
 
-    const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
-
     movedGroupBlocks.forEach(movedGroupBlock => {
       this.get('onBlockDeletedLocally')(index + 1, movedGroupBlock);
-      movedGroupBlock.set('parent', newGroup);
     });
+
+    const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
 
     group.get('blocks').replace(index, Infinity, []);
     this.get('onBlockDeletedLocally')(index, block);

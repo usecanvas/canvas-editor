@@ -1,13 +1,17 @@
-<div>CHECKBOX</div>
+<div local-class="checkbox">
+  {{ui-checkbox checked=true}}
+</div>
 
-{{canvas-block-checklist-item-content
-  block=block
-  changeBlockType=changeBlockType
-  onBlockDeletedLocally=onBlockDeletedLocally
-  onNavigateDown=onNavigateDown
-  onNavigateLeft=onNavigateLeft
-  onNavigateRight=onNavigateRight
-  onNavigateUp=onNavigateUp
-  onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
-  onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
-  onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
+<div local-class="content">
+  {{canvas-block-checklist-item-content
+    block=block
+    changeBlockType=changeBlockType
+    onBlockDeletedLocally=onBlockDeletedLocally
+    onNavigateDown=onNavigateDown
+    onNavigateLeft=onNavigateLeft
+    onNavigateRight=onNavigateRight
+    onNavigateUp=onNavigateUp
+    onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
+    onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
+    onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
+</div>

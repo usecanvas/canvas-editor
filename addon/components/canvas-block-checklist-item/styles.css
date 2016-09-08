@@ -1,3 +1,14 @@
 .canvas-block-checklist-item {
+  align-items: center;
+  display: flex;
   list-style-type: none;
+}
+
+.checkbox {
+  flex: none;
+  margin-right: 0.5em;
+}
+
+.content {
+  flex: 1;
 }

@@ -9,11 +9,11 @@ import styles from './styles';
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
 export default CanvasBlockEditable.extend({
-  tagName: 'li',
-  localClassNames: ['canvas-block-unordered-list-item'],
   classNames: ['canvas-block-unordered-list-item'],
-  styles,
+  localClassNames: ['component'],
   nextBlockConstructor: UnorderedList,
+  styles,
+  tagName: 'li',
 
   newBlockInsertedLocally(content) {
     if (!this.get('block.content')) {
@@ -22,5 +22,28 @@ export default CanvasBlockEditable.extend({
     }
 
     return this._super(...arguments);
+  },
+
+  setBlockContentFromInput(content, preventRerender = true) {
+    const type = getNewType(content);
+
+    if (type) {
+      this.get('changeBlockType')(
+        `unordered-list-item/${type}`, this.get('block'), content);
+    } else {
+      this._super(content, preventRerender);
+    }
   }
 });
+
+function getNewType(content) {
+  if (isChecklistItem(content)) {
+    return 'checklist-item';
+  }
+
+  return null;
+}
+
+function isChecklistItem(content) {
+  return (/^\[[ Xx]\]\s/).test(content);
+}

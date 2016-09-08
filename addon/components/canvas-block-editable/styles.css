@@ -1,0 +1,4 @@
+.component {
+  composes: component from 'canvas-editor/components/canvas-block/styles';
+  white-space: pre-wrap;
+}

@@ -1,7 +1,7 @@
 @value --block-placeholder-color from "canvas-editor/styles/theme";
 
-.canvas-block-title {
-  composes: canvas-block from '../canvas-block/styles';
+.component {
+  composes: component from 'canvas-editor/components/canvas-block-editable/styles';
   font-size: 2rem;
   font-weight: bold;
   position: relative;

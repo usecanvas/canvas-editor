@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
+import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
@@ -16,7 +17,8 @@ const { run } = Ember;
  * @extends Ember.Component
  */
 export default Ember.Component.extend({
-  localClassNames: ['canvas-editor'],
+  classNames: ['canvas-editor'],
+  localClassNames: ['component'],
   layout,
   styles,
 
@@ -32,6 +34,19 @@ export default Ember.Component.extend({
    * @param {CanvasEditor.RealtimeCanvas.Block} block The updated block
    */
   onBlockContentUpdatedLocally: Ember.K,
+
+  /**
+   * A dummy handler for an action that receives a block, meta path, old value,
+   * and new value when the value was replaced.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block whose meta
+   *   was updated locally
+   * @param {Array<*>} metaPath The path to the updated meta property
+   * @param {*} oldValue The old meta value
+   * @param {*} newValue The new meta value
+   */
+  onBlockMetaReplacedLocally: Ember.K,
 
   /**
    * A dummy handler for an action that receives an index in the block's parent
@@ -79,7 +94,9 @@ export default Ember.Component.extend({
    *   focus the element for
    */
   focusBlockStart(block) {
-    const $block = this.$(`[data-block-id="${block.get('id')}"]`);
+    let $block = this.$(`[data-block-id="${block.get('id')}"]`);
+    const $editableContent = $block.find('.editable-content');
+    if ($editableContent.length) $block = $editableContent;
     const range = Rangy.createRange();
     range.setStart($block.get(0), 0);
     Rangy.getSelection().setSingleRange(range);
@@ -130,12 +147,11 @@ export default Ember.Component.extend({
     const groupIndex = this.get('canvas.blocks').indexOf(group);
     const movedGroupBlocks = Ember.A(group.get('blocks').slice(index + 1));
 
-    const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
-
     movedGroupBlocks.forEach(movedGroupBlock => {
       this.get('onBlockDeletedLocally')(index + 1, movedGroupBlock);
-      movedGroupBlock.set('parent', newGroup);
     });
+
+    const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
 
     group.get('blocks').replace(index, Infinity, []);
     this.get('onBlockDeletedLocally')(index, block);
@@ -163,6 +179,21 @@ export default Ember.Component.extend({
      */
     blockContentUpdatedLocally(block) {
       this.get('onBlockContentUpdatedLocally')(block);
+    },
+
+    /**
+     * Called when block meta was updated locally.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block whose meta
+     *   was updated locally
+     * @param {Array<*>} metaPath The path to the updated meta property
+     * @param {*} oldValue The old meta value
+     * @param {*} newValue The new meta value
+     */
+    blockMetaReplacedLocally(block, metaPath, oldValue, newValue) {
+      this.get('onBlockMetaReplacedLocally')(
+        block, metaPath, oldValue, newValue);
     },
 
     /**
@@ -229,33 +260,50 @@ export default Ember.Component.extend({
     },
     /* eslint-enable max-statements */
 
+    /* eslint-disable max-statements */
     changeBlockType(typeChange, block, content) {
       const blocks = this.get('canvas.blocks');
 
       switch (typeChange) {
         case 'paragraph/unordered-list-item': {
           const index = blocks.indexOf(block);
-          const group = List.create({ blocks: Ember.A([block]) });
+
           this.get('onBlockDeletedLocally')(index, block);
+
+          const group = List.create({ blocks: Ember.A([block]) });
+
           block.setProperties({
-            parent: group,
             type: 'unordered-list-item',
             content: content.slice(2)
           });
 
           blocks.replace(index, 1, [group]);
-
           this.get('onNewBlockInsertedLocally')(index, group);
           run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
-        } case 'unordered-list-item/paragraph': {
+        } case 'checklist-item/paragraph':
+          case 'unordered-list-item/paragraph': {
           this.splitGroupAtMember(block, content);
+          break;
+        } case 'unordered-list-item/checklist-item': {
+          const group = block.get('parent');
+          const index = group.get('blocks').indexOf(block);
+          const newBlock =
+            ChecklistItem.createFromMarkdown(content, {
+              id: block.get('id'),
+              parent: group
+            });
+          this.get('onBlockDeletedLocally')(index, block);
+          this.get('onNewBlockInsertedLocally')(index, newBlock);
+          group.get('blocks').replace(index, 1, [newBlock]);
+          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
         } default: {
           throw new Error(`Cannot do type change: "${typeChange}"`);
         }
       }
     },
+    /* eslint-enable max-statements */
 
     /**
      * Called when the user wishes to navigate down to the next block from the

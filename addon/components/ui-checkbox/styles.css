@@ -1,0 +1,16 @@
+@value --blue from 'canvas-colors/styles/colors';
+@value --gray from 'canvas-colors/styles/colors';
+
+.component {
+  border: 2px solid --gray;
+  border-radius: 50%;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 1.25em;
+  width: 1.25em;
+}
+
+.is-checked {
+  background: --blue;
+  border-color: --blue;
+}

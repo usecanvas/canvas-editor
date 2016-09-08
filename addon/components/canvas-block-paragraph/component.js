@@ -8,7 +8,8 @@ import styles from './styles';
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
 export default CanvasBlockEditable.extend({
-  localClassNames: 'canvas-block-paragraph',
+  classNames: ['canvas-block-paragraph'],
+  localClassNames: ['component'],
   styles,
 
   setBlockContentFromInput(content, preventRerender = true) {

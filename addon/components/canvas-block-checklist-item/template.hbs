@@ -1,14 +1,17 @@
-{{#each block.blocks as |child|~}}
-  {{component (block-component-name child.type)
-    block=child
+<div local-class="checkbox">
+  {{ui-checkbox checked=block.meta.checked onToggle=(action 'onToggleChecked')}}
+</div>
+
+<div local-class="content">
+  {{canvas-block-checklist-item-content
+    block=block
     changeBlockType=changeBlockType
     onBlockDeletedLocally=onBlockDeletedLocally
     onNavigateDown=onNavigateDown
     onNavigateLeft=onNavigateLeft
     onNavigateRight=onNavigateRight
     onNavigateUp=onNavigateUp
-    onBlockMetaReplacedLocally=onBlockMetaReplacedLocally
     onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
     onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
     onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
-{{~/each}}
+</div>

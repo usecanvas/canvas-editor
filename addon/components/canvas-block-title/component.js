@@ -12,8 +12,9 @@ const { computed } = Ember;
  */
 export default CanvasBlockEditable.extend({
   attributeBindings: ['placeholder:data-placeholder'],
+  classNames: ['canvas-block-title'],
   isEmpty: computed.not('block.content'),
-  localClassNames: ['canvas-block-title'],
+  localClassNames: ['component'],
   localClassNameBindings: ['isEmpty'],
   styles,
 

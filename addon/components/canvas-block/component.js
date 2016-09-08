@@ -10,29 +10,9 @@ import styles from './styles';
  */
 export default Ember.Component.extend({
   attributeBindings: ['block.id:data-block-id'],
-  localClassNames: ['canvas-block'],
   classNames: ['canvas-block'],
+  localClassNames: ['component'],
   styles,
-
-  /**
-   * A dummy handler for an action that receives a block after its content has
-   * been changed by the user.
-   *
-   * @method onBlockContentUpdatedLocally
-   * @param {CanvasEditor.RealtimeCanvas.Block} block The block that changed
-   */
-  onBlockContentUpdatedLocally: Ember.K,
-
-  /**
-   * A dummy handler for an action that receives a new block and the one that
-   * came before it after the new block was inserted.
-   *
-   * @method onNewBlockInsertedLocally
-   * @param {CanvasEditor.RealtimeCanvas.Block} prevBlock The block that the new
-   *   block comes after
-   * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The new block
-   */
-  onNewBlockInsertedLocally: Ember.K,
 
   /**
    * Called when the block content is updated by the user.

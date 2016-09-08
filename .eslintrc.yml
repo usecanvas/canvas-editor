@@ -86,7 +86,9 @@ rules:
       ignoreTrailingComments: true
   max-lines: 'off'
   max-nested-callbacks: error
-  max-params: error
+  max-params:
+    - error
+    - max: 6
   max-statements:
     - error
     - max: 20
@@ -194,7 +196,7 @@ rules:
   object-curly-spacing:
     - error
     - always
-  object-property-newline: error
+  object-property-newline: 'off'
   object-shorthand: error
   one-var: 'off'
   one-var-declaration-per-line: error

@@ -1,11 +1,11 @@
-import Block from './content-block';
+import ContentBlock from './content-block';
 
 /**
  * A block representing a paragraph.
  *
  * @class CanvasEditor.RealtimeCanvas.Paragraph
- * @extends CanvasEditor.RealtimeCanvas.Block
+ * @extends CanvasEditor.RealtimeCanvas.ContentBlock
  */
-export default Block.extend({
+export default ContentBlock.extend({
   type: 'title'
 });

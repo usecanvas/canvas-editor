@@ -6,5 +6,9 @@ import Group from './group-block';
  * @extends CanvasEditor.RealtimeCanvas.GroupBlock
  */
 export default Group.extend({
-  type: 'list'
+  type: 'list',
+
+  init() {
+    this.get('blocks').setEach('parent', this);
+  }
 });

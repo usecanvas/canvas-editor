@@ -1,5 +1,6 @@
 import BlockComponent from 'canvas-editor/components/canvas-block/component';
 import layout from './template';
+import styles from './styles';
 
 /**
  * A component for rendering lists.
@@ -9,6 +10,8 @@ import layout from './template';
  */
 export default BlockComponent.extend({
   classNames: ['canvas-block-list'],
-  tagName: 'ul',
-  layout
+  localClassNames: ['component'],
+  layout,
+  styles,
+  tagName: 'ul'
 });

@@ -4,7 +4,7 @@
 @value --editor-padding from "canvas-editor/styles/theme";
 @value --editor-text-color from "canvas-editor/styles/theme";
 
-.canvas-editor {
+.component {
   background-color: --editor-background-color;
   color: --editor-text-color;
   font-family: --editor-font-family;
@@ -12,6 +12,6 @@
   padding: --editor-padding;
 }
 
-.canvas-editor [contenteditable] {
+.component [contenteditable] {
   outline: 0;
 }

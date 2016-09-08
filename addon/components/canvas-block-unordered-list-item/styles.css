@@ -1,11 +1,16 @@
 @value --list-bullet-color from "canvas-editor/styles/theme";
 
-.canvas-block-unordered-list-item {
+.component {
+  composes: component from 'canvas-editor/components/canvas-block-editable/styles';
   list-style: none;
   position: relative;
 }
 
-.canvas-block-unordered-list-item::before {
+.component ~ .component {
+  margin: 0;
+}
+
+.component::before {
   background: --list-bullet-color;
   border-radius: 50%;
   box-sizing: border-box;

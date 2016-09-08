@@ -9,11 +9,11 @@ import styles from './styles';
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
 export default CanvasBlockEditable.extend({
-  tagName: 'li',
-  localClassNames: ['canvas-block-unordered-list-item'],
   classNames: ['canvas-block-unordered-list-item'],
-  styles,
+  localClassNames: ['component'],
   nextBlockConstructor: UnorderedList,
+  styles,
+  tagName: 'li',
 
   newBlockInsertedLocally(content) {
     if (!this.get('block.content')) {

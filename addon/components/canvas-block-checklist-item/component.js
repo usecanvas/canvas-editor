@@ -10,10 +10,10 @@ import styles from './styles';
  * @extends CanvasEditor.CanvasBlockComponent
  */
 export default Ember.Component.extend({
-  tagName: 'li',
-  localClassNames: ['canvas-block-checklist-item'],
   classNames: ['canvas-block-checklist-item'],
   layout,
+  localClassNames: ['component'],
+  nextBlockConstructor: ChecklistItem,
   styles,
-  nextBlockConstructor: ChecklistItem
+  tagName: 'li'
 });

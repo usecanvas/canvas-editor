@@ -1,6 +1,6 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
-import styles from 'canvas-editor/components/canvas-block-editable/styles';
+import styles from './styles';
 
 /**
  * A component representing the editable content of a checklist item.
@@ -9,10 +9,10 @@ import styles from 'canvas-editor/components/canvas-block-editable/styles';
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
 export default CanvasBlockEditable.extend({
-  classNames: ['editable-content', 'canvas-block-checklist-item-content'],
+  classNames: ['canvas-block-checklist-item-content', 'editable-content'],
   localClassNames: ['component'],
-  styles,
   nextBlockConstructor: ChecklistItem,
+  styles,
 
   newBlockInsertedLocally(content) {
     if (!this.get('block.content')) {

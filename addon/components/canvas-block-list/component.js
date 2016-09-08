@@ -9,6 +9,6 @@ import layout from './template';
  */
 export default BlockComponent.extend({
   classNames: ['canvas-block-list'],
-  tagName: 'ul',
-  layout
+  layout,
+  tagName: 'ul'
 });

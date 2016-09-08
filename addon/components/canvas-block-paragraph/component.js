@@ -1,5 +1,5 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
-import styles from 'canvas-editor/components/canvas-block-editable/styles';
+import styles from './styles';
 
 /**
  * A component representing a "paragraph" type canvas block.
@@ -8,7 +8,8 @@ import styles from 'canvas-editor/components/canvas-block-editable/styles';
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
 export default CanvasBlockEditable.extend({
-  localClassNames: 'canvas-block-paragraph',
+  classNames: ['canvas-block-paragraph'],
+  localClassNames: ['component'],
   styles,
 
   setBlockContentFromInput(content, preventRerender = true) {

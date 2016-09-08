@@ -251,7 +251,8 @@ export default Ember.Component.extend({
           this.get('onNewBlockInsertedLocally')(index, group);
           run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
-        } case 'unordered-list-item/paragraph': {
+        } case 'checklist-item/paragraph':
+          case 'unordered-list-item/paragraph': {
           this.splitGroupAtMember(block, content);
           break;
         } case 'unordered-list-item/checklist-item': {

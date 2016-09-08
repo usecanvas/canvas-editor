@@ -11,5 +11,14 @@ import styles from './styles';
 export default CanvasBlockEditable.extend({
   classNames: ['editable-content', 'canvas-block-checklist-item-content'],
   styles,
-  nextBlockConstructor: ChecklistItem
+  nextBlockConstructor: ChecklistItem,
+
+  newBlockInsertedLocally(content) {
+    if (!this.get('block.content')) {
+      return this.get('changeBlockType')(
+        `${this.get('block.type')}/paragraph`, this.get('block'), content);
+    }
+
+    return this._super(...arguments);
+  },
 });

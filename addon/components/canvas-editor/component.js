@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
+import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
@@ -79,7 +80,9 @@ export default Ember.Component.extend({
    *   focus the element for
    */
   focusBlockStart(block) {
-    const $block = this.$(`[data-block-id="${block.get('id')}"]`);
+    let $block = this.$(`[data-block-id="${block.get('id')}"]`);
+    const $editableContent = $block.find('.editable-content');
+    if ($editableContent.length) $block = $editableContent;
     const range = Rangy.createRange();
     range.setStart($block.get(0), 0);
     Rangy.getSelection().setSingleRange(range);
@@ -250,6 +253,16 @@ export default Ember.Component.extend({
           break;
         } case 'unordered-list-item/paragraph': {
           this.splitGroupAtMember(block, content);
+          break;
+        } case 'unordered-list-item/checklist-item': {
+          const group = block.get('parent');
+          const index = group.get('blocks').indexOf(block);
+          const newBlock =
+            ChecklistItem.createFromMarkdown(content, { id: block.get('id') });
+          this.get('onBlockDeletedLocally')(index, block);
+          this.get('onNewBlockInsertedLocally')(index, newBlock);
+          group.get('blocks').replace(index, 1, [newBlock]);
+          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
         } default: {
           throw new Error(`Cannot do type change: "${typeChange}"`);

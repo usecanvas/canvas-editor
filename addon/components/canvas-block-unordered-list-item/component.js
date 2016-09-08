@@ -22,5 +22,28 @@ export default CanvasBlockEditable.extend({
     }
 
     return this._super(...arguments);
+  },
+
+  setBlockContentFromInput(content, preventRerender = true) {
+    const type = getNewType(content);
+
+    if (type) {
+      this.get('changeBlockType')(
+        `unordered-list-item/${type}`, this.get('block'), content);
+    } else {
+      this._super(content, preventRerender);
+    }
   }
 });
+
+function getNewType(content) {
+  if (isChecklistItem(content)) {
+    return 'checklist-item';
+  }
+
+  return null;
+}
+
+function isChecklistItem(content) {
+  return (/^\[[ Xx]\]\s/).test(content);
+}

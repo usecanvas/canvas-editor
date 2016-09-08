@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
+import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import UnorderedGroupList from 'canvas-editor/lib/realtime-canvas/list';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
@@ -16,6 +17,8 @@ export default Ember.Object.extend({
   blocks: computed(_ => Ember.A([]))
 }).reopenClass({
   createBlockFromJSON(json) {
+    json.meta = clone(json.meta);
+
     switch (json.type) {
       case 'paragraph': {
         return Paragraph.create(json);
@@ -23,6 +26,8 @@ export default Ember.Object.extend({
         return Title.create(json);
       } case 'unordered-list-item': {
         return UnorderedList.create(json);
+      } case 'checklist-item': {
+        return ChecklistItem.create(json);
       } case 'list': {
         const group = UnorderedGroupList.create(json);
         group.set('blocks', json.blocks.map(blockJSON => {
@@ -36,3 +41,7 @@ export default Ember.Object.extend({
     }
   }
 });
+
+function clone(json) {
+  return JSON.parse(JSON.stringify(json));
+}

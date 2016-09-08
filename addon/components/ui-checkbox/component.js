@@ -11,5 +11,9 @@ export default Ember.Component.extend({
   isChecked: false,
   localClassNames: ['component'],
   localClassNameBindings: ['checked:is-checked'],
-  styles
+  styles,
+
+  click() {
+    this.get('onToggle')();
+  }
 });

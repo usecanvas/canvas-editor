@@ -1,18 +1,22 @@
-import Block from './content-block';
+import ContentBlock from './content-block';
+import Ember from 'ember';
+
+const { computed } = Ember;
 
 /**
  * A block representing a checklist item.
  *
  * @class CanvasEditor.RealtimeCanvas.ChecklistItem
- * @extends CanvasEditor.RealtimeCanvas.Block
+ * @extends CanvasEditor.RealtimeCanvas.ContentBlock
  */
-export default Block.extend({
-  type: 'checklist-item'
+export default ContentBlock.extend({
+  type: 'checklist-item',
+  meta: computed(_ => Ember.Object.create({ checked: false }))
 }).reopenClass({
   createFromMarkdown(markdown, properties) {
     if (!markdown.startsWith('- ')) markdown = `- ${markdown}`;
     const checked = (/^- \[[Xx]/).test(markdown);
-    const content = markdown.split(/^- \[.\] /)[1];
+    const content = markdown.split(/^- \[.\] /)[1] || '';
 
     return this.create(Object.assign(properties, {
       content,

@@ -15,5 +15,17 @@ export default Ember.Component.extend({
   localClassNames: ['component'],
   nextBlockConstructor: ChecklistItem,
   styles,
-  tagName: 'li'
+  tagName: 'li',
+
+  actions: {
+    onToggleChecked() {
+      const oldValue = this.get('block.meta.checked');
+      this.toggleProperty('block.meta.checked');
+      this.get('onBlockMetaReplacedLocally')(
+        this.get('block'),
+        ['checked'],
+        oldValue,
+        this.get('block.meta.checked'));
+    }
+  }
 });

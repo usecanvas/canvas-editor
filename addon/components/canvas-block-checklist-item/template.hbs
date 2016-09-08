@@ -1,5 +1,5 @@
 <div local-class="checkbox">
-  {{ui-checkbox checked=true}}
+  {{ui-checkbox checked=block.meta.checked onToggle=(action 'onToggleChecked')}}
 </div>
 
 <div local-class="content">

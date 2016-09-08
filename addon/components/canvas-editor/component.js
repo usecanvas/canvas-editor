@@ -36,6 +36,19 @@ export default Ember.Component.extend({
   onBlockContentUpdatedLocally: Ember.K,
 
   /**
+   * A dummy handler for an action that receives a block, meta path, old value,
+   * and new value when the value was replaced.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block whose meta
+   *   was updated locally
+   * @param {Array<*>} metaPath The path to the updated meta property
+   * @param {*} oldValue The old meta value
+   * @param {*} newValue The new meta value
+   */
+  onBlockMetaReplacedLocally: Ember.K,
+
+  /**
    * A dummy handler for an action that receives an index in the block's parent
    * and a block after the block was deleted locally.
    *
@@ -170,6 +183,21 @@ export default Ember.Component.extend({
     },
 
     /**
+     * Called when block meta was updated locally.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block whose meta
+     *   was updated locally
+     * @param {Array<*>} metaPath The path to the updated meta property
+     * @param {*} oldValue The old meta value
+     * @param {*} newValue The new meta value
+     */
+    blockMetaReplacedLocally(block, metaPath, oldValue, newValue) {
+      this.get('onBlockMetaReplacedLocally')(
+        block, metaPath, oldValue, newValue);
+    },
+
+    /**
      * Called when block type was updated locally.
      *
      * @method
@@ -233,22 +261,24 @@ export default Ember.Component.extend({
     },
     /* eslint-enable max-statements */
 
+    /* eslint-disable max-statements */
     changeBlockType(typeChange, block, content) {
       const blocks = this.get('canvas.blocks');
 
       switch (typeChange) {
         case 'paragraph/unordered-list-item': {
           const index = blocks.indexOf(block);
-          const group = List.create({ blocks: Ember.A([block]) });
+
           this.get('onBlockDeletedLocally')(index, block);
+
+          const group = List.create({ blocks: Ember.A([block]) });
+
           block.setProperties({
-            parent: group,
             type: 'unordered-list-item',
             content: content.slice(2)
           });
 
           blocks.replace(index, 1, [group]);
-
           this.get('onNewBlockInsertedLocally')(index, group);
           run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
@@ -274,6 +304,7 @@ export default Ember.Component.extend({
         }
       }
     },
+    /* eslint-enable max-statements */
 
     /**
      * Called when the user wishes to navigate down to the next block from the

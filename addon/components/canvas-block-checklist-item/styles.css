@@ -1,13 +1,14 @@
 .component {
-  display: flex;
-  list-style-type: none;
+  list-style: none;
+  padding-left: 1.5em;
+  position: relative;
 }
 
 .checkbox {
-  flex: none;
-  margin-right: 0.5em;
-}
-
-.content {
-  flex: 1;
+  box-sizing: border-box;
+  height: 1.25em;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 1.25em;
 }

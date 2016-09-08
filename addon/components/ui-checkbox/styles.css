@@ -4,8 +4,10 @@
 .component {
   border: 2px solid --gray;
   border-radius: 50%;
-  height: 16px;
-  width: 16px;
+  box-sizing: border-box;
+  cursor: pointer;
+  height: 1.25em;
+  width: 1.25em;
 }
 
 .is-checked {

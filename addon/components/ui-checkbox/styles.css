@@ -11,19 +11,41 @@
 }
 
 .is-checked {
-  animation: tick 100ms ease-in-out;
+  animation: tick;
+  animation-duration: 0.5s;
   background: url('/canvas-editor/images/checkmark.svg') --blue;
   border-color: --blue;
 }
 
-@keyframes tick{
+@keyframes tick {
+  from, 20%, 40%, 60%, 80%, to {
+    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  }
+
   0% {
-    transform: scale(0);
+    opacity: 0;
+    transform: scale3d(.3, .3, .3);
   }
-  90% {
-    transition: scale(1.4);
+
+  20% {
+    transform: scale3d(1.1, 1.1, 1.1);
   }
-  100% {
-    transition: scale(1);
+
+  40% {
+    transform: scale3d(.9, .9, .9);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale3d(1.03, 1.03, 1.03);
+  }
+
+  80% {
+    transform: scale3d(.97, .97, .97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
   }
 }

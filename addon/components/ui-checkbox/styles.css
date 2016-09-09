@@ -11,6 +11,6 @@
 }
 
 .is-checked {
-  background: --blue;
+  background: url('/canvas-editor/images/checkmark.svg') --blue;
   border-color: --blue;
 }

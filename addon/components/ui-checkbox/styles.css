@@ -11,6 +11,19 @@
 }
 
 .is-checked {
+  animation: tick 100ms ease-in-out;
   background: url('/canvas-editor/images/checkmark.svg') --blue;
   border-color: --blue;
+}
+
+@keyframes tick{
+  0% {
+    transform: scale(0);
+  }
+  90% {
+    transition: scale(1.4);
+  }
+  100% {
+    transition: scale(1);
+  }
 }

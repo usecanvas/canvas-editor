@@ -6,6 +6,7 @@ import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
 import List from 'canvas-editor/lib/realtime-canvas/list';
+import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import styles from './styles';
 
 const { run } = Ember;
@@ -284,6 +285,19 @@ export default Ember.Component.extend({
         } case 'checklist-item/paragraph':
           case 'unordered-list-item/paragraph': {
           this.splitGroupAtMember(block, content);
+          break;
+        } case 'checklist-item/unordered-list-item': {
+          const group = block.get('parent');
+          const index = group.get('blocks').indexOf(block);
+          const newBlock =
+            UnorderedListItem.createFromMarkdown(content, {
+              id: block.get('id'),
+              parent: group
+            });
+          this.get('onBlockDeletedLocally')(index, block);
+          this.get('onNewBlockInsertedLocally')(index, newBlock);
+          group.get('blocks').replace(index, 1, [newBlock]);
+          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
         } case 'unordered-list-item/checklist-item': {
           const group = block.get('parent');

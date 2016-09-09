@@ -8,4 +8,9 @@ import ContentBlock from './content-block';
  */
 export default ContentBlock.extend({
   type: 'unordered-list-item'
+}).reopenClass({
+  createFromMarkdown(markdown, properties) {
+    const content = markdown.split(/^- /)[1] || '';
+    return this.create(Object.assign(properties, { content }));
+  }
 });

@@ -22,4 +22,27 @@ export default CanvasBlockEditable.extend({
 
     return this._super(...arguments);
   },
+
+  setBlockContentFromInput(content, preventRerender = true) {
+    const type = getNewType(content);
+
+    if (type) {
+      this.get('changeBlockType')(
+        `${this.get('block.type')}/${type}`, this.get('block'), content);
+    } else {
+      this._super(content, preventRerender);
+    }
+  }
 });
+
+function getNewType(content) {
+  if (isUnorderedListItem(content)) {
+    return 'unordered-list-item';
+  }
+
+  return null;
+}
+
+function isUnorderedListItem(content) {
+  return (/^-\s/).test(content);
+}

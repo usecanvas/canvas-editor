@@ -17,7 +17,7 @@ export default Ember.Object.extend({
   blocks: computed(_ => Ember.A([]))
 }).reopenClass({
   createBlockFromJSON(json) {
-    json.meta = clone(json.meta);
+    json = clone(json);
 
     switch (json.type) {
       case 'paragraph': {
@@ -41,5 +41,16 @@ export default Ember.Object.extend({
 });
 
 function clone(json) {
-  return JSON.parse(JSON.stringify(json));
+  if (Array.isArray(json)) {
+    return json.map(clone);
+  }
+
+  if (typeof json === 'object') {
+    return Object.keys(json).reduce((object, key) => {
+      object[key] = clone(json[key]);
+      return object;
+    }, {});
+  }
+
+  return json;
 }

@@ -12,9 +12,13 @@
 
 .is-checked {
   animation: tick;
-  animation-duration: 0.5s;
+  animation-duration: 0;
   background: url('/canvas-editor/images/checkmark.svg') --blue;
   border-color: --blue;
+}
+
+.is-animateable {
+  animation-duration: 0.5s;
 }
 
 @keyframes tick {

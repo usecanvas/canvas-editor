@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import styles from './styles';
 
+const { observer, on } = Ember;
+
 /**
  * A component that renders a custom checkbox
  *
@@ -8,12 +10,16 @@ import styles from './styles';
  * @extends Ember.Component
  */
 export default Ember.Component.extend({
-  isChecked: false,
+  animateable: false,
   localClassNames: ['component'],
-  localClassNameBindings: ['checked:is-checked'],
+  localClassNameBindings: ['animateable:is-animateable', 'checked:is-checked'],
   styles,
 
   click() {
     this.get('onToggle')();
-  }
+  },
+
+  setAnimateable: on('willUpdate', function() {
+    this.set('animateable', true);
+  })
 });

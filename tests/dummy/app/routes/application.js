@@ -2,6 +2,7 @@ import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import ULItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import CLItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
+import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import Ember from 'ember';
 import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
@@ -15,6 +16,7 @@ export default Ember.Route.extend({
         Title.create({ content: 'The Title' }),
         Paragraph.create({ content: 'Hello, World' }),
         Paragraph.create({ content: 'Hello, World' }),
+        URLCard.create({ meta: { url: 'https://usecanvas.com' } }),
         Paragraph.create({ content: 'Hello, World' }),
         Paragraph.create({ content: 'Hello, World' }),
         Paragraph.create({ content: 'Hello, World' }),

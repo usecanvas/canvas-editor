@@ -6,9 +6,9 @@
 
 .checkbox {
   box-sizing: border-box;
-  height: 1.25em;
+  height: 1.125em;
   left: 0;
   position: absolute;
-  top: 0;
-  width: 1.25em;
+  top: 0.125em;
+  width: 1.125em;
 }

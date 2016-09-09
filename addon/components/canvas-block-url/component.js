@@ -9,7 +9,8 @@ import styles from './styles';
  * @extends CanvasEditor.CanvasBlockComponent
  */
 export default CanvasBlock.extend({
+  classNames: ['canvas-block-url'],
   layout,
-  localClassNames: ['canvas-block-url'],
+  localClassNames: ['component'],
   styles
 });

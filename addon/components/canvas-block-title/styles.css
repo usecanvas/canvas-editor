@@ -4,14 +4,8 @@
   composes: component from 'canvas-editor/components/canvas-block-editable/styles';
   font-size: 2rem;
   font-weight: bold;
-  position: relative;
 }
 
-.is-empty::before {
-  color: --block-placeholder-color;
-  content: attr(data-placeholder);
-  display: block;
-  left: 0;
-  position: absolute;
-  top: 0;
+.is-empty {
+  composes: is-empty from 'canvas-editor/components/canvas-block-editable/styles';
 }

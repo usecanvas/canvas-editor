@@ -1,6 +1,8 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import styles from './styles';
 
+const { computed } = Ember;
+
 /**
  * A component representing a "paragraph" type canvas block.
  *
@@ -9,7 +11,9 @@ import styles from './styles';
  */
 export default CanvasBlockEditable.extend({
   classNames: ['canvas-block-paragraph'],
-  localClassNames: ['component'],
+  isEmpty: computed.not('block.content'),
+  // localClassNames: ['component'],
+  // localClassNameBindings: ['isEmpty'],
   styles,
 
   setBlockContentFromInput(content, preventRerender = true) {

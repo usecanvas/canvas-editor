@@ -6,7 +6,7 @@
   white-space: pre-wrap;
 }
 
-.is-empty::before {
+.is-empty::after {
   color: --block-placeholder-color;
   content: attr(data-placeholder);
   display: block;

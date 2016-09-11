@@ -1,18 +1,16 @@
+@value --block-placeholder-color from 'canvas-editor/styles/theme';
+
 .component {
   composes: component from 'canvas-editor/components/canvas-block/styles';
   position: relative;
   white-space: pre-wrap;
 }
 
-.is-empty {
-  background: red;
-}
-
-/*.is-empty::before {
+.is-empty::before {
   color: --block-placeholder-color;
   content: attr(data-placeholder);
   display: block;
   left: 0;
   position: absolute;
   top: 0;
-}*/
+}

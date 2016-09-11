@@ -12,8 +12,10 @@ const { computed } = Ember;
  */
 export default CanvasBlockEditable.extend({
   classNames: ['canvas-block-title'],
-  isEmpty: computed.not('block.content'),
-  // localClassNames: ['component'],
-  // localClassNameBindings: ['isEmpty'],
-  styles
+  localClassNames: ['component'],
+  styles,
+
+  placeholder: computed('block.meta.placeholder', function() {
+    return this.getWithDefault('block.meta.placeholder', 'Give me a title...');
+  })
 });

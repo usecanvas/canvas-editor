@@ -11,9 +11,7 @@ const { computed } = Ember;
  */
 export default CanvasBlockEditable.extend({
   classNames: ['canvas-block-paragraph'],
-  isEmpty: computed.not('block.content'),
-  // localClassNames: ['component'],
-  // localClassNameBindings: ['isEmpty'],
+  localClassNames: ['component'],
   styles,
 
   setBlockContentFromInput(content, preventRerender = true) {

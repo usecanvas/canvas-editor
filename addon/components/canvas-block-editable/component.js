@@ -12,11 +12,24 @@ const { computed } = Ember;
  * @extends CanvasEditor.CanvasBlockComponent
  */
 export default CanvasBlock.extend(ContentEditable, {
-  attributeBindings: ['block.meta.placeholder:data-placeholder'],
+  attributeBindings: ['placeholder:data-placeholder'],
   classNames: ['canvas-block-editable'],
+  classNameBindings: ['isEmptyClass'],
   isEmpty: computed.not('block.content'),
   localClassNames: ['component'],
-  localClassNameBindings: ['isEmpty'],
   nextBlockConstructor: Paragraph,
-  styles
+  placeholder: computed.oneWay('block.meta.placeholder'),
+  styles,
+
+  /**
+   * @property {String} isEmptyClass Dynamic CSS class applied if isEmpty is
+   * true.
+   *
+   * This should be a `localClassNameBindings` but currently requires a computed
+   * property until this issue gets resolved:
+   * https://github.com/salsify/ember-css-modules/issues/48
+   */
+  isEmptyClass: computed('isEmpty', function() {
+    return this.get('isEmpty') ? this.get('styles.is-empty') : ''
+  })
 });

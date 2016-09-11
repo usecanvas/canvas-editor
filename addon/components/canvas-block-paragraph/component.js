@@ -1,8 +1,6 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import styles from './styles';
 
-const { computed } = Ember;
-
 /**
  * A component representing a "paragraph" type canvas block.
  *

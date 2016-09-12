@@ -22,6 +22,10 @@ export default CardBlock.extend({
     let tasksTotal = this.get('tasksTotal');
     if (typeof tasksComplete !== 'number') tasksComplete = 1;
     if (typeof tasksTotal !== 'number') tasksTotal = 1;
+    if (tasksTotal === 0) {
+      tasksComplete = 1;
+      tasksTotal = 1;
+    }
     return tasksComplete / tasksTotal * 100;
   })
 });

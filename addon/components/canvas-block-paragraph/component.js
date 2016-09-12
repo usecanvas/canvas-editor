@@ -1,7 +1,13 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
+import CanvasCard from 'canvas-editor/lib/realtime-canvas/canvas-card';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import styles from './styles';
+
+/* eslint-disable max-len */
+const CANVAS_URL = new RegExp(
+  `^https?:\/\/(?:www\.)?${window.location.host}\/[^\/]+\/[^\/]+\/([^\/]{22})(?:\/next)?$`);
+/* eslint-enable max-len */
 
 /**
  * A component representing a "paragraph" type canvas block.
@@ -29,17 +35,23 @@ export default CanvasBlockEditable.extend({
     const { textBeforeSelection, textAfterSelection } =
       TextManipulation.getManipulation(this.get('element'));
 
-    if (!textBeforeSelection ||
-        textAfterSelection ||
-        !isURL(textBeforeSelection)) {
-      this._super(...arguments);
-      return;
+    if (!textAfterSelection) {
+      if (isCanvasURL(textBeforeSelection)) {
+        const canvasBlock =
+          CanvasCard.create({ meta: parseCanvasURL(textBeforeSelection) });
+        this.newBlockInsertedLocally('');
+        this.blockReplacedLocally(canvasBlock);
+        return;
+      } else if (isURL(textBeforeSelection)) {
+        const urlBlock = URLCard.create({ meta: { url: textBeforeSelection } });
+        this.newBlockInsertedLocally('');
+        this.blockReplacedLocally(urlBlock);
+        return;
+      }
     }
 
-    const urlBlock = URLCard.create({ meta: { url: textBeforeSelection } });
-
-    this.newBlockInsertedLocally('');
-    this.blockReplacedLocally(urlBlock);
+    this._super(...arguments);
+    return;
   }
 });
 
@@ -55,6 +67,14 @@ function isUnorderedListItem(content) {
   return (/^-\s/).test(content);
 }
 
+function isCanvasURL(text) {
+  return CANVAS_URL.test(text);
+}
+
 function isURL(text) {
   return (/^https?:\/\/.*$/).test(text);
+}
+
+function parseCanvasURL(url) {
+  return { id: url.match(CANVAS_URL)[1] };
 }

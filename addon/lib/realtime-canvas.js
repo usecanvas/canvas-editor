@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
+import CanvasCard from 'canvas-editor/lib/realtime-canvas/canvas-card';
 import CLItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import ULItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import List from 'canvas-editor/lib/realtime-canvas/list';
@@ -34,6 +35,8 @@ export default Ember.Object.extend({
           blocks: json.blocks.map(block => this.createBlockFromJSON(block)),
           meta: json.meta
         });
+      } case 'canvas': {
+        return CanvasCard.create(json);
       } case 'url': {
         return URLCard.create(json);
       } default: {
@@ -46,6 +49,10 @@ export default Ember.Object.extend({
 function clone(json) {
   if (Array.isArray(json)) {
     return json.map(clone);
+  }
+
+  if (!json) {
+    return json;
   }
 
   if (typeof json === 'object') {

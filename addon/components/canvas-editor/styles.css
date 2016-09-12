@@ -3,6 +3,7 @@
 @value --editor-line-height from "canvas-editor/styles/theme";
 @value --editor-padding from "canvas-editor/styles/theme";
 @value --editor-text-color from "canvas-editor/styles/theme";
+@value --editor-link-color from "canvas-editor/styles/theme";
 
 .component {
   background-color: --editor-background-color;
@@ -14,4 +15,9 @@
 
 .component [contenteditable] {
   outline: 0;
+}
+
+.component a {
+  color: --editor-link-color;
+  text-decoration: none;
 }

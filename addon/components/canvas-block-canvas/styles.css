@@ -1,0 +1,30 @@
+@value --dark-gray from 'canvas-colors/styles/colors';
+
+.component {
+  composes: component from '../canvas-block-card/styles';
+  align-items: center;
+  display: flex;
+  font-size: 0.875em;
+}
+
+.icon {
+  background: url('/canvas-editor/images/document.svg');
+  display: block;
+  height: 2rem;
+  margin-right: 0.25rem;
+  width: 2rem;
+}
+
+.content {
+  flex: 1;
+}
+
+.title {
+  display: block;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.summary {
+  color: --dark-gray;
+}

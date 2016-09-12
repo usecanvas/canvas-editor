@@ -1,0 +1,8 @@
+@value --light-gray from 'canvas-colors/styles/colors';
+
+.component {
+  composes: component from '../canvas-block/styles';
+  border: 1px solid --light-gray;
+  border-radius: 4px;
+  padding: 1rem;
+}

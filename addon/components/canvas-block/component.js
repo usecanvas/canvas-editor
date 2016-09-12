@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import styles from './styles';
 
 /**
@@ -21,6 +20,17 @@ export default Ember.Component.extend({
    */
   blockContentUpdatedLocally() {
     this.get('onBlockContentUpdatedLocally')(this.get('block'));
+  },
+
+  /**
+   * Called when the block is replaced by the user.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} newBlock The block this block
+   *   was replaced with
+   */
+  blockReplacedLocally(newBlock) {
+    this.get('onBlockReplacedLocally')(this.get('block'), newBlock);
   },
 
   /**

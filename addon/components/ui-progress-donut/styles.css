@@ -1,0 +1,4 @@
+.component svg {
+  display: block;
+  transform: rotate(270deg) scaleY(-1);
+}

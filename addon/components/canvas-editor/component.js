@@ -81,6 +81,15 @@ export default Ember.Component.extend({
   onBlockReplacedLocally: Ember.K,
 
   /**
+   * A dummy handler for a function that is passed in in order to unfurl a
+   * block.
+   *
+   * @method
+   * @param {CanvasEditor.RealtimeCanvas.Block} block The block to unfurl
+   */
+  unfurlBlock() { return Ember.RSVP.resolve({}); },
+
+  /**
    * Focus at the end of the element that represents the block with the given
    * ID.
    *
@@ -428,6 +437,16 @@ export default Ember.Component.extend({
       parent.replace(index, 0, [newBlock]);
       this.get('onNewBlockInsertedLocally')(index, newBlock);
       run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);
+    },
+
+    /**
+     * Called when a card block is rendered to unfurl it.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block to unfurl
+     */
+    unfurl(block) {
+      return this.get('unfurlBlock')(block);
     }
   }
 });

@@ -15,6 +15,6 @@ export default Ember.Component.extend({
   }),
 
   percentage: computed('circumference', 'progress', function() {
-    return this.get('circumference') * ((this.get('progress') - 100) / 100);
+    return this.get('circumference') * (100 - ((this.get('progress') - 100) / 100));
   })
 });

@@ -1,36 +1,78 @@
-@value --extra-light-gray from 'canvas-colors/styles/colors';
-@value --gray from 'canvas-colors/styles/colors';
+@value --dark-gray from 'canvas-colors/styles/colors';
 
 .component {
   composes: component from '../canvas-block-card/styles';
-  display: flex;
   padding: 1rem;
   overflow: hidden;
 }
 
-.content {
+.main {
+  display: flex;
+}
+
+.main-content {
   flex: 1;
   margin-right: 1rem;
 }
 
-.title,
-.text {
-  margin-bottom: 0.5em;
+.header {
+  align-items: center;
+  display: flex;
 }
 
 .title {
+  font-weight: 600;
+}
+
+.provider-icon {
   display: block;
+  height: 24px;
+  margin-right: 8px;
+  width: 24px;
 }
 
-.provider-name {
-  color: --gray;
-  font-size: 0.875em;
+.text {
+  color: --dark-gray;
+  margin-top: 0.25em;
 }
 
-.image {
-  background-color: --extra-light-gray;
-  background-size: cover;
+.thumbnail {
   border-radius: 4px;
-  height: 128px;
-  width: 128px;
+}
+
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.field {
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.field--short {
+  width: 50%;
+}
+
+.field-title {
+  font-weight: 600;
+}
+
+.field-value {
+  color: --dark-gray;
+}
+
+.labels {
+    display: flex;
+    margin-top: 0.5rem;
+}
+
+.label {
+  align-items: center;
+  display: flex;
+  margin-right: 1rem;
+}
+
+.label-icon {
+  margin-right: 0.25em;
 }

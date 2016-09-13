@@ -8,46 +8,42 @@
 <div local-class="image" style="background-image: url('{{image}}');"></div> --}}
 
 
+<div local-class="main">
+  <div local-class="main-content">
+    <div local-class="header">
+      <img local-class="provider-icon" src="{{unfurl.providerIconUrl}}" height="24" width="24">
+      <div local-class="title">{{unfurl.title}}</div>
+    </div>
 
-<div>
-  <img src="#" height=16 width=16>
-  <div>{{unfurl.title}}</div>
+    <div local-class="text">{{unfurl.text}}</div>
+  </div>
+
+  <img local-class="thumbnail" src="{{unfurl.thumbnailUrl}}" height="48" width="48">
 </div>
 
-<div>
-  {{unfurl.text}}
-</div>
+{{#if unfurl.fields}}
+  <div local-class="fields">
+    {{#each unfurl.fields as |field|}}
+      <div local-class="field" class="{{if field.short styles.field--short}}">
+        <div local-class="field-title">{{field.title}}</div>
+        <div local-class="field-value">{{field.value}}</div>
+      </div>
+    {{/each}}
 
-<div>
-  <div>
-    <div>Field 1</div>
-    <div>Value 1</div>
+    <div local-class="field">
+      <div local-class="field-title">Title Long</div>
+      <div local-class="field-value">Value long</div>
+    </div>
   </div>
+{{/if}}
 
-  <div>
-    <div>Field 2</div>
-    <div>Value 2</div>
+{{#if unfurl.labels}}
+  <div local-class="labels">
+    {{#each unfurl.labels as |label|}}
+      <div local-class="label" style="color: {{label.color}}; background-color: {{backgroundColor}};">
+        <img local-class="label-icon" src="{{label.iconUrl}}" height="16" width="16">
+        <div local-class="label-value">{{label.value}}</div>
+      </div>
+    {{/each}}
   </div>
-
-  <div>
-    <div>Field 3</div>
-    <div>Value 3</div>
-  </div>
-</div>
-
-<div>
-  <div>
-    <img src="#" height=16 width=16>
-    <div>Some label</div>
-  </div>
-
-  <div>
-    <img src="#" height=16 width=16>
-    <div>A colored label</div>
-  </div>
-
-  <div>
-    <img src="#" height=16 width=16>
-    <div>A colored label</div>
-  </div>
-</div>
+{{/if}}

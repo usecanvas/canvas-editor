@@ -3,8 +3,22 @@
 .component {
   composes: component from 'canvas-editor/components/canvas-block-card/styles';
   align-items: center;
+  border: none;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
   color: --dark-gray;
   display: flex;
+  position: relative;
+}
+
+.remove {
+  cursor: pointer;
+  line-height: 1;
+  font-family: Arial, sans-serif;
+  font-size: 1rem;
+  position: absolute;
+  right: 0.75rem;
+  top: 0.5rem;
+  transform: rotate(45deg);
 }
 
 .icon {

@@ -12,5 +12,11 @@ export default CardBlock.extend({
   classNames: ['canvas-block-tip'],
   layout,
   localClassNames: ['component'],
-  styles
+  styles,
+
+  actions: {
+    removeSelf() {
+      alert("Implement me");
+    }
+  }
 });

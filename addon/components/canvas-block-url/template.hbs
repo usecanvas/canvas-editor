@@ -8,7 +8,9 @@
     <div local-class="text">{{unfurl.text}}</div>
   </div>
 
-  <img local-class="thumbnail" src="{{unfurl.thumbnailUrl}}" height="48" width="48">
+  {{#if unfurl.thumbnailUrl}}
+    <img local-class="thumbnail" src="{{unfurl.thumbnailUrl}}" height="48" width="48">
+  {{/if}}
 </div>
 
 {{#if unfurl.fields}}

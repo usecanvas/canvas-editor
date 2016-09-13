@@ -6,6 +6,8 @@
   <div local-class="summary">{{unfurl.text}}</div>
 </div>
 
-<div local-class="progress">
-  {{ui-progress-donut progress=progress}}
-</div>
+{{#if hasProgress}}
+  <div local-class="progress">
+    {{ui-progress-donut progress=progress}}
+  </div>
+{{/if}}

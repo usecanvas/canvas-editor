@@ -22,7 +22,7 @@
   display: block;
 }
 
-.domain {
+.provider-name {
   color: --gray;
   font-size: 0.875em;
 }

@@ -7,7 +7,8 @@ import Block from './block';
  * @extends CanvasEditor.RealtimeCanvas.Block
  */
 export default Block.extend({
-  type: 'canvas',
   content: null,
-  lastContent: null
+  isCard: true,
+  lastContent: null,
+  type: 'canvas'
 });

@@ -247,6 +247,13 @@ export default Ember.Component.extend({
 
       if (!prevBlock) return; // `block` is the first block
 
+      if (prevBlock.get('isCard')) {
+        const index = this.get('canvas.blocks').indexOf(prevBlock);
+        this.get('canvas.blocks').removeObject(prevBlock);
+        this.get('onBlockDeletedLocally')(index, prevBlock);
+        return;
+      }
+
       /*
        * Capture selection at the end of the previous block, so we can restore
        * to that position once we've joined the deleted block's remaining

@@ -26,7 +26,10 @@
   <div local-class="labels">
     {{#each unfurl.labels as |label|}}
       <div local-class="label" style="color: {{label.color}}; background-color: {{backgroundColor}};">
-        <img local-class="label-icon" src="{{label.iconUrl}}" height="16" width="16">
+        {{#if label.iconUrl}}
+          <img local-class="label-icon" src="{{label.iconUrl}}" height="16" width="16">
+        {{/if}}
+
         <div local-class="label-value">{{label.value}}</div>
       </div>
     {{/each}}

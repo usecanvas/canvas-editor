@@ -7,6 +7,7 @@ import CanvasCard from 'canvas-editor/lib/realtime-canvas/canvas-card';
 import Ember from 'ember';
 import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
+import Tip from 'canvas-editor/lib/realtime-canvas/tip';
 
 const { A } = Ember;
 
@@ -17,6 +18,7 @@ export default Ember.Route.extend({
         Title.create({ content: 'The Title' }),
         Paragraph.create({ content: 'Hello, World' }),
         CanvasCard.create({ meta: { id: 'this is some id' } }),
+        Tip.create({ content: 'This is a pro tip and it is super useful.' }),
         Paragraph.create({ content: 'Hello, World' }),
         URLCard.create({ meta: { url: 'https://usecanvas.com' } }),
         Paragraph.create({ content: 'Hello, World' }),

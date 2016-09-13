@@ -4,7 +4,6 @@
   composes: component from '../canvas-block-card/styles';
   align-items: center;
   display: flex;
-  padding: 1rem;
 }
 
 .icon {

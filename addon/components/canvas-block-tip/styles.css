@@ -1,0 +1,23 @@
+@value --dark-gray from 'canvas-colors/styles/colors';
+
+.component {
+  composes: component from 'canvas-editor/components/canvas-block-card/styles';
+  align-items: center;
+  color: --dark-gray;
+  display: flex;
+}
+
+.icon {
+  background: url('/canvas-editor/images/light-bulb.svg');
+  height: 2rem;
+  margin-right: 1rem;
+  width: 2rem;
+}
+
+.content {
+  flex: 1;
+}
+
+.title {
+  font-weight: 600;
+}

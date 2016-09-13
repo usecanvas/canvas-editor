@@ -4,5 +4,5 @@
   composes: component from '../canvas-block/styles';
   border: 1px solid --light-gray;
   border-radius: 4px;
-  padding: 1rem;
+  font-size: 0.875em;
 }

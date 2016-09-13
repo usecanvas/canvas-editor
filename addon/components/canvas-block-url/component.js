@@ -12,5 +12,7 @@ export default CardBlock.extend({
   classNames: ['canvas-block-url'],
   layout,
   localClassNames: ['component'],
-  styles
+  styles,
+
+  image: '/canvas-editor/images/sample.png'
 });

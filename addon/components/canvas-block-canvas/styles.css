@@ -4,7 +4,7 @@
   composes: component from '../canvas-block-card/styles';
   align-items: center;
   display: flex;
-  font-size: 0.875em;
+  padding: 1rem;
 }
 
 .icon {

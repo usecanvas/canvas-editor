@@ -14,7 +14,9 @@ export default Ember.Component.extend({
     return this.get('radius') * 2 * Math.PI;
   }),
 
-  percentage: computed('circumference', 'progress', function() {
-    return this.get('circumference') * (100 - ((this.get('progress') - 100) / 100));
+  length: computed('circumference', 'progress', function() {
+    const circumference = this.get('circumference');
+    const progress = this.get('progress');
+    return circumference - circumference * (progress / 100);
   })
 });

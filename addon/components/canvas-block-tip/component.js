@@ -16,7 +16,8 @@ export default CardBlock.extend({
 
   actions: {
     removeSelf() {
-      alert("Implement me");
+      this.get('onBlockDeletedLocally')(
+        this.get('block'), null, { onlySelf: true });
     }
   }
 });

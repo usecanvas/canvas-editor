@@ -239,8 +239,17 @@ export default Ember.Component.extend({
      * @param {CanvasEditor.CanvasRealtime.Block} block The block that the user
      *   deleted in
      * @param {string} remainingContent The remaining content left in the block
+     * @param {object} opts Options for deleting the block
+     * @param {boolean} opts.onlySelf Only remove the given block
      */
-    blockDeletedLocally(block, remainingContent) {
+    blockDeletedLocally(block, remainingContent = '', opts = {}) {
+      if (opts.onlySelf) {
+        const index = this.get('canvas.blocks').indexOf(block);
+        this.get('canvas.blocks').removeObject(block);
+        this.get('onBlockDeletedLocally')(index, block);
+        return;
+      }
+
       const navigableBlocks = this.getNavigableBlocks();
       const navigableIndex = navigableBlocks.indexOf(block);
       const prevBlock = navigableBlocks.objectAt(navigableIndex - 1);

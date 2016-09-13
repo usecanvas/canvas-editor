@@ -17,11 +17,9 @@ export default CardBlock.extend({
   localClassNames: ['component'],
   styles,
 
-  progress: computed('tasksComplete', 'tasksTotal', function() {
-    let tasksComplete = this.get('tasksComplete');
-    let tasksTotal = this.get('tasksTotal');
-    if (typeof tasksComplete !== 'number') tasksComplete = 1;
-    if (typeof tasksTotal !== 'number') tasksTotal = 1;
+  progress: computed('unfurl.meta.tasks_complete', 'unfurl.meta.tasks_total', function() {
+    let tasksComplete = this.get('unfurl.meta.tasks_complete');
+    let tasksTotal = this.get('unfurl.meta.tasks_total');
     if (tasksTotal === 0) {
       tasksComplete = 1;
       tasksTotal = 1;

@@ -30,8 +30,8 @@ export default CanvasBlock.extend({
   },
 
   doUnfurl: on('didInsertElement', function() {
-    this.get('unfurl')(this.get('block')).then(props => {
-      if (this.get('isVisible')) this.setProperties(props);
+    this.get('unfurl')(this.get('block')).then(unfurl => {
+      if (this.get('isVisible')) this.set('unfurl', unfurl);
     });
   })
 });

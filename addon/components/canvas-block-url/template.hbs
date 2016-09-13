@@ -1,8 +1,34 @@
-<div local-class="content">
-  <a local-class="title" href="#">{{unfurl.title}}</a>
-  <div local-class="text">{{unfurl.text}}</div>
+<div local-class="main">
+  <div local-class="main-content">
+    <div local-class="header">
+      <img local-class="provider-icon" src="{{unfurl.providerIconUrl}}" height="24" width="24">
+      <div local-class="title">{{unfurl.title}}</div>
+    </div>
 
-  <div local-class="provider-name">Github</div>
+    <div local-class="text">{{unfurl.text}}</div>
+  </div>
+
+  <img local-class="thumbnail" src="{{unfurl.thumbnailUrl}}" height="48" width="48">
 </div>
 
-<div local-class="image" style="background-image: url('{{image}}');"></div>
+{{#if unfurl.fields}}
+  <div local-class="fields">
+    {{#each unfurl.fields as |field|}}
+      <div local-class="field" class="{{if field.short styles.field--short}}">
+        <div local-class="field-title">{{field.title}}</div>
+        <div local-class="field-value">{{field.value}}</div>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
+
+{{#if unfurl.labels}}
+  <div local-class="labels">
+    {{#each unfurl.labels as |label|}}
+      <div local-class="label" style="color: {{label.color}}; background-color: {{backgroundColor}};">
+        <img local-class="label-icon" src="{{label.iconUrl}}" height="16" width="16">
+        <div local-class="label-value">{{label.value}}</div>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}

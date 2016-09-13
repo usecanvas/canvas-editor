@@ -17,13 +17,14 @@ export default CardBlock.extend({
   localClassNames: ['component'],
   styles,
 
-  progress: computed('unfurl.meta.tasks_complete', 'unfurl.meta.tasks_total', function() {
-    let tasksComplete = this.get('unfurl.meta.tasks_complete');
-    let tasksTotal = this.get('unfurl.meta.tasks_total');
-    if (tasksTotal === 0) {
-      tasksComplete = 1;
-      tasksTotal = 1;
-    }
-    return tasksComplete / tasksTotal * 100;
+  hasProgress: computed('progress', function() {
+    return typeof this.get('progress') === 'number';
+  }),
+
+  progress: computed('unfurl.fields', function() {
+    const field = Ember.A(this.get('unfurl.fields'))
+      .findBy('title', 'progress');
+    if (!field) return null;
+    return field.value;
   })
 });

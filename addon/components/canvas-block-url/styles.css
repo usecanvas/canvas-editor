@@ -2,8 +2,6 @@
 
 .component {
   composes: component from '../canvas-block-card/styles';
-  padding: 1rem;
-  overflow: hidden;
 }
 
 .main {

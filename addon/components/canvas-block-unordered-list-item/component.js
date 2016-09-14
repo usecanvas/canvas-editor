@@ -1,4 +1,4 @@
-import CanvasBlockContent from 'canvas-editor/components/canvas-block-content/component';
+import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import styles from './styles';
 
@@ -6,9 +6,9 @@ import styles from './styles';
  * A component representing a "unordered list" type canvas block.
  *
  * @class CanvasEditor.CanvasBlockUnorderedListItemComponent
- * @extends CanvasEditor.CanvasBlockContentComponent
+ * @extends CanvasEditor.CanvasBlockEditableComponent
  */
-export default CanvasBlockContent.extend({
+export default CanvasBlockEditable.extend({
   classNames: ['canvas-block-unordered-list-item'],
   localClassNames: ['component'],
   nextBlockConstructor: UnorderedList,

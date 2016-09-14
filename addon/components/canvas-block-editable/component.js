@@ -8,12 +8,12 @@ const { computed } = Ember;
 /**
  * A component representing a user-editable canvas block.
  *
- * @class CanvasEditor.CanvasBlockContentComponent
+ * @class CanvasEditor.CanvasBlockEditableComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
 export default CanvasBlock.extend(ContentEditable, {
   attributeBindings: ['placeholder:data-placeholder'],
-  classNames: ['canvas-block-content'],
+  classNames: ['canvas-block-editable'],
   classNameBindings: ['isEmptyClass'],
   isEmpty: computed.not('block.content'),
   localClassNames: ['component'],

@@ -1,4 +1,4 @@
-import CanvasBlockContent from 'canvas-editor/components/canvas-block-content/component';
+import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
 import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
 import CanvasCard from 'canvas-editor/lib/realtime-canvas/canvas-card';
@@ -14,9 +14,9 @@ const CANVAS_URL = new RegExp(
  * A component representing a "paragraph" type canvas block.
  *
  * @class CanvasEditor.CanvasBlockParagraphComponent
- * @extends CanvasEditor.CanvasBlockContentComponent
+ * @extends CanvasEditor.CanvasBlockEditableComponent
  */
-export default CanvasBlockContent.extend({
+export default CanvasBlockEditable.extend({
   classNames: ['canvas-block-paragraph'],
   localClassNames: ['component'],
   styles,

@@ -124,7 +124,7 @@ export default Ember.Component.extend({
     const self = this;
 
     Ember.$(document).on(nsEvent('focus', this),
-                         '.canvas-block-content', function() {
+                         '.canvas-block-editable', function() {
       self.$('[data-card-block-selected=true]')
         .attr('data-card-block-selected', false);
     });

@@ -123,13 +123,13 @@ export default Ember.Component.extend({
   bindKeyDownEvents() {
     const self = this;
 
-    Ember.$(document).on(`focus.${Ember.guidFor(this)}`,
+    Ember.$(document).on(nsEvent('focus', this),
                          '.canvas-block-editable', function() {
       self.$('[data-card-block-selected=true]')
         .attr('data-card-block-selected', false);
     });
 
-    Ember.$(document).on(`keydown.${Ember.guidFor(this)}`, function(evt) {
+    Ember.$(document).on(nsEvent('keydown', this), function(evt) {
       const selectedCardElement =
         self.$('[data-card-block-selected=true]').get(0);
 
@@ -177,8 +177,7 @@ export default Ember.Component.extend({
    * @method
    */
   unbindKeyDownEvents() {
-    Ember.$(document).off(`focus.${Ember.guidFor(this)}`);
-    Ember.$(document).off(`keydown.${Ember.guidFor(this)}`);
+    Ember.$(document).off(`.${Ember.guidFor(this)}`);
   },
 
   /**
@@ -584,3 +583,7 @@ export default Ember.Component.extend({
     }
   }
 });
+
+function nsEvent(event, object) {
+  return `${event}.${Ember.guidFor(object)}`;
+}

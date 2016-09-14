@@ -8,6 +8,7 @@ import Ember from 'ember';
 import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
 import Tip from 'canvas-editor/lib/realtime-canvas/tip';
+import HorizontalRule from 'canvas-editor/lib/realtime-canvas/horizontal-rule';
 
 const { A } = Ember;
 
@@ -37,6 +38,7 @@ export default Ember.Route.extend({
         }),
         Paragraph.create({ content: 'Hello, World' }),
         Paragraph.create({ content: 'Hello, World' }),
+        HorizontalRule.create(),
         Paragraph.create({ content: 'Hello, World' }),
         Paragraph.create({ content: 'Hello, World' }),
         Paragraph.create({ content: 'Hello, World' }),

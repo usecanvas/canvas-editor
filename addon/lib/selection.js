@@ -105,9 +105,9 @@ const SelectionService = Ember.Object.extend({
    *   within `block`'s element (due to padding, etc)
    */
   navigateBlockBasedOnRect({ $container, block, rangeRect, boundary, offset }) {
-    const blockElement = this.getBlockElement($container, block);
-
+    const blockElement = this.getEditableBlockElement($container, block);
     const blockRect = blockElement.getClientRects()[0];
+
     /*
      * Create a point using the `left` value from the current range, and the
      * `boundary` value of the next block. We add to or subtract from the
@@ -157,6 +157,22 @@ const SelectionService = Ember.Object.extend({
   getBlockElement($container, block) {
     return $container
       .find(`[data-block-id="${block.get('id')}"]`)
+      .get(0);
+  },
+
+  /**
+   * Get the editable element associated with a given block.
+   *
+   * @method
+   * @private
+   * @param {jQuery.Element} $container The container of the editor
+   * @param {CanvasEditor.RealtimeCanvas.CardBlock} block The block to get the
+   *   element for
+   * @returns {Element} The element associated with `block`
+   */
+  getEditableBlockElement($container, block) {
+    return Ember.$(this.getBlockElement($container, block))
+      .find('.canvas-block-editable')
       .get(0);
   }
 });

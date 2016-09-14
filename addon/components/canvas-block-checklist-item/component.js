@@ -1,5 +1,5 @@
+import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
-import Ember from 'ember';
 import layout from './template';
 import styles from './styles';
 
@@ -9,11 +9,10 @@ import styles from './styles';
  * @class CanvasEditor.CanvasBlockChecklistItemComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
-export default Ember.Component.extend({
+export default CanvasBlock.extend({
   classNames: ['canvas-block-checklist-item'],
   layout,
   localClassNames: ['component'],
-  nextBlockConstructor: ChecklistItem,
   styles,
   tagName: 'li',
 

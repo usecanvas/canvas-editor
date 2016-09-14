@@ -189,7 +189,9 @@ export default Ember.Component.extend({
    *   focus the element for
    */
   focusBlockEnd(block) {
-    const $block = this.$(`[data-block-id="${block.get('id')}"]`);
+    let $block = this.$(`[data-block-id="${block.get('id')}"]`);
+    const $editableContent = $block.find('.canvas-block-editable');
+    if ($editableContent.length) $block = $editableContent;
     const range = Rangy.createRange();
     range.selectNodeContents($block.get(0));
     range.collapse(false /* collapse to end */);
@@ -207,7 +209,7 @@ export default Ember.Component.extend({
    */
   focusBlockStart(block) {
     let $block = this.$(`[data-block-id="${block.get('id')}"]`);
-    const $editableContent = $block.find('.editable-content');
+    const $editableContent = $block.find('.canvas-block-editable');
     if ($editableContent.length) $block = $editableContent;
     const range = Rangy.createRange();
     range.setStart($block.get(0), 0);

@@ -27,7 +27,7 @@
 {{#if unfurl.labels}}
   <div local-class="labels">
     {{#each unfurl.labels as |label|}}
-      <div local-class="label" style="color: {{label.color}}; background-color: {{backgroundColor}};">
+      <div local-class="label" style="color: {{label.color}}; background-color: {{label.backgroundColor}};">
         {{#if label.iconUrl}}
           <img local-class="label-icon" src="{{label.iconUrl}}" height="16" width="16">
         {{/if}}

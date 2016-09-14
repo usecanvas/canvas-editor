@@ -90,7 +90,7 @@ function isHeading(text) {
 }
 
 function isHorizontalRule(text) {
-  return (/^\---/).test(text);
+  return (/^---/).test(text);
 }
 
 function isRunKit(text) {

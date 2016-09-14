@@ -2,7 +2,6 @@
 
 .component {
   composes: component from '../canvas-block-card/styles';
-  align-items: center;
   display: flex;
 }
 
@@ -26,4 +25,13 @@
 
 .summary {
   color: --dark-gray;
+}
+
+.progress {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  height: 48px;
+  margin-left: 1rem;
+  width: 48px;
 }

@@ -61,8 +61,9 @@
 }
 
 .labels {
-    display: flex;
-    margin-top: 0.5rem;
+  display: flex;
+  font-size: 0.875em;
+  margin-top: 0.5rem;
 }
 
 .label {

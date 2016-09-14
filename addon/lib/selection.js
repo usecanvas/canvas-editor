@@ -3,13 +3,6 @@ import Rangy from 'rangy';
 
 const { computed } = Ember;
 
-/*
- * These offsets are used for vertical navigation to compensate for spacing
- * and/or padding between blocks.
- */
-const DOWN_NAV_OFFSET = 1;
-const UP_NAV_OFFSET = -DOWN_NAV_OFFSET;
-
 /**
  * A service providing access to a user's selection in the DOM.
  *
@@ -62,8 +55,7 @@ const SelectionService = Ember.Object.extend({
       $container,
       block: nextBlock,
       rangeRect,
-      boundary: 'top',
-      offset: DOWN_NAV_OFFSET });
+      boundary: 'top' });
   },
 
   /**
@@ -83,8 +75,7 @@ const SelectionService = Ember.Object.extend({
       $container,
       block: prevBlock,
       rangeRect,
-      boundary: 'bottom',
-      offset: UP_NAV_OFFSET });
+      boundary: 'bottom' });
   },
 
   /**
@@ -101,17 +92,21 @@ const SelectionService = Ember.Object.extend({
    *   horizontal position
    * @param {string} [opts.boundary] The "top" or "bottom" boundary that we
    *   are navigating into
-   * @param {number} [opts.offset] An offset used to ensure we find a point
-   *   within `block`'s element (due to padding, etc)
    */
-  navigateBlockBasedOnRect({ $container, block, rangeRect, boundary, offset }) {
+  navigateBlockBasedOnRect({ $container, block, rangeRect, boundary }) {
     const blockElement = this.getEditableBlockElement($container, block);
-    const blockRect = blockElement.getClientRects()[0];
+
+    let targetRange = Rangy.createRange();
+    targetRange.selectNodeContents(blockElement);
+    const blockRect = targetRange.nativeRange.getClientRects()[0];
+
+    let offset = parseInt(getComputedStyle(blockElement).fontSize, 10) / 3;
+    if (boundary === 'bottom') offset = offset * -1;
 
     /*
      * Create a point using the `left` value from the current range, and the
-     * `boundary` value of the next block. We add to or subtract from the
-     * boundary value to compensate for space around the text, such as padding.
+     * `boundary` value of the target block. We apply an offset based on the
+     * computed font size of the target element in order to find a valid space.
      */
     const point = [rangeRect.left, blockRect[boundary] + offset];
 
@@ -122,6 +117,22 @@ const SelectionService = Ember.Object.extend({
       range.setStart(position.offsetNode, position.offset);
     } else if (document.caretRangeFromPoint) {
       range = document.caretRangeFromPoint(...point);
+    }
+
+    /**
+     * Fall back if a range could not be found.
+     */
+    if (!range) {
+      console.warn('Range not found.');
+
+      range = Rangy.createRange();
+      range.selectNodeContents(blockElement);
+
+      if (boundary === 'top') {
+        range.collapse(true);
+      } else {
+        range.collapse(false);
+      }
     }
 
     range = new Rangy.WrappedRange(range);

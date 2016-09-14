@@ -104,6 +104,9 @@ export default Ember.Component.extend({
 
     if ($target.closest('.canvas-block-card').get(0) &&
         evt.target.tagName !== 'A') {
+      self.$('[data-card-block-selected=true]')
+        .attr('data-card-block-selected', false);
+
       const block = this.get('canvas.blocks')
         .findBy('id',
                 $target.closest('.canvas-block-card').attr('data-block-id'));

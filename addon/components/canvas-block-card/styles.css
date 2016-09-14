@@ -1,4 +1,5 @@
 @value --black from 'canvas-colors/styles/colors';
+@value --blue from 'canvas-colors/styles/colors';
 @value --extra-light-gray from 'canvas-colors/styles/colors';
 @value --light-gray from 'canvas-colors/styles/colors';
 
@@ -12,7 +13,8 @@
 }
 
 .component[data-card-block-selected=true] {
-  outline: 2px solid blue;
+  border-color: --blue;
+  box-shadow: 0 0 0 1px --blue;
 }
 
 .component a:link,

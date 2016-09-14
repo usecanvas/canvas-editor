@@ -1,5 +1,6 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import layout from './template';
+import styles from './styles';
 
 /*
  * A component representing a "paragraph" type canvas block.
@@ -9,5 +10,7 @@ import layout from './template';
  */
 export default CanvasBlock.extend({
   classNames: ['canvas-block-paragraph'],
-  layout
+  layout,
+  localClassNames: ['component'],
+  styles
 });

@@ -1,8 +1,7 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import Ember from 'ember';
 import layout from './template';
-
-const { computed } = Ember;
+import styles from './styles';
 
 /**
  * A component representing a "title" type canvas block.
@@ -13,5 +12,6 @@ const { computed } = Ember;
 export default CanvasBlock.extend({
   classNames: ['canvas-block-title'],
   layout,
-  localClassNames: ['component']
+  localClassNames: ['component'],
+  styles
 });

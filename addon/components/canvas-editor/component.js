@@ -25,7 +25,11 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     this.bindKeyDownEvents();
-    this.focusBlockStart(this.get('canvas.blocks.firstObject'));
+
+    run.next(_ => {
+      if (!this.get('isVisible')) return;
+      this.focusBlockStart(this.get('canvas.blocks.firstObject'));
+    });
   },
 
   willDestroyElement() {

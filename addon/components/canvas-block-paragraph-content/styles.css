@@ -1,5 +1,3 @@
-@value --block-placeholder-color from "canvas-editor/styles/theme";
-
 .component {
   composes: component from 'canvas-editor/components/canvas-block-editable/styles';
 }

@@ -1,7 +1,7 @@
 @value --list-bullet-color from "canvas-editor/styles/theme";
 
 .component {
-  composes: component from 'canvas-editor/components/canvas-block-editable/styles';
+  composes: component from 'canvas-editor/components/canvas-block-content/styles';
   list-style: none;
   padding-left: 1.5em;
   position: relative;
@@ -25,7 +25,7 @@
 }
 
 .is-empty {
-  composes: is-empty from 'canvas-editor/components/canvas-block-editable/styles';
+  composes: is-empty from 'canvas-editor/components/canvas-block-content/styles';
 }
 
 .is-empty::after {

@@ -1,3 +1,4 @@
+@value --black from 'canvas-colors/styles/colors';
 @value --light-gray from 'canvas-colors/styles/colors';
 
 .component {
@@ -5,5 +6,10 @@
   border: 1px solid --light-gray;
   border-radius: 4px;
   font-size: 0.875em;
-  padding: 0.5rem;
+  padding: 0.75rem;
+}
+
+.component a:link,
+.component a:visited {
+  color: --black;
 }

@@ -162,6 +162,11 @@ export default Ember.Component.extend({
         self.send('navigateUp', block);
         self.send('blockDeletedLocally', block, null, { onlySelf: true });
         break;
+      case 'Enter':
+      case 13:
+        evt.preventDefault();
+        self.send('newBlockInsertedLocally', block, Paragraph.create());
+        break;
       }
     });
   },

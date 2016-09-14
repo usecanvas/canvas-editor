@@ -105,10 +105,7 @@ const SelectionService = Ember.Object.extend({
    *   within `block`'s element (due to padding, etc)
    */
   navigateBlockBasedOnRect({ $container, block, rangeRect, boundary, offset }) {
-    const blockElement =
-      $container
-        .find(`[data-block-id="${block.get('id')}"]`)
-        .get(0);
+    const blockElement = this.getBlockElement($container, block);
 
     const blockRect = blockElement.getClientRects()[0];
     /*
@@ -130,6 +127,37 @@ const SelectionService = Ember.Object.extend({
     range = new Rangy.WrappedRange(range);
     this.get('selection').setSingleRange(range);
     blockElement.focus();
+  },
+
+  /**
+   * Select a card block (they do not have editable text, and have a special
+   * "selected" state).
+   *
+   * @method
+   * @param {jQuery.Element} $container The container of the editor
+   * @param {CanvasEditor.RealtimeCanvas.CardBlock} block The block to select
+   */
+  selectCardBlock($container, block) {
+    const blockElement = this.getBlockElement($container, block);
+    this.get('selection').removeAllRanges();
+    $container.find(':focus').blur();
+    blockElement.setAttribute('data-card-block-selected', true);
+  },
+
+  /**
+   * Get the element associated with a given block.
+   *
+   * @method
+   * @private
+   * @param {jQuery.Element} $container The container of the editor
+   * @param {CanvasEditor.RealtimeCanvas.CardBlock} block The block to get the
+   *   element for
+   * @returns {Element} The element associated with `block`
+   */
+  getBlockElement($container, block) {
+    return $container
+      .find(`[data-block-id="${block.get('id')}"]`)
+      .get(0);
   }
 });
 

@@ -1,8 +1,10 @@
 @value --black from 'canvas-colors/styles/colors';
+@value --extra-light-gray from 'canvas-colors/styles/colors';
 @value --light-gray from 'canvas-colors/styles/colors';
 
 .component {
   composes: component from '../canvas-block/styles';
+  box-shadow: 0 1px 1px --extra-light-gray;
   border: 1px solid --light-gray;
   border-radius: 4px;
   font-size: 0.875em;

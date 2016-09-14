@@ -1,5 +1,6 @@
 @value --blue from 'canvas-colors/styles/colors';
 @value --gray from 'canvas-colors/styles/colors';
+@value --green from 'canvas-colors/styles/colors';
 
 .component {
   border: 2px solid --gray;
@@ -11,10 +12,19 @@
   width: 1.125em;
 }
 
+.is-focused {
+  border-color: --blue;
+}
+
 .is-checked {
   animation: tick;
   animation-duration: 0;
-  background: url('/canvas-editor/images/checkmark.svg') --blue;
+  background: url('/canvas-editor/images/checkmark.svg') --green;
+  border-color: --green;
+}
+
+.is-focused.is-checked {
+  background-color: --blue;
   border-color: --blue;
 }
 

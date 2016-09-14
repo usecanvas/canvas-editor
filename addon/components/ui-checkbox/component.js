@@ -10,9 +10,13 @@ const { observer, on } = Ember;
  * @extends Ember.Component
  */
 export default Ember.Component.extend({
-  animateable: false,
+  isAnimateable: false,
   localClassNames: ['component'],
-  localClassNameBindings: ['animateable:is-animateable', 'checked:is-checked'],
+  localClassNameBindings: [
+    'isAnimateable',
+    'checked:is-checked',
+    'isFocused'
+  ],
   styles,
 
   click() {
@@ -20,6 +24,6 @@ export default Ember.Component.extend({
   },
 
   setAnimateable: on('willUpdate', function() {
-    this.set('animateable', true);
+    this.set('isAnimateable', true);
   })
 });

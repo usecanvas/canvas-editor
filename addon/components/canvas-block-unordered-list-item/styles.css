@@ -1,4 +1,5 @@
 @value --list-bullet-color from "canvas-editor/styles/theme";
+@value --blue from "canvas-editor/styles/theme";
 
 .component {
   list-style: none;
@@ -21,4 +22,8 @@
   position: absolute;
   top: 0.4375em;
   width: 0.5em;
+}
+
+.is-focused::before {
+  background: --blue;
 }

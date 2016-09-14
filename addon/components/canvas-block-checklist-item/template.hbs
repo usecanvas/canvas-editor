@@ -1,5 +1,7 @@
 <div local-class="checkbox">
-  {{ui-checkbox checked=block.meta.checked onToggle=(action 'onToggleChecked')}}
+  {{ui-checkbox
+    checked=block.meta.checked onToggle=(action 'onToggleChecked')
+    isFocused=isFocused}}
 </div>
 
 <div local-class="content">

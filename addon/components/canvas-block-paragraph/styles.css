@@ -1,3 +1,20 @@
+@value --blue from 'canvas-colors/styles/colors';
+
 .component {
   composes: component from 'canvas-editor/components/canvas-block/styles';
+}
+
+.is-focused {
+  position: relative;
+}
+
+.is-focused::before {
+  background: --blue;
+  border-radius: 1000px;
+  content: '';
+  height: 100%;
+  left: -1rem;
+  position: absolute;
+  top: 0;
+  width: 3px;
 }

@@ -257,9 +257,7 @@ export default Ember.Component.extend({
       if (!prevBlock) return; // `block` is the first block
 
       if (prevBlock.get('isCard')) {
-        const index = this.get('canvas.blocks').indexOf(prevBlock);
-        this.get('canvas.blocks').removeObject(prevBlock);
-        this.get('onBlockDeletedLocally')(index, prevBlock);
+        Selection.selectCardBlock(this.$(), prevBlock);
         return;
       }
 

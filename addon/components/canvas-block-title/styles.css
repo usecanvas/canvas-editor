@@ -3,7 +3,7 @@
 .component {
   composes: component from 'canvas-editor/components/canvas-block-editable/styles';
   font-size: 2rem;
-  font-weight: bold;
+  font-weight: 600;
 }
 
 .is-empty {

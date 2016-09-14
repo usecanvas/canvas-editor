@@ -24,7 +24,12 @@ export default Ember.Component.extend({
   styles,
 
   didInsertElement() {
+    this.bindKeyDownEvents();
     this.focusBlockStart(this.get('canvas.blocks.firstObject'));
+  },
+
+  willDestroyElement() {
+    this.unbindKeyDownEvents();
   },
 
   /**
@@ -88,6 +93,85 @@ export default Ember.Component.extend({
    * @param {CanvasEditor.RealtimeCanvas.Block} block The block to unfurl
    */
   unfurlBlock() { return Ember.RSVP.resolve({}); },
+
+  /**
+   * Bind click event for focusing cards.
+   *
+   * @method
+   */
+  click(evt) {
+    const $target = this.$(evt.target);
+
+    if ($target.closest('.canvas-block-card').get(0) &&
+        evt.target.tagName !== 'A') {
+      const block = this.get('canvas.blocks')
+        .findBy('id',
+                $target.closest('.canvas-block-card').attr('data-block-id'));
+      Selection.selectCardBlock(this.$(), block);
+    }
+  },
+
+  /**
+   * Bind keyDown events on `document`, because they do not fire on the editor
+   * when a card block is selected.
+   *
+   * @method
+   */
+  bindKeyDownEvents() {
+    const self = this;
+
+    Ember.$(document).on(`focus.${Ember.guidFor(this)}`,
+                         '.canvas-block-editable', function() {
+      self.$('[data-card-block-selected=true]')
+        .attr('data-card-block-selected', false);
+    });
+
+    Ember.$(document).on(`keydown.${Ember.guidFor(this)}`, function(evt) {
+      const selectedCardElement =
+        self.$('[data-card-block-selected=true]').get(0);
+
+      if (!selectedCardElement) return;
+
+      const block = self.get('canvas.blocks')
+        .findBy('id', selectedCardElement.getAttribute('data-block-id'));
+
+      switch (evt.originalEvent.key || evt.originalEvent.keyCode) {
+      case 'ArrowLeft':
+      case 37:
+      case 'ArrowUp':
+      case 38:
+        evt.preventDefault();
+        selectedCardElement.setAttribute('data-card-block-selected', false);
+        self.send('navigateUp', block);
+        break;
+      case 'ArrowRight':
+      case 39:
+      case 'ArrowDown':
+      case 40:
+        evt.preventDefault();
+        selectedCardElement.setAttribute('data-card-block-selected', false);
+        self.send('navigateDown', block);
+        break;
+      case 'Backspace':
+      case 8:
+        evt.preventDefault();
+        selectedCardElement.setAttribute('data-card-block-selected', false);
+        self.send('navigateUp', block);
+        self.send('blockDeletedLocally', block, null, { onlySelf: true });
+        break;
+      }
+    });
+  },
+
+  /**
+   * Unbind keyDown events on `document`.
+   *
+   * @method
+   */
+  unbindKeyDownEvents() {
+    Ember.$(document).off(`focus.${Ember.guidFor(this)}`);
+    Ember.$(document).off(`keydown.${Ember.guidFor(this)}`);
+  },
 
   /**
    * Focus at the end of the element that represents the block with the given
@@ -387,7 +471,11 @@ export default Ember.Component.extend({
       if (nextBlock.get('isCard')) {
         Selection.selectCardBlock(this.$(), nextBlock);
       } else {
-        Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
+        if (block.get('isCard')) {
+          run.scheduleOnce('afterRender', this, 'focusBlockStart', nextBlock);
+        } else {
+          Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
+        }
       }
     },
 
@@ -451,7 +539,11 @@ export default Ember.Component.extend({
       if (prevBlock.get('isCard')) {
         Selection.selectCardBlock(this.$(), prevBlock);
       } else {
-        Selection.navigateUpToBlock(this.$(), prevBlock, rangeRect);
+        if (block.get('isCard')) {
+          run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
+        } else {
+          Selection.navigateUpToBlock(this.$(), prevBlock, rangeRect);
+        }
       }
     },
 

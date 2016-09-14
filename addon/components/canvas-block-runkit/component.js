@@ -1,4 +1,4 @@
-import BlockComponent from 'canvas-editor/components/canvas-block/component';
+import CardBlock from 'canvas-editor/components/canvas-block-card/component';
 import Ember from 'ember';
 import RunKit from 'runkit';
 import layout from './template';
@@ -10,9 +10,9 @@ const { run } = Ember;
  * A component representing a RunKit.
  *
  * @class CanvasEditor.CanvasBlockRunkitComponent
- * @extends CanvasEditor.CanvasBlockComponent
+ * @extends CanvasEditor.CanvasBlockCardComponent
  */
-export default BlockComponent.extend({
+export default CardBlock.extend({
   classNames: ['canvas-block-runkit'],
   layout,
   localClassNames: ['component'],

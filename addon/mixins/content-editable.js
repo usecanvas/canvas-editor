@@ -59,6 +59,7 @@ export default Ember.Mixin.create(Selection, {
     case 'Enter':
     case 13:
       if (evt.shiftKey) return;
+      evt.stopPropagation();
       evt.preventDefault();
       this.newBlockAtSplit();
       break;
@@ -78,6 +79,7 @@ export default Ember.Mixin.create(Selection, {
     const { textBeforeSelection, textAfterSelection } =
       TextManipulation.getManipulation(this.get('element'));
     if (textBeforeSelection || !this.get('selection.isCollapsed')) return;
+    evt.stopPropagation();
     evt.preventDefault();
     this.get('onBlockDeletedLocally')(this.get('block'), textAfterSelection);
   },
@@ -96,6 +98,7 @@ export default Ember.Mixin.create(Selection, {
     const rangeRect = this.get('currentRangeRect');
     const distanceFromBottom = contentBottom - rangeRect.bottom;
     if (distanceFromBottom > 10) return; // Navigate within this element
+    evt.stopPropagation();
     evt.preventDefault();
     this.get('onNavigateDown')(this.get('block'), rangeRect);
   },
@@ -113,6 +116,7 @@ export default Ember.Mixin.create(Selection, {
     const { textBeforeSelection } =
       TextManipulation.getManipulation(this.get('element'));
     if (textBeforeSelection) return; // Navigate within this element
+    evt.stopPropagation();
     evt.preventDefault();
     this.get('onNavigateLeft')(this.get('block'));
   },
@@ -130,6 +134,7 @@ export default Ember.Mixin.create(Selection, {
     const { textAfterSelection } =
       TextManipulation.getManipulation(this.get('element'));
     if (textAfterSelection) return; // Navigate within this element
+    evt.stopPropagation();
     evt.preventDefault();
     this.get('onNavigateRight')(this.get('block'));
   },
@@ -148,6 +153,7 @@ export default Ember.Mixin.create(Selection, {
     const rangeRect = this.get('currentRangeRect');
     const distanceFromTop = rangeRect.top - contentTop;
     if (distanceFromTop > 10) return; // Navigate within this element
+    evt.stopPropagation();
     evt.preventDefault();
     this.get('onNavigateUp')(this.get('block'), rangeRect);
   },

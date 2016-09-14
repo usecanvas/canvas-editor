@@ -1,5 +1,4 @@
 @value --dark-gray from 'canvas-colors/styles/colors';
-@value --light-gray from 'canvas-colors/styles/colors';
 @value --extra-light-gray from 'canvas-colors/styles/colors';
 
 .component {

@@ -1,0 +1,14 @@
+@value --light-gray from "canvas-colors/styles/colors";
+
+.component {
+  composes: component from 'canvas-editor/components/canvas-block/styles';
+}
+
+.component::after {
+  background: --light-gray;
+  content: '';
+  display: block;
+  height: 1px;
+  margin-top: 1em;
+  width: 10%;
+}

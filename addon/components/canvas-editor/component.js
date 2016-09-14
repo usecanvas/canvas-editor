@@ -385,7 +385,12 @@ export default Ember.Component.extend({
       const blockIndex = blocks.indexOf(block);
       const nextBlock = blocks.objectAt(blockIndex + 1);
       if (!nextBlock) return; // `block` is the last block
-      Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
+
+      if (nextBlock.get('isCard')) {
+        Selection.selectCardBlock(this.$(), nextBlock);
+      } else {
+        Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
+      }
     },
 
     /**
@@ -401,7 +406,12 @@ export default Ember.Component.extend({
       const blockIndex = blocks.indexOf(block);
       const prevBlock = blocks.objectAt(blockIndex - 1);
       if (!prevBlock) return; // `block` is the first block
-      run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
+
+      if (prevBlock.get('isCard')) {
+        Selection.selectCardBlock(this.$(), prevBlock);
+      } else {
+        run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
+      }
     },
 
     /**
@@ -417,7 +427,12 @@ export default Ember.Component.extend({
       const blockIndex = blocks.indexOf(block);
       const nextBlock = blocks.objectAt(blockIndex + 1);
       if (!nextBlock) return; // `block` is the last block
-      run.scheduleOnce('afterRender', this, 'focusBlockStart', nextBlock);
+
+      if (nextBlock.get('isCard')) {
+        Selection.selectCardBlock(this.$(), nextBlock);
+      } else {
+        run.scheduleOnce('afterRender', this, 'focusBlockStart', nextBlock);
+      }
     },
 
     /**
@@ -434,7 +449,12 @@ export default Ember.Component.extend({
       const blockIndex = blocks.indexOf(block);
       const prevBlock = blocks.objectAt(blockIndex - 1);
       if (!prevBlock) return; // `block` is the first block
-      Selection.navigateUpToBlock(this.$(), prevBlock, rangeRect);
+
+      if (prevBlock.get('isCard')) {
+        Selection.selectCardBlock(this.$(), prevBlock);
+      } else {
+        Selection.navigateUpToBlock(this.$(), prevBlock, rangeRect);
+      }
     },
 
     /**

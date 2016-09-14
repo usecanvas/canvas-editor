@@ -105,11 +105,6 @@ const SelectionService = Ember.Object.extend({
    *   within `block`'s element (due to padding, etc)
    */
   navigateBlockBasedOnRect({ $container, block, rangeRect, boundary, offset }) {
-    if (block.get('isCard')) {
-      this.selectCardBlock($container, block);
-      return;
-    }
-
     const blockElement = this.getBlockElement($container, block);
 
     const blockRect = blockElement.getClientRects()[0];

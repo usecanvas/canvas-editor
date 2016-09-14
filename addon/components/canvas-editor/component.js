@@ -192,11 +192,12 @@ export default Ember.Component.extend({
     let $block = this.$(`[data-block-id="${block.get('id')}"]`);
     const $editableContent = $block.find('.canvas-block-editable');
     if ($editableContent.length) $block = $editableContent;
+    const blockElement = $block.get(0);
     const range = Rangy.createRange();
-    range.selectNodeContents($block.get(0));
-    range.collapse(false /* collapse to end */);
+    range.setStart(blockElement, blockElement.childNodes.length);
     Rangy.getSelection().setSingleRange(range);
     $block.focus();
+    Selection.scrollTo(blockElement);
   },
 
   /**
@@ -211,10 +212,12 @@ export default Ember.Component.extend({
     let $block = this.$(`[data-block-id="${block.get('id')}"]`);
     const $editableContent = $block.find('.canvas-block-editable');
     if ($editableContent.length) $block = $editableContent;
+    const blockElement = $block.get(0);
     const range = Rangy.createRange();
-    range.setStart($block.get(0), 0);
+    range.setStart(blockElement, 0);
     Rangy.getSelection().setSingleRange(range);
     $block.focus();
+    Selection.scrollTo(blockElement);
   },
 
   /**
@@ -360,7 +363,8 @@ export default Ember.Component.extend({
        * content onto it.
        */
       const $prevBlock = this.$(`[data-block-id="${prevBlock.get('id')}"]`);
-      const selectionState = new SelectionState($prevBlock.get(0));
+      const selectionState =
+        new SelectionState($prevBlock.find('.canvas-block-editable').get(0));
       this.focusBlockEnd(prevBlock);
       selectionState.capture();
 

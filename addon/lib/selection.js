@@ -113,8 +113,11 @@ const SelectionService = Ember.Object.extend({
     let range;
     if (document.caretPositionFromPoint) {
       const position = document.caretPositionFromPoint(...point);
-      range = document.createRange();
-      range.setStart(position.offsetNode, position.offset);
+
+      if (position) {
+        range = document.createRange();
+        range.setStart(position.offsetNode, position.offset);
+      }
     } else if (document.caretRangeFromPoint) {
       range = document.caretRangeFromPoint(...point);
     }
@@ -125,19 +128,19 @@ const SelectionService = Ember.Object.extend({
     if (!range) {
       console.warn('Range not found.');
 
-      range = Rangy.createRange();
-      range.selectNodeContents(blockElement);
+      range = document.createRange();
 
       if (boundary === 'top') {
-        range.collapse(true);
+        range.setStart(blockElement, 0);
       } else {
-        range.collapse(false);
+        range.setStart(blockElement, blockElement.childNodes.length);
       }
     }
 
     range = new Rangy.WrappedRange(range);
     this.get('selection').setSingleRange(range);
     blockElement.focus();
+    this.scrollTo(blockElement);
   },
 
   /**
@@ -185,6 +188,18 @@ const SelectionService = Ember.Object.extend({
     return Ember.$(this.getBlockElement($container, block))
       .find('.canvas-block-editable')
       .get(0);
+  },
+
+  /**
+   * Scroll to a block if needed.
+   *
+   * @method
+   * @param {HTMLElement} element The element to scroll to if possible
+   */
+  scrollTo(element) {
+    if (element.scrollIntoViewIfNeeded) {
+      element.scrollIntoViewIfNeeded();
+    }
   }
 });
 

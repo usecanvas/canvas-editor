@@ -4,6 +4,7 @@ import CanvasCard from 'canvas-editor/lib/realtime-canvas/canvas-card';
 import CLItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import ULItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import List from 'canvas-editor/lib/realtime-canvas/list';
+import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import Tip from 'canvas-editor/lib/realtime-canvas/tip';
@@ -42,6 +43,8 @@ export default Ember.Object.extend({
         return URLCard.create(json);
       } case 'tip': {
         return Tip.create(json);
+      } case 'runkit': {
+        return RunKitBlock.create(json);
       } default: {
         throw new Error(`Unrecognized block type: "${json.type}".`);
       }

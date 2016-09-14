@@ -20,5 +20,7 @@ module.exports = {
     app.import('vendor/shims/base62.js');
     app.import('vendor/shims/rangy.js');
     app.import('vendor/shims/uuid.js');
+    app.import('vendor/runkit.js');
+    app.import('vendor/shims/runkit.js');
   }
 };

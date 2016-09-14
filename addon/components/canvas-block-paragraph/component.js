@@ -1,5 +1,6 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
+import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
 import CanvasCard from 'canvas-editor/lib/realtime-canvas/canvas-card';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import styles from './styles';
@@ -42,6 +43,11 @@ export default CanvasBlockEditable.extend({
         this.newBlockInsertedLocally('');
         this.blockReplacedLocally(canvasBlock);
         return;
+      } else if (isRunKit(textBeforeSelection)) {
+        const runkit = RunKitBlock.create();
+        this.newBlockInsertedLocally('');
+        this.blockReplacedLocally(runkit);
+        return;
       } else if (isURL(textBeforeSelection)) {
         const urlBlock = URLCard.create({ meta: { url: textBeforeSelection } });
         this.newBlockInsertedLocally('');
@@ -69,6 +75,10 @@ function isUnorderedListItem(content) {
 
 function isCanvasURL(text) {
   return CANVAS_URL.test(text);
+}
+
+function isRunKit(text) {
+  return (/^\/runkit/).test(text);
 }
 
 function isURL(text) {

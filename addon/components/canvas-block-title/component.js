@@ -1,6 +1,6 @@
-import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
+import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import Ember from 'ember';
-import styles from './styles';
+import layout from './template';
 
 const { computed } = Ember;
 
@@ -8,14 +8,10 @@ const { computed } = Ember;
  * A component representing a "title" type canvas block.
  *
  * @class CanvasEditor.CanvasBlockTitleComponent
- * @extends CanvasEditor.CanvasBlockEditableComponent
+ * @extends CanvasEditor.CanvasBlockComponent
  */
-export default CanvasBlockEditable.extend({
+export default CanvasBlock.extend({
   classNames: ['canvas-block-title'],
-  localClassNames: ['component'],
-  styles,
-
-  placeholder: computed('block.meta.placeholder', function() {
-    return this.getWithDefault('block.meta.placeholder', 'Give me a title...');
-  })
+  layout,
+  localClassNames: ['component']
 });

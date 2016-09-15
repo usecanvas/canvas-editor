@@ -1,7 +1,8 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
-import TextManipulation from 'canvas-editor/lib/text-manipulation';
-import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
 import CanvasCard from 'canvas-editor/lib/realtime-canvas/canvas-card';
+import HorizontalRule from 'canvas-editor/lib/realtime-canvas/horizontal-rule';
+import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
+import TextManipulation from 'canvas-editor/lib/text-manipulation';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import styles from './styles';
 
@@ -43,6 +44,11 @@ export default CanvasBlockEditable.extend({
         this.newBlockInsertedLocally('');
         this.blockReplacedLocally(canvasBlock);
         return;
+      } else if (isHorizontalRule(textBeforeSelection)) {
+        const horizontalRule = HorizontalRule.create();
+        this.newBlockInsertedLocally('');
+        this.blockReplacedLocally(horizontalRule);
+        return;
       } else if (isRunKit(textBeforeSelection)) {
         const runkit = RunKitBlock.create();
         this.newBlockInsertedLocally('');
@@ -81,6 +87,10 @@ function isCanvasURL(text) {
 
 function isHeading(text) {
   return (/^#{1,6}\s/).test(text);
+}
+
+function isHorizontalRule(text) {
+  return (/^---/).test(text);
 }
 
 function isRunKit(text) {

@@ -9,6 +9,7 @@ import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import Tip from 'canvas-editor/lib/realtime-canvas/tip';
+import HorizontalRule from 'canvas-editor/lib/realtime-canvas/horizontal-rule';
 
 const { computed } = Ember;
 
@@ -48,6 +49,8 @@ export default Ember.Object.extend({
         return RunKitBlock.create(json);
       } case 'heading': {
         return Heading.create(json);
+      } case 'horizontal-rule': {
+        return HorizontalRule.create(json);
       } default: {
         throw new Error(`Unrecognized block type: "${json.type}".`);
       }

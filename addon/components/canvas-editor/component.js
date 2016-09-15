@@ -199,7 +199,14 @@ export default Ember.Component.extend({
     if ($editableContent.length) $block = $editableContent;
     const blockElement = $block.get(0);
     const range = Rangy.createRange();
-    range.setStart(blockElement, blockElement.childNodes.length);
+
+    // Empty blocks have a <br> and focusing after it does not work.
+    if (block.get('content') === '') {
+      range.setStart(blockElement, 0);
+    } else {
+      range.setStart(blockElement, blockElement.childNodes.length);
+    }
+
     Rangy.getSelection().setSingleRange(range);
     $block.focus();
     Selection.scrollTo(blockElement);

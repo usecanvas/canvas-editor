@@ -1,3 +1,6 @@
+@value --dark-gray from 'canvas-colors/styles/colors';
+@value --gray from 'canvas-colors/styles/colors';
+
 .component {
   composes: component from 'canvas-editor/components/canvas-block-paragraph/styles';
 }
@@ -7,19 +10,33 @@
 }
 
 .heading-level-1 {
-  font-size: 32px;
+  font-size: 2rem;
+  font-weight: 600;
 }
 
 .heading-level-2 {
-  font-size: 28px;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .heading-level-3 {
-  font-size: 22px;
+  font-size: 1.125rem;
+  font-weight: 600;
 }
 
 .heading-level-4,
 .heading-level-5,
 .heading-level-6 {
-  font-size: 16px;
+  color: --dark-gray;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.heading-level-5,
+.heading-level-6 {
+  font-size: 0.9375rem;
+}
+
+.heading-level-6 {
+  font-size: 0.875rem;
 }

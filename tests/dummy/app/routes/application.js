@@ -9,6 +9,7 @@ import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
 import Tip from 'canvas-editor/lib/realtime-canvas/tip';
 import HorizontalRule from 'canvas-editor/lib/realtime-canvas/horizontal-rule';
+import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 
 const { A } = Ember;
 
@@ -18,6 +19,12 @@ export default Ember.Route.extend({
       blocks: A([
         Title.create({ content: 'The Title' }),
         Paragraph.create({ content: 'Hello, World' }),
+        Heading.create({ content: 'This is a heading', meta: { level: 1 } }),
+        Heading.create({ content: 'This is a heading', meta: { level: 2 } }),
+        Heading.create({ content: 'This is a heading', meta: { level: 3 } }),
+        Heading.create({ content: 'This is a heading', meta: { level: 4 } }),
+        Heading.create({ content: 'This is a heading', meta: { level: 5 } }),
+        Heading.create({ content: 'This is a heading', meta: { level: 6 } }),
         CanvasCard.create({ meta: { id: 'this is some id' } }),
         Tip.create({ content: 'This is a pro tip and it is super useful.' }),
         Paragraph.create({ content: 'Hello, World' }),

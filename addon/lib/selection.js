@@ -98,7 +98,9 @@ const SelectionService = Ember.Object.extend({
 
     let targetRange = Rangy.createRange();
     targetRange.selectNodeContents(blockElement);
-    const blockRect = targetRange.nativeRange.getClientRects()[0];
+    const blockRects = targetRange.nativeRange.getClientRects();
+    let blockRect = blockRects[blockRects.length - 1];
+    if (boundary === 'top') blockRect = blockRects[0];
 
     let offset = parseInt(getComputedStyle(blockElement).fontSize, 10) / 3;
     if (boundary === 'bottom') offset = offset * -1;

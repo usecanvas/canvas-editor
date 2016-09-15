@@ -1,4 +1,5 @@
 import CardBlock from 'canvas-editor/components/canvas-block-card/component';
+import Ember from 'ember';
 import styles from './styles';
 
 /**
@@ -10,5 +11,6 @@ import styles from './styles';
 export default CardBlock.extend({
   classNames: ['canvas-block-horizontal-rule'],
   localClassNames: ['component'],
-  styles
+  styles,
+  doUnfurl: Ember.K
 });

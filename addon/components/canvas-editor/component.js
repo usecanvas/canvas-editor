@@ -365,6 +365,10 @@ export default Ember.Component.extend({
       if (!prevBlock) return; // `block` is the first block
 
       if (prevBlock.get('isCard')) {
+        if (!block.get('content')) {
+          this.send('blockDeletedLocally', block, '', { onlySelf: true });
+        }
+
         Selection.selectCardBlock(this.$(), prevBlock);
         return;
       }

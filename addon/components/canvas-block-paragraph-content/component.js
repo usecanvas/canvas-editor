@@ -64,6 +64,8 @@ export default CanvasBlockEditable.extend({
 function getNewType(content) {
   if (isUnorderedListItem(content)) {
     return 'unordered-list-item';
+  } else if (isHeading(content)) {
+    return 'heading';
   }
 
   return null;
@@ -75,6 +77,10 @@ function isUnorderedListItem(content) {
 
 function isCanvasURL(text) {
   return CANVAS_URL.test(text);
+}
+
+function isHeading(text) {
+  return (/^#{1,6}\s/).test(text);
 }
 
 function isRunKit(text) {

@@ -2,6 +2,7 @@ import Ember from 'ember';
 import layout from './template';
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
+import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
@@ -415,6 +416,15 @@ export default Ember.Component.extend({
 
           blocks.replace(index, 1, [group]);
           this.get('onNewBlockInsertedLocally')(index, group);
+          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
+          break;
+        } case 'paragraph/heading': {
+          const index = this.get('canvas.blocks').indexOf(block);
+          const newBlock =
+            Heading.createFromMarkdown(content, { id: block.get('id') });
+          this.get('onBlockDeletedLocally')(index, block);
+          this.get('onNewBlockInsertedLocally')(index, newBlock);
+          this.get('canvas.blocks').replace(index, 1, [newBlock]);
           run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
           break;
         } case 'checklist-item/paragraph':

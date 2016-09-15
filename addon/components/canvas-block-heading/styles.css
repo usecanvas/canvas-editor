@@ -1,0 +1,25 @@
+.component {
+  composes: component from 'canvas-editor/components/canvas-block-paragraph/styles';
+}
+
+.is-focused {
+  composes: is-focused from 'canvas-editor/components/canvas-block-paragraph/styles';
+}
+
+.heading-level-1 {
+  font-size: 32px;
+}
+
+.heading-level-2 {
+  font-size: 28px;
+}
+
+.heading-level-3 {
+  font-size: 22px;
+}
+
+.heading-level-4,
+.heading-level-5,
+.heading-level-6 {
+  font-size: 16px;
+}

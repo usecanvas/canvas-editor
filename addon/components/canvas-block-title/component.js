@@ -36,7 +36,7 @@ export default CanvasBlock.extend({
 
       if (value) {
         filteredTemplates = templates.filter(function(item) {
-          return item.title.toLowerCase().indexOf(value) !== -1;
+          return item.title.toLowerCase().indexOf(value.toLowerCase()) > -1;
         });
       }
 

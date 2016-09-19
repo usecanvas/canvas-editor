@@ -19,11 +19,13 @@
         filter=(action 'filterTemplates')
         value=block.content
         as |templates|}}
-        <div local-class="suggestions-content">
-          {{#each templates as |template|}}
-            <div local-class="template">{{template.title}}</div>
-          {{/each}}
-        </div>
+        {{#if templates}}
+          <div local-class="suggestions-content">
+            {{#each templates as |template|}}
+              <div local-class="template">{{template.title}}</div>
+            {{/each}}
+          </div>
+        {{/if}}
       {{/ui-list-filter}}
     </div>
   {{/if}}

@@ -15,21 +15,55 @@ const { computed } = Ember;
  */
 export default CanvasBlock.extend({
   classNames: ['canvas-block-title'],
+  isShowingSelect: false,
   layout,
   localClassNames: ['component'],
   styles,
 
-  showTemplates: computed('hasContent', 'isFocused', function() {
-    return !this.get('hasContent') && this.get('isFocused');
+  showTemplates: computed('searchTerm', 'hasContent', 'isFocused', function() {
+    return !this.get('hasContent') &&
+      this.get('isFocused');
   }),
 
-  templates: [
-    { title: 'OKRs' },
-    { title: 'Onboarding' },
-    { title: 'Sprint Planning' }
-  ],
+  templates: [{
+      title: 'OKRs',
+      blocks: [{
+        type: 'paragraph',
+        content: 'Paragraph content',
+        meta: {}
+      }]
+    }, {
+      title: 'Onboarding',
+      blocks: [{
+        type: 'paragraph',
+        content: 'Foo bar',
+        meta: {}
+      }, {
+        type: 'list',
+        blocks: [{
+          type: 'checklist-item',
+          content: 'CL Item',
+          meta: { checked: true }
+        }]
+      }]
+    }, {
+      title: 'Sprint Planning',
+      blocks: [{
+        type: 'paragraph',
+        content: 'Paragraph content',
+        meta: {}
+      }]
+    }],
 
   actions: {
+    remainFocused(evt) {
+      evt.preventDefault();
+    },
+
+    selectTemplate(template) {
+      this.get('onTemplateApply')(template);
+    },
+
     filterTemplates(value) {
       const templates = this.get('templates');
       let filteredTemplates = [];

@@ -8,6 +8,6 @@ export default Ember.Component.extend({
 
   onValueChange: observer('value', function() {
     const value = this.get('value');
-    this.get('filter')(value).then(results => this.set('results', results));
+    this.get('onFilter')(value).then(results => this.set('results', results));
   })
 });

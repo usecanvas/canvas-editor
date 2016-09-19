@@ -36,8 +36,9 @@ export default Ember.Object.extend({
         return CLItem.create(json);
       } case 'list': {
         return List.create({
-          blocks: json.blocks.map(block => this.createBlockFromJSON(block)),
-          meta: json.meta
+          blocks: Ember.A(
+            json.blocks.map(block => this.createBlockFromJSON(block))),
+          meta: json.meta || Ember.Object.create()
         });
       } case 'canvas': {
         return CanvasCard.create(json);

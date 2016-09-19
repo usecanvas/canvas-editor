@@ -16,16 +16,17 @@
   {{#if showTemplates}}
     <div local-class="suggestions">
       {{#ui-list-filter
-        filter=(action 'filterTemplates')
         value=block.content
+        isShowingSelect=(mut isShowingSelect)
+        onFilter=(action 'filterTemplates')
         as |templates|}}
-        {{#if templates}}
-          <div local-class="suggestions-content">
-            {{#each templates as |template|}}
-              <div local-class="template">{{template.title}}</div>
-            {{/each}}
-          </div>
-        {{/if}}
+          {{#if templates}}
+            <div local-class="suggestions-content">
+              {{#each templates as |template|}}
+                <div local-class="template" onmousedown={{action "remainFocused"}} onclick={{action "selectTemplate" template}}>{{template.title}}</div>
+              {{/each}}
+            </div>
+          {{/if}}
       {{/ui-list-filter}}
     </div>
   {{/if}}

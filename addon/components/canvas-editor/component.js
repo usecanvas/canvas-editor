@@ -4,6 +4,7 @@ import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import Rangy from 'rangy';
+import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
 import List from 'canvas-editor/lib/realtime-canvas/list';
@@ -586,6 +587,7 @@ export default Ember.Component.extend({
       }
     },
 
+
     /**
      * Called when a new block was added after `prevBlock` and the canvas model
      * needs to be updated.
@@ -602,6 +604,32 @@ export default Ember.Component.extend({
       parent.replace(index, 0, [newBlock]);
       this.get('onNewBlockInsertedLocally')(index, newBlock);
       run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);
+    },
+
+    /**
+     * Called when a template should be applied to the canvas.
+     *
+     * @method
+     * @param {Array<object>} template A template to apply to the canvas.
+     */
+    templateApply(template) {
+      const titleBlock = this.get('canvas.blocks').objectAt(0);
+      titleBlock.set('lastContent', titleBlock.get('content'));
+      titleBlock.set('content', template.title);
+
+      this.get('onBlockContentUpdatedLocally')(titleBlock);
+
+      const contentBlocks =
+          template.blocks
+            .map(RealtimeCanvas.createBlockFromJSON.bind(RealtimeCanvas));
+
+      const contentBlocksLength = contentBlocks.length;
+
+      for (let i = 0; i < contentBlocksLength; i += 1) {
+        const newBlock = contentBlocks[i];
+        this.get('canvas.blocks').pushObject(newBlock);
+        this.get('onNewBlockInsertedLocally')(i + 1, newBlock);
+      }
     },
 
     /**

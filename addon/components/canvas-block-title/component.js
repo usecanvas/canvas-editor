@@ -4,6 +4,7 @@ import Ember from 'ember';
 import RSVP from 'rsvp';
 import layout from './template';
 import styles from './styles';
+import templates from 'canvas-editor/lib/templates';
 
 const { computed } = Ember;
 
@@ -19,41 +20,12 @@ export default CanvasBlock.extend({
   layout,
   localClassNames: ['component'],
   styles,
+  templates,
 
   showTemplates: computed('searchTerm', 'hasContent', 'isFocused', function() {
     return !this.get('hasContent') &&
       this.get('isFocused');
   }),
-
-  templates: [{
-      title: 'OKRs',
-      blocks: [{
-        type: 'paragraph',
-        content: 'Paragraph content',
-        meta: {}
-      }]
-    }, {
-      title: 'Onboarding',
-      blocks: [{
-        type: 'paragraph',
-        content: 'Foo bar',
-        meta: {}
-      }, {
-        type: 'list',
-        blocks: [{
-          type: 'checklist-item',
-          content: 'CL Item',
-          meta: { checked: true }
-        }]
-      }]
-    }, {
-      title: 'Sprint Planning',
-      blocks: [{
-        type: 'paragraph',
-        content: 'Paragraph content',
-        meta: {}
-      }]
-    }],
 
   actions: {
     remainFocused(evt) {

@@ -17,7 +17,7 @@ export default Ember.Route.extend({
   model() {
     return RealtimeCanvas.create({
       blocks: A([
-        Title.create({ content: 'The Title' })
+        Title.create({ content: '' })
       ])
     });
   }

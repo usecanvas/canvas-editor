@@ -1,3 +1,4 @@
+@value --blue from "canvas-colors/styles/colors";
 @value --light-gray from "canvas-colors/styles/colors";
 
 .component {
@@ -11,4 +12,30 @@
   height: 1px;
   margin-top: 1em;
   width: 10%;
+}
+
+.suggestions {
+  position: relative;
+}
+
+.suggestions-content {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  color: white;
+  padding: 0.25rem;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 99999;
+}
+
+.template {
+  padding: 0.25rem 0.5rem;
+}
+
+.template:hover {
+  background: --blue;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
 }

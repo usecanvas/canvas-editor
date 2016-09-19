@@ -10,7 +10,7 @@ import List from 'canvas-editor/lib/realtime-canvas/list';
 import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import styles from './styles';
 
-const { run } = Ember;
+const { computed, run } = Ember;
 
 /**
  * A component that allows for the editing of a canvas in realtime.
@@ -20,6 +20,7 @@ const { run } = Ember;
  */
 export default Ember.Component.extend({
   classNames: ['canvas-editor'],
+  hasContent: computed.gt('canvas.blocks.length', 1),
   localClassNames: ['component'],
   layout,
   styles,

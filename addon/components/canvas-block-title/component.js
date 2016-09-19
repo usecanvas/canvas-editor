@@ -32,11 +32,13 @@ export default CanvasBlock.extend({
   actions: {
     filterTemplates(value) {
       const templates = this.get('templates');
-      const rgxp = new RegExp(value, 'i');
+      let filteredTemplates = [];
 
-      const filteredTemplates = templates.filter(function(item) {
-        return item.title.match(rgxp) !== null;
-      });
+      if (value) {
+        filteredTemplates = templates.filter(function(item) {
+          return item.title.toLowerCase().indexOf(value) !== -1;
+        });
+      }
 
       return DS.PromiseArray.create({
         promise: RSVP.resolve(filteredTemplates)

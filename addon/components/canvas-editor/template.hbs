@@ -1,6 +1,7 @@
 {{#each canvas.blocks as |block|}}
   {{component (block-component-name block.type)
     block=block
+    hasContent=hasContent
     changeBlockType=(action 'changeBlockType')
     onBlockDeletedLocally=(action 'blockDeletedLocally')
     onBlockReplacedLocally=(action 'blockReplacedLocally')
@@ -12,5 +13,6 @@
     onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
     onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
     onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
+    onTemplateApply=(action 'templateApply')
     unfurl=(action 'unfurl')}}
 {{/each}}

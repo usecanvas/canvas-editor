@@ -1,3 +1,7 @@
 .component {
   composes: component from  'canvas-editor/components/canvas-block-editable/styles';
 }
+
+.is-empty {
+  composes: is-empty from 'canvas-editor/components/canvas-block-editable/styles';
+}

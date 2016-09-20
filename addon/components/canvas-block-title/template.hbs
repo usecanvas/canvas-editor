@@ -12,4 +12,22 @@
     onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
     onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
     onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
+
+  {{#if showTemplates}}
+    <div local-class="suggestions">
+      {{#ui-list-filter
+        value=block.content
+        isShowingSelect=(mut isShowingSelect)
+        onFilter=(action 'filterTemplates')
+        as |templates|}}
+          {{#if templates}}
+            <div local-class="suggestions-content">
+              {{#each templates as |template|}}
+                <div local-class="template" onmousedown={{action "remainFocused"}} onclick={{action "selectTemplate" template}}>{{template.blocks.0.content}}</div>
+              {{/each}}
+            </div>
+          {{/if}}
+      {{/ui-list-filter}}
+    </div>
+  {{/if}}
 </div>

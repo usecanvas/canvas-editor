@@ -37,12 +37,12 @@ export default CanvasBlock.extend({
     },
 
     filterTemplates(value) {
-      const templates = this.get('templates');
       let filteredTemplates = [];
 
       if (value) {
         filteredTemplates = templates.filter(function(item) {
-          return item.title.toLowerCase().indexOf(value.toLowerCase()) > -1;
+          return item.blocks[0].content.toLowerCase().indexOf(
+            value.toLowerCase()) > -1;
         });
       }
 

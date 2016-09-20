@@ -1,6 +1,11 @@
 export default {
-  title: 'Sprint Planning',
+  isTemplate: true,
   blocks: [
+    {
+      type: 'title',
+      content: 'Sprint Planning',
+      meta: {}
+    },
     {
       type: 'heading',
       content: 'Retrospective',

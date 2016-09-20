@@ -19,7 +19,6 @@ export default CanvasBlock.extend({
   styles,
 
   levelClass: computed('block.meta.level', function() {
-    return this.get('styles')
-      [`heading-level-${this.get('block.meta.level')}`];
+    return this.get('styles')[`heading-level-${this.get('block.meta.level')}`];
   })
 });

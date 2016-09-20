@@ -1,6 +1,11 @@
 export default {
-  title: 'OKRs',
+  isTemplate: true,
   blocks: [
+    {
+      type: 'title',
+      content: 'OKRs',
+      meta: {}
+    },
     {
       type: 'heading',
       content: '',

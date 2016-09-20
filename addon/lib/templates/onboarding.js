@@ -1,6 +1,11 @@
 export default {
-  title: 'Onboarding',
+  isTemplate: true,
   blocks: [
+    {
+      type: 'title',
+      content: 'Onboarding',
+      meta: {}
+    },
     {
       type: 'heading',
       content: 'HR Tools',

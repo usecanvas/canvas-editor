@@ -1,6 +1,11 @@
 export default {
-  title: 'Standup',
+  isTemplate: true,
   blocks: [
+    {
+      type: 'title',
+      content: 'Standup',
+      meta: {}
+    },
     {
       type: 'heading',
       content: 'Jonathan',

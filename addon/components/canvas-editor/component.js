@@ -615,12 +615,13 @@ export default Ember.Component.extend({
     templateApply(template) {
       const titleBlock = this.get('canvas.blocks').objectAt(0);
       titleBlock.set('lastContent', titleBlock.get('content'));
-      titleBlock.set('content', template.title);
+      titleBlock.set('content', template.blocks[0].content);
 
       this.get('onBlockContentUpdatedLocally')(titleBlock);
 
       const contentBlocks =
           template.blocks
+            .slice(1)
             .map(RealtimeCanvas.createBlockFromJSON.bind(RealtimeCanvas));
 
       const contentBlocksLength = contentBlocks.length;

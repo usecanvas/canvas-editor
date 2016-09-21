@@ -14,6 +14,19 @@
   width: 10%;
 }
 
+.content {
+  display: flex;
+}
+
+.title {
+  flex: 1;
+}
+
+.actions {
+  margin-left: 1rem;
+  margin-top: 0.6rem;
+}
+
 .suggestions {
   font-size: 0.875rem;
   position: relative;

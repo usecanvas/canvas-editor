@@ -1,33 +1,41 @@
 <div local-class="content">
-  {{canvas-block-title-content
-    block=block
-    changeBlockType=changeBlockType
-    isFocused=(mut isFocused)
-    onBlockDeletedLocally=onBlockDeletedLocally
-    onBlockReplacedLocally=onBlockReplacedLocally
-    onNavigateDown=onNavigateDown
-    onNavigateLeft=onNavigateLeft
-    onNavigateRight=onNavigateRight
-    onNavigateUp=onNavigateUp
-    onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
-    onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
-    onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
+  <div local-class="title">
+    {{canvas-block-title-content
+      block=block
+      changeBlockType=changeBlockType
+      isFocused=(mut isFocused)
+      onBlockDeletedLocally=onBlockDeletedLocally
+      onBlockReplacedLocally=onBlockReplacedLocally
+      onNavigateDown=onNavigateDown
+      onNavigateLeft=onNavigateLeft
+      onNavigateRight=onNavigateRight
+      onNavigateUp=onNavigateUp
+      onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
+      onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
+      onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
+  </div>
 
-  {{#if showTemplates}}
-    <div local-class="suggestions">
-      {{#ui-list-filter
-        value=block.content
-        isShowingSelect=(mut isShowingSelect)
-        onFilter=(action 'filterTemplates')
-        as |templates|}}
-          {{#if templates}}
-            <div local-class="suggestions-content">
-              {{#each templates as |template|}}
-                <div local-class="template" onmousedown={{action "remainFocused"}} onclick={{action "selectTemplate" template}}>{{template.blocks.0.content}}</div>
-              {{/each}}
-            </div>
-          {{/if}}
-      {{/ui-list-filter}}
+  {{#if actionsComponent}}
+    <div local-class="actions">
+      {{component actionsComponent}}
     </div>
   {{/if}}
 </div>
+
+{{#if showTemplates}}
+  <div local-class="suggestions">
+    {{#ui-list-filter
+      value=block.content
+      isShowingSelect=(mut isShowingSelect)
+      onFilter=(action 'filterTemplates')
+      as |templates|}}
+        {{#if templates}}
+          <div local-class="suggestions-content">
+            {{#each templates as |template|}}
+              <div local-class="template" onmousedown={{action "remainFocused"}} onclick={{action "selectTemplate" template}}>{{template.blocks.0.content}}</div>
+            {{/each}}
+          </div>
+        {{/if}}
+    {{/ui-list-filter}}
+  </div>
+{{/if}}

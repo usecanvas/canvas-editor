@@ -1,24 +1,19 @@
 {{canvas-block-title
   block=titleBlock
   hasContent=hasContent
-  changeBlockType=(action 'changeBlockType')
   onBlockDeletedLocally=(action 'blockDeletedLocally')
-  onBlockReplacedLocally=(action 'blockReplacedLocally')
+  onBlockMetaReplacedLocally=(action 'blockMetaReplacedLocally')
+  onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
   onNavigateDown=(action 'navigateDown')
   onNavigateLeft=(action 'navigateLeft')
   onNavigateRight=(action 'navigateRight')
   onNavigateUp=(action 'navigateUp')
-  onBlockMetaReplacedLocally=(action 'blockMetaReplacedLocally')
-  onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
-  onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
   onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
-  onTemplateApply=(action 'templateApply')
-  unfurl=(action 'unfurl')}}
+  onTemplateApply=(action 'templateApply')}}
 
 {{#each contentBlocks as |block|}}
   {{component (block-component-name block.type)
     block=block
-    hasContent=hasContent
     changeBlockType=(action 'changeBlockType')
     onBlockDeletedLocally=(action 'blockDeletedLocally')
     onBlockReplacedLocally=(action 'blockReplacedLocally')
@@ -30,6 +25,5 @@
     onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
     onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
     onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
-    onTemplateApply=(action 'templateApply')
     unfurl=(action 'unfurl')}}
 {{/each}}

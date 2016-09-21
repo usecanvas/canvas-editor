@@ -26,6 +26,12 @@ export default Ember.Component.extend({
   layout,
   styles,
 
+  titleBlock: computed.readOnly('canvas.blocks.firstObject'),
+
+  contentBlocks: computed('canvas.blocks.[]', function() {
+    return this.get('canvas.blocks').slice(1);
+  }),
+
   didInsertElement() {
     this.bindKeyDownEvents();
 

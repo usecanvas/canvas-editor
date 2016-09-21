@@ -1,15 +1,17 @@
-import Ember from 'ember';
-import layout from './template';
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
-import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
+import Ember from 'ember';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
+import layout from './template';
+import List from 'canvas-editor/lib/realtime-canvas/list';
+import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Rangy from 'rangy';
 import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
+import RSVP from 'rsvp';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
-import List from 'canvas-editor/lib/realtime-canvas/list';
-import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import styles from './styles';
+import testTemplates from 'canvas-editor/lib/templates';
+import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 
 const { computed, run } = Ember;
 
@@ -43,6 +45,10 @@ export default Ember.Component.extend({
 
   willDestroyElement() {
     this.unbindKeyDownEvents();
+  },
+
+  fetchTemplates() {
+    return RSVP.resolve(testTemplates);
   },
 
   /**

@@ -8,7 +8,7 @@ import styles from './styles';
 
 /* eslint-disable max-len */
 const CANVAS_URL = new RegExp(
-  `^https?:\/\/(?:www\.)?${window.location.host}\/[^\/]+\/([^\/]{22})\/[^\/]+$`);
+  `^https?:\/\/(?:www\.)?${window.location.host}\/[^\/]+\/([^\/]{22})$`);
 /* eslint-enable max-len */
 
 /**

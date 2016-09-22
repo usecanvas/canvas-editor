@@ -29,6 +29,7 @@ export default Ember.Component.extend({
   styles,
 
   onCanvasTemplateChange: observer('canvas.fillTemplate', function() {
+    if (!this.get('canvas.fillTemplate')) return;
     this.send('templateApply', this.get('canvas.fillTemplate'));
   }),
 

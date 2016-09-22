@@ -6,10 +6,8 @@ import TextManipulation from 'canvas-editor/lib/text-manipulation';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import styles from './styles';
 
-/* eslint-disable max-len */
 const CANVAS_URL = new RegExp(
-  `^https?:\/\/(?:www\.)?${window.location.host}\/[^\/]+\/([^\/]{22})$`);
-/* eslint-enable max-len */
+  `^https?:\/\/(?:www\.)?${window.location.host}\/([^\/]+)\/([^\/]{22})$`);
 
 /**
  * A component representing a "paragraph" type canvas block's content.
@@ -102,5 +100,6 @@ function isURL(text) {
 }
 
 function parseCanvasURL(url) {
-  return { id: url.match(CANVAS_URL)[1] };
+  const match = url.match(CANVAS_URL);
+  return { id: match[2], team_domain: match[1] }; // eslint-disable-line camelcase
 }

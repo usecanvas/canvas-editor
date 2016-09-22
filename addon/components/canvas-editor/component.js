@@ -13,7 +13,7 @@ import styles from './styles';
 import testTemplates from 'canvas-editor/lib/templates';
 import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 
-const { computed, run } = Ember;
+const { computed, observer, run } = Ember;
 
 /**
  * A component that allows for the editing of a canvas in realtime.
@@ -27,6 +27,10 @@ export default Ember.Component.extend({
   localClassNames: ['component'],
   layout,
   styles,
+
+  onCanvasTemplateChange: observer('canvas.fillTemplate', function() {
+    this.send('templateApply', this.get('canvas.fillTemplate'));
+  }),
 
   titleBlock: computed.readOnly('canvas.blocks.firstObject'),
 

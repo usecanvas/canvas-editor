@@ -10,13 +10,21 @@ export default Ember.Component.extend({
   radius: 14,
   styles,
 
+  '2radius': computed('radius', function() {
+    return this.get('radius') * 2;
+  }),
+
   circumference: computed('radius', function() {
     return this.get('radius') * 2 * Math.PI;
   }),
 
-  length: computed('circumference', 'progress', function() {
+  strokeDasharray: computed('circumference', function() {
+    return `${this.get('circumference')}px`;
+  }),
+
+  strokeDashoffset: computed('circumference', 'progress', function() {
     const circumference = this.get('circumference');
     const progress = this.get('progress');
-    return circumference - circumference * (progress / 100);
+    return `${circumference - circumference * (progress / 100)}px`;
   })
 });

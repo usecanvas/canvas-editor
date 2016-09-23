@@ -12,7 +12,7 @@ const { computed, observer, on } = Ember;
  */
 export default Ember.Mixin.create(Selection, {
   attributeBindings: ['contentEditable:contenteditable'],
-  contentEditable: true,
+  contentEditable: computed.readOnly('editingEnabled'),
   isUpdatingBlockContent: false,
 
   elementRect: computed(function() {

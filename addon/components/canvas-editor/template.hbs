@@ -1,5 +1,6 @@
 {{canvas-block-title
   block=titleBlock
+  editingEnabled=editingEnabled
   hasContent=hasContent
   fetchTemplates=fetchTemplates
   actionsComponent=titleActionsComponent
@@ -16,6 +17,7 @@
 {{#each contentBlocks as |block|}}
   {{component (block-component-name block.type)
     block=block
+    editingEnabled=editingEnabled
     changeBlockType=(action 'changeBlockType')
     onBlockDeletedLocally=(action 'blockDeletedLocally')
     onBlockReplacedLocally=(action 'blockReplacedLocally')

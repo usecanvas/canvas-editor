@@ -98,7 +98,7 @@ function isHorizontalRule(text) {
 }
 
 function isImageURL(text) {
-  return (/^https?:\/\/.*(gif|jpg|jpeg|png)$/).test(text);
+  return (/^https?:\/\/\S*\.(?:gif|jpg|jpeg|png)(?:\?\S*)?$/i).test(text);
 }
 
 function isRunKit(text) {

@@ -6,6 +6,7 @@ import CLItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import ULItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
+import Image from 'canvas-editor/lib/realtime-canvas/image';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import Tip from 'canvas-editor/lib/realtime-canvas/tip';
@@ -42,6 +43,8 @@ export default Ember.Object.extend({
         });
       } case 'canvas': {
         return CanvasCard.create(json);
+      } case 'image': {
+        return Image.create(json);
       } case 'url': {
         return URLCard.create(json);
       } case 'tip': {

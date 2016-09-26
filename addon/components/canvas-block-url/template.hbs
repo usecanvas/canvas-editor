@@ -5,7 +5,9 @@
       <a href="{{unfurl.id}}" local-class="title">{{unfurl.title}}</a>
     </div>
 
-    <div local-class="text">{{unfurl.text}}</div>
+    {{#if unfurl.text}}
+      <div local-class="text">{{unfurl.text}}</div>
+    {{/if}}
   </div>
 
   {{#if unfurl.thumbnailUrl}}

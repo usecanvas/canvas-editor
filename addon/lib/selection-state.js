@@ -141,7 +141,7 @@ export default class SelectionState {
   getNodeIterator(iteratee) {
     return document.createNodeIterator(
       iteratee,
-      NodeFilter.SHOW_ALL,
+      NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_TEXT,
       function onNode(node) {
         if (node === iteratee) {
           return NodeFilter.FILTER_SKIP;

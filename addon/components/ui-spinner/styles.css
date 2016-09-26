@@ -1,0 +1,32 @@
+@value --gray from 'canvas-colors/styles/colors';
+
+.ui-spinner {
+  height: 1.5rem;
+  position: relative;
+  width: 1.5rem;
+}
+
+.double-bounce1,
+.double-bounce2 {
+  animation: bounce 2.0s infinite ease-in-out;
+  background-color: --gray;
+  border-radius: 50%;
+  height: 100%;
+  left: 0;
+  opacity: 0.5;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.double-bounce2 {
+  animation-delay: -1.0s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(0.0);
+  } 50% {
+    transform: scale(1.0);
+  }
+}

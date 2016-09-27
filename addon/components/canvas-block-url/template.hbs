@@ -1,23 +1,23 @@
 <div local-class="main">
   <div local-class="main-content">
     <div local-class="header">
-      <img local-class="provider-icon" src="{{unfurl.providerIconUrl}}" height="24" width="24">
-      <a href="{{unfurl.id}}" local-class="title">{{unfurl.title}}</a>
+      <img local-class="provider-icon" src="{{unfurled.providerIconUrl}}" height="24" width="24">
+      <a href="{{unfurled.id}}" local-class="title">{{unfurled.title}}</a>
     </div>
 
-    {{#if unfurl.text}}
-      <div local-class="text">{{unfurl.text}}</div>
+    {{#if unfurled.text}}
+      <div local-class="text">{{unfurled.text}}</div>
     {{/if}}
   </div>
 
-  {{#if unfurl.thumbnailUrl}}
-    <img local-class="thumbnail" src="{{unfurl.thumbnailUrl}}" height="48" width="48">
+  {{#if unfurled.thumbnailUrl}}
+    <img local-class="thumbnail" src="{{unfurled.thumbnailUrl}}" height="48" width="48">
   {{/if}}
 </div>
 
-{{#if unfurl.fields}}
+{{#if unfurled.fields}}
   <div local-class="fields">
-    {{#each unfurl.fields as |field|}}
+    {{#each unfurled.fields as |field|}}
       <div local-class="field" class="{{if field.short styles.field--short}}">
         <div local-class="field-title">{{field.title}}</div>
         <div local-class="field-value">{{field.value}}</div>
@@ -26,9 +26,9 @@
   </div>
 {{/if}}
 
-{{#if unfurl.labels}}
+{{#if unfurled.labels}}
   <div local-class="labels">
-    {{#each unfurl.labels as |label|}}
+    {{#each unfurled.labels as |label|}}
       <div local-class="label" style="color: {{label.color}}; background-color: {{label.backgroundColor}};">
         {{#if label.iconUrl}}
           <img local-class="label-icon" src="{{label.iconUrl}}" height="16" width="16">
@@ -38,4 +38,8 @@
       </div>
     {{/each}}
   </div>
+{{/if}}
+
+{{#if showAuthComponent}}
+  {{component authComponent}}
 {{/if}}

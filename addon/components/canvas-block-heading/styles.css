@@ -2,11 +2,11 @@
 @value --gray from 'canvas-colors/styles/colors';
 
 .canvas-block-heading {
-  margin: 2rem 0 1rem;
+  margin: 2rem 0 0.5rem;
 }
 
 .canvas-block-heading + .canvas-block-heading {
-  margin-top: 0.5rem;
+  margin-top: 1rem;
 }
 
 .is-focused {

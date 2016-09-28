@@ -1,4 +1,6 @@
 @value --dark-gray from 'canvas-colors/styles/colors';
+@value --extra-light-gray from 'canvas-colors/styles/colors';
+@value --light-gray from 'canvas-colors/styles/colors';
 
 .canvas-block-url {
   composes: canvas-block-card from 'canvas-editor/components/canvas-block-card/styles';
@@ -75,4 +77,26 @@
 
 .label-icon {
   margin-right: 0.25em;
+}
+
+.auth-component {
+  background: --extra-light-gray;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 1px 1px --light-gray inset;
+  text-align: center;
+}
+
+.auth-component a:link,
+.auth-component a:visited {
+  color: --dark-gray;
+}
+
+.component--needs-auth {
+  padding: 0;
+}
+
+.component--needs-auth .main,
+.component--needs-auth .auth-component {
+  padding: 0.75rem;
 }

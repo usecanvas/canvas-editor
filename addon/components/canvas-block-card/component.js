@@ -3,7 +3,7 @@ import Ember from 'ember';
 import layout from './template';
 import styles from './styles';
 
-const { on } = Ember;
+const { computed, on } = Ember;
 
 /**
  * A component representing a card.
@@ -16,6 +16,21 @@ export default CanvasBlock.extend({
   layout,
   localClassNames: ['canvas-block-card'],
   styles,
+
+  authComponent: computed('unfurled.providerName', function() {
+    switch (this.get('unfurled.providerName')) {
+      case 'GitHub':
+        return this.get('githubAuthComponent');
+      default:
+        return null;
+    }
+  }),
+
+  showAuthComponent: computed('unfurled.providerName',
+                              'unfurled.fetched', function() {
+    return !this.get('unfurled.fetched') &&
+      this.get('unfurled.providerName') === 'GitHub';
+  }),
 
   /**
    * Called in order to "unfurl" the card to get properties set on the
@@ -31,7 +46,7 @@ export default CanvasBlock.extend({
 
   doUnfurl: on('didInsertElement', function() {
     this.get('unfurl')(this.get('block')).then(unfurl => {
-      if (this.get('isVisible')) this.set('unfurl', unfurl);
+      if (this.get('isVisible')) this.set('unfurled', unfurl);
     });
   })
 });

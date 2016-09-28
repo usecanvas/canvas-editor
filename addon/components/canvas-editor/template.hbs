@@ -18,6 +18,7 @@
 {{#each contentBlocks as |block|}}
   {{component (block-component-name block.type)
     block=block
+    githubAuthComponent=githubAuthComponent
     editingEnabled=editingEnabled
     changeBlockType=(action 'changeBlockType')
     onBlockDeletedLocally=(action 'blockDeletedLocally')

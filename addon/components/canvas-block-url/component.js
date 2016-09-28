@@ -11,7 +11,7 @@ import styles from './styles';
 export default CardBlock.extend({
   classNames: ['canvas-block-url'],
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-url'],
   localClassNameBindings: ['showAuthComponent:component--needs-auth'],
   styles,
 

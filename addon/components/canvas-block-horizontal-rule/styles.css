@@ -2,9 +2,9 @@
 @value --blue from 'canvas-colors/styles/colors';
 
 .canvas-block-horizontal-rule {
-  composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
   background: --light-gray;
   height: 1px;
+  margin: -1px 0 1.5rem;
 }
 
 .canvas-block-horizontal-rule[data-card-block-selected=true] {

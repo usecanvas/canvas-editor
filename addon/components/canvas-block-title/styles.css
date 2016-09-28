@@ -3,14 +3,18 @@
 
 .canvas-block-title {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
+  padding-bottom: 1rem;
+  position: relative;
 }
 
 .canvas-block-title::after {
   background: --light-gray;
+  bottom: 0;
   content: '';
   display: block;
   height: 1px;
-  margin-top: 1em;
+  position: absolute;
+  margin-top: 1rem;
   width: 10%;
 }
 
@@ -20,6 +24,7 @@
 
 .title {
   flex: 1;
+  line-height: 1.3333333;
 }
 
 .actions {
@@ -52,4 +57,8 @@
   border-radius: 3px;
   color: white;
   cursor: pointer;
+}
+
+.byline {
+  margin-top: 0.2rem;
 }

@@ -2,7 +2,11 @@
 @value --gray from 'canvas-colors/styles/colors';
 
 .canvas-block-heading {
-  composes: canvas-block-paragraph from 'canvas-editor/components/canvas-block-paragraph/styles';
+  margin: 2rem 0 1rem;
+}
+
+.canvas-block-heading + .canvas-block-heading {
+  margin-top: 0.5rem;
 }
 
 .is-focused {
@@ -12,31 +16,39 @@
 .heading-level-1 {
   font-size: 2rem;
   font-weight: 600;
+  line-height: 1.25;
 }
 
 .heading-level-2 {
   font-size: 1.5rem;
   font-weight: 600;
+  line-height: 1.3333333;
 }
 
 .heading-level-3 {
   font-size: 1.125rem;
   font-weight: 600;
+  line-height: 1.3333333;
 }
 
 .heading-level-4,
 .heading-level-5,
 .heading-level-6 {
   color: --dark-gray;
-  font-size: 1rem;
   font-weight: 600;
+}
+
+.heading-leve-4 {
+  font-size: 1rem;
 }
 
 .heading-level-5,
 .heading-level-6 {
   font-size: 0.9375rem;
+  line-height: 1.6666666;
 }
 
 .heading-level-6 {
   font-size: 0.875rem;
+  line-height: 1.75;
 }

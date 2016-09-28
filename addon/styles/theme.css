@@ -22,7 +22,7 @@
 @value --editor-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 @value --editor-text-color: --black;
 @value --editor-link-color: --blue;
-@value --editor-line-height: 1.485;
+@value --editor-line-height: 1.5;
 @value --editor-padding: 1rem;
 
 /*

@@ -21,8 +21,8 @@ export default CardBlock.extend({
     return typeof this.get('progress') === 'number';
   }),
 
-  progress: computed('unfurl.fields', function() {
-    const field = Ember.A(this.get('unfurl.fields'))
+  progress: computed('unfurled.fields', function() {
+    const field = Ember.A(this.get('unfurled.fields'))
       .findBy('title', 'progress');
     if (!field) return null;
     return field.value;

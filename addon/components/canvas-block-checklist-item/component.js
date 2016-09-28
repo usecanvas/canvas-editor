@@ -12,7 +12,7 @@ import styles from './styles';
 export default CanvasBlock.extend({
   classNames: ['canvas-block-checklist-item'],
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-checklist-item'],
   styles,
   tagName: 'li',
 

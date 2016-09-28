@@ -11,6 +11,6 @@ import styles from './styles';
 export default CanvasBlock.extend({
   classNames: ['canvas-block-paragraph'],
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-paragraph'],
   styles
 });

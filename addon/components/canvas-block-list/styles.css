@@ -1,4 +1,4 @@
-.component {
-  composes: component from 'canvas-editor/components/canvas-block/styles';
+.canvas-block-list {
+  composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
   padding: 0;
 }

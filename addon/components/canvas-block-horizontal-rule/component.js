@@ -10,7 +10,7 @@ import styles from './styles';
  */
 export default CardBlock.extend({
   classNames: ['canvas-block-horizontal-rule'],
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-horizontal-rule'],
   styles,
   doUnfurl: Ember.K
 });

@@ -12,7 +12,7 @@ import styles from './styles';
 export default CardBlock.extend({
   classNames: ['canvas-block-image'],
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-image'],
   styles,
   doUnfurl: Ember.K
 });

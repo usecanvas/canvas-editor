@@ -18,7 +18,7 @@ const CANVAS_URL = new RegExp(
  */
 export default CanvasBlockEditable.extend({
   classNames: ['canvas-block-paragraph-content'],
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-paragraph-content'],
   styles,
 
   setBlockContentFromInput(content, preventRerender = true) {

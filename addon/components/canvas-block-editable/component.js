@@ -17,7 +17,7 @@ export default Ember.Component.extend(BlockEvents, ContentEditable, {
   classNames: ['canvas-block-editable'],
   classNameBindings: ['isEmptyClass'],
   isEmpty: computed.not('block.content'),
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-editable'],
   nextBlockConstructor: Paragraph,
   placeholder: computed.oneWay('block.meta.placeholder'),
   styles,

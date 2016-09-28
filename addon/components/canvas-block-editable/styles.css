@@ -1,6 +1,6 @@
 @value --block-placeholder-color from 'canvas-editor/styles/theme';
 
-.component {
+.canvas-block-editable {
   position: relative;
   white-space: pre-wrap;
 }

@@ -3,8 +3,8 @@
 @value --extra-light-gray from 'canvas-colors/styles/colors';
 @value --light-gray from 'canvas-colors/styles/colors';
 
-.component {
-  composes: component from '../canvas-block/styles';
+.canvas-block-card {
+  composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
   box-shadow: 0 1px 1px --extra-light-gray;
   border: 1px solid --light-gray;
   border-radius: 4px;
@@ -12,12 +12,12 @@
   padding: 0.75rem;
 }
 
-.component[data-card-block-selected=true] {
+.canvas-block-card[data-card-block-selected=true] {
   border-color: --blue;
   box-shadow: 0 0 0 1px --blue;
 }
 
-.component a:link,
-.component a:visited {
+.canvas-block-card a:link,
+.canvas-block-card a:visited {
   color: --black;
 }

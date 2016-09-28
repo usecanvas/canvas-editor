@@ -1,8 +1,8 @@
 @value --dark-gray from 'canvas-colors/styles/colors';
 @value --gray from 'canvas-colors/styles/colors';
 
-.component {
-  composes: component from 'canvas-editor/components/canvas-block-paragraph/styles';
+.canvas-block-heading {
+  composes: canvas-block-paragraph from 'canvas-editor/components/canvas-block-paragraph/styles';
 }
 
 .is-focused {

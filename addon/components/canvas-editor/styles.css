@@ -5,7 +5,7 @@
 @value --editor-text-color from "canvas-editor/styles/theme";
 @value --editor-link-color from "canvas-editor/styles/theme";
 
-.component {
+.canvas-editor {
   background-color: --editor-background-color;
   color: --editor-text-color;
   font-family: --editor-font-family;
@@ -13,11 +13,11 @@
   padding: --editor-padding;
 }
 
-.component [contenteditable] {
+.canvas-editor [contenteditable] {
   outline: 0;
 }
 
-.component a {
+.canvas-editor a {
   color: --editor-link-color;
   text-decoration: none;
 }

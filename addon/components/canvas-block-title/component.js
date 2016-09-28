@@ -16,7 +16,7 @@ export default CanvasBlock.extend({
   classNames: ['canvas-block-title'],
   isShowingSelect: false,
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-title'],
   styles,
 
   showTemplates: computed('searchTerm', 'hasContent', 'isFocused', function() {

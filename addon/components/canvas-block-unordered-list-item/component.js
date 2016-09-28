@@ -12,7 +12,7 @@ import styles from './styles';
 export default CanvasBlock.extend({
   classNames: ['canvas-block-unordered-list-item'],
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-unordered-list-item'],
   styles,
   tagName: 'li'
 });

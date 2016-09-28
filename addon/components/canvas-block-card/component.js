@@ -14,7 +14,7 @@ const { on } = Ember;
 export default CanvasBlock.extend({
   classNames: ['canvas-block-card'],
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-card'],
   styles,
 
   /**

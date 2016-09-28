@@ -10,7 +10,7 @@ import styles from './styles';
  */
 export default BlockComponent.extend({
   classNames: ['canvas-block-list'],
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-list'],
   layout,
   styles,
   tagName: 'ul'

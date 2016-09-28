@@ -12,7 +12,7 @@ export default CardBlock.extend({
   classNames: ['canvas-block-tip'],
   doUnfurl: Ember.K,
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-tip'],
   styles,
 
   actions: {

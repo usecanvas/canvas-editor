@@ -2,7 +2,7 @@
 @value --gray from 'canvas-colors/styles/colors';
 @value --green from 'canvas-colors/styles/colors';
 
-.component {
+.ui-checkbox {
   border: 2px solid --gray;
   border-radius: 50%;
   box-sizing: border-box;

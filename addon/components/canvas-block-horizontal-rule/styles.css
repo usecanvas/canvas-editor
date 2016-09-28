@@ -1,13 +1,13 @@
 @value --light-gray from 'canvas-colors/styles/colors';
 @value --blue from 'canvas-colors/styles/colors';
 
-.component {
-  composes: component from 'canvas-editor/components/canvas-block/styles';
+.canvas-block-horizontal-rule {
+  composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
   background: --light-gray;
   height: 1px;
 }
 
-.component[data-card-block-selected=true] {
+.canvas-block-horizontal-rule[data-card-block-selected=true] {
   background: --blue;
   box-shadow: 0 0 0 1px --blue;
 }

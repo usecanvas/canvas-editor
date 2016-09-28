@@ -1,7 +1,7 @@
 @value --dark-gray from 'canvas-colors/styles/colors';
 
-.component {
-  composes: component from '../canvas-block-card/styles';
+.canvas-block-canvas {
+  composes: canvas-block-card from 'canvas-editor/components/canvas-block-card/styles';
   display: flex;
 }
 

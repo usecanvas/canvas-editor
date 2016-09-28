@@ -24,7 +24,7 @@ const { computed, observer, run } = Ember;
 export default Ember.Component.extend({
   classNames: ['canvas-editor'],
   hasContent: computed.gt('canvas.blocks.length', 1),
-  localClassNames: ['component'],
+  localClassNames: ['canvas-editor'],
   layout,
   styles,
 

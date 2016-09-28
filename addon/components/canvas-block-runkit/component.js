@@ -15,7 +15,7 @@ const { run } = Ember;
 export default CardBlock.extend({
   classNames: ['canvas-block-runkit'],
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-runkit'],
   styles,
 
   didInsertElement() {

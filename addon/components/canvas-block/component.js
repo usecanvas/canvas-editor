@@ -15,7 +15,7 @@ export default Ember.Component.extend(BlockEvents, {
   classNames: ['canvas-block'],
   classNameBindings: ['isFocusedClass'],
   isFocused: false,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block'],
   styles,
 
   isFocusedClass: computed('isFocused', function() {

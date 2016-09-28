@@ -14,7 +14,7 @@ const { computed } = Ember;
 export default CardBlock.extend({
   classNames: ['canvas-block-canvas'],
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-canvas'],
   styles,
 
   hasProgress: computed('progress', function() {

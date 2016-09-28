@@ -10,7 +10,7 @@ import styles from './styles';
  */
 export default CanvasBlockEditable.extend({
   classNames: ['canvas-block-checklist-item-content'],
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-checklist-item-content'],
   nextBlockConstructor: ChecklistItem,
   styles,
 

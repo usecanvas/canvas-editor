@@ -1,11 +1,11 @@
 @value --blue from "canvas-colors/styles/colors";
 @value --light-gray from "canvas-colors/styles/colors";
 
-.component {
-  composes: component from 'canvas-editor/components/canvas-block/styles';
+.canvas-block-title {
+  composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
 }
 
-.component::after {
+.canvas-block-title::after {
   background: --light-gray;
   content: '';
   display: block;

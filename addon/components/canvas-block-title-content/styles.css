@@ -1,7 +1,7 @@
 @value --block-placeholder-color from "canvas-editor/styles/theme";
 
-.component {
-  composes: component from 'canvas-editor/components/canvas-block-editable/styles';
+.canvas-block-title-content {
+  composes: canvas-block-editable from 'canvas-editor/components/canvas-block-editable/styles';
   font-size: 2.25rem;
   font-weight: 600;
 }

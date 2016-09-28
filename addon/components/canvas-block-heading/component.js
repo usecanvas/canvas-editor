@@ -15,7 +15,7 @@ export default CanvasBlock.extend({
   classNames: ['canvas-block-heading'],
   layout,
   classNameBindings: ['levelClass'],
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-heading'],
   styles,
 
   levelClass: computed('block.meta.level', function() {

@@ -1,5 +1,5 @@
-.component {
-  composes: component from  'canvas-editor/components/canvas-block-editable/styles';
+.canvas-block-heading-content {
+  composes: canvas-block-editable from  'canvas-editor/components/canvas-block-editable/styles';
 }
 
 .is-empty {

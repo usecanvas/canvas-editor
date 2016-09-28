@@ -10,7 +10,7 @@ import styles from './styles';
  */
 export default CanvasBlockEditable.extend({
   classNames: ['canvas-block-unordered-list-item-content'],
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-unordered-list-item-content'],
   nextBlockConstructor: UnorderedList,
   styles,
 

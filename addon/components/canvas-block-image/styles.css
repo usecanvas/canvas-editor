@@ -1,16 +1,16 @@
 @value --light-gray from 'canvas-colors/styles/colors';
 @value --blue from 'canvas-colors/styles/colors';
 
-.component {
-  composes: component from 'canvas-editor/components/canvas-block/styles';
+.canvas-block-image {
+  composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
 }
 
-.component img {
+.canvas-block-image img {
   display: block;
   margin: 0 auto;
   max-width: 100%;
 }
 
-.component[data-card-block-selected=true] img {
+.canvas-block-image[data-card-block-selected=true] img {
   box-shadow: 0 0 0 2px --blue;
 }

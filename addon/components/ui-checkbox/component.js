@@ -11,7 +11,7 @@ const { observer, on } = Ember;
  */
 export default Ember.Component.extend({
   isAnimateable: false,
-  localClassNames: ['component'],
+  localClassNames: ['ui-checkbox'],
   localClassNameBindings: [
     'isAnimateable',
     'checked:is-checked',

@@ -13,7 +13,7 @@ const LEVEL_REG = /^(#{1,6})\s+(.*)$/;
  */
 export default CanvasBlockEditable.extend({
   classNames: ['canvas-block-heading-content'],
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-heading-content'],
   styles,
 
   setBlockContentFromInput(content, preventRerender = true) {

@@ -17,10 +17,13 @@ module.exports = {
     app.import(`${app.bowerDirectory}/rangy/rangy-textrange.js`);
     app.import(`${app.bowerDirectory}/uuid.js/src/uuid.js`);
     app.import('vendor/normalize.css');
+    app.import('vendor/hljs-solarized-dark.css');
     app.import('vendor/shims/base62.js');
     app.import('vendor/shims/rangy.js');
     app.import('vendor/shims/uuid.js');
     app.import('vendor/runkit.js');
     app.import('vendor/shims/runkit.js');
+    app.import('vendor/shims/highlight.js');
+    app.import('vendor/highlight.js');
   }
 };

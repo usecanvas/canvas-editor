@@ -16,9 +16,11 @@ export default Ember.Mixin.create({
    * @method
    * @param {CanvasEditor.CanvasRealtime.Block} newBlock The block this block
    *   was replaced with
+   * @param {object} [opts={}] Options object
+   * @param {boolean} opts.focus Whether to focus the replacing block
    */
-  blockReplacedLocally(newBlock) {
-    this.get('onBlockReplacedLocally')(this.get('block'), newBlock);
+  blockReplacedLocally(newBlock, opts = {}) {
+    this.get('onBlockReplacedLocally')(this.get('block'), newBlock, opts);
   },
 
   /**

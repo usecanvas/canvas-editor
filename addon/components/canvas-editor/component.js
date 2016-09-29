@@ -506,11 +506,16 @@ export default Ember.Component.extend({
      *   replaced
      * @param {CanvasEditor.CanvasRealtime.Block} newBlock The block that the
      *   user replaced with
+     * @param {object} [opts={}] Options object
+     * @param {boolean} opts.focus Whether to focus the replacing block
      */
-    blockReplacedLocally(block, newBlock) {
+    blockReplacedLocally(block, newBlock, opts = {}) {
       const index = this.get('canvas.blocks').indexOf(block);
       this.get('canvas.blocks').replace(index, 1, newBlock);
       this.get('onBlockReplacedLocally')(index, block, newBlock);
+      if (opts.focus) {
+        run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);
+      }
     },
 
     /**

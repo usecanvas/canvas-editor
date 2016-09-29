@@ -16,8 +16,8 @@ export default Ember.Component.extend({
 
   progress: computed('unfurled.fields', function() {
     const fields = Ember.A(this.get('unfurled.fields'));
-    const tasksComplete = getValueFromFields(fields, 'Tasks Complete');
     const tasksTotal = getValueFromFields(fields, 'Tasks Total');
+    const tasksComplete = getValueFromFields(fields, 'Tasks Complete') || 0;
 
     if (!tasksTotal) return null;
     return tasksComplete / tasksTotal * 100;

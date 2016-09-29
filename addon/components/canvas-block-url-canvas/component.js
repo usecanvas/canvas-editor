@@ -4,6 +4,9 @@ import styles from 'canvas-editor/components/canvas-block-url/styles';
 
 const { computed } = Ember;
 
+const TASKS_COMPLETE = 'Tasks Complete';
+const TASKS_TOTAL = 'Tasks Total';
+
 export default Ember.Component.extend({
   classNames: ['canvas-block-url-canvas'],
   layout,
@@ -11,13 +14,14 @@ export default Ember.Component.extend({
   styles,
 
   hasProgress: computed('progress', function() {
-    return typeof this.get('progress') === 'number';
+    return getValueFromFields(Ember.A(this.get('unfurled.fields')),
+      TASKS_TOTAL) > 0;
   }),
 
-  progress: computed('unfurled.fields', function() {
+  progress: computed('unfurled.fields.[]', function() {
     const fields = Ember.A(this.get('unfurled.fields'));
-    const tasksTotal = getValueFromFields(fields, 'Tasks Total');
-    const tasksComplete = getValueFromFields(fields, 'Tasks Complete') || 0;
+    const tasksTotal = getValueFromFields(fields, TASKS_TOTAL);
+    const tasksComplete = getValueFromFields(fields, TASKS_COMPLETE);
 
     if (!tasksTotal) return null;
     return tasksComplete / tasksTotal * 100;
@@ -25,8 +29,5 @@ export default Ember.Component.extend({
 });
 
 function getValueFromFields(fields, title) {
-  const field = fields.findBy('title', title);
-  if (!field || !field.hasOwnProperty('value')) return null;
-
-  return field.value;
+  return fields.findBy('title', title).value;
 }

@@ -25,5 +25,6 @@
 {{/if}}
 
 {{#if unfurled.isFulfilled}}
-  {{canvas-block-url-default unfurled=unfurled}}
+  {{component (url-block-component-name unfurled.providerName)
+    unfurled=unfurled}}
 {{/if}}

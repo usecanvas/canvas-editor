@@ -1,0 +1,18 @@
+<div local-class="main">
+  <div local-class="main-content">
+    <div local-class="header">
+      {{svg-jar 'Document' height='24' width='24' local-class='provider-icon'}}
+      <a href="{{unfurled.url}}" local-class="title">{{unfurled.title}}</a>
+    </div>
+
+    {{#if unfurled.text}}
+      <div local-class="text">{{unfurled.text}}</div>
+    {{/if}}
+  </div>
+
+  {{#if hasProgress}}
+    <div local-class="progress">
+      {{ui-progress-donut progress=progress}}
+    </div>
+  {{/if}}
+</div>

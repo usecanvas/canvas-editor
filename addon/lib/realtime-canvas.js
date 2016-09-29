@@ -1,13 +1,13 @@
 import Ember from 'ember';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
-import CanvasCard from 'canvas-editor/lib/realtime-canvas/canvas-card';
 import CLItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import ULItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
 import Image from 'canvas-editor/lib/realtime-canvas/image';
 import Title from 'canvas-editor/lib/realtime-canvas/title';
+import Unknown from 'canvas-editor/lib/realtime-canvas/unknown';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import Tip from 'canvas-editor/lib/realtime-canvas/tip';
 import HorizontalRule from 'canvas-editor/lib/realtime-canvas/horizontal-rule';
@@ -41,8 +41,6 @@ export default Ember.Object.extend({
             json.blocks.map(block => this.createBlockFromJSON(block))),
           meta: json.meta || Ember.Object.create()
         });
-      } case 'canvas': {
-        return CanvasCard.create(json);
       } case 'image': {
         return Image.create(json);
       } case 'url': {
@@ -56,7 +54,7 @@ export default Ember.Object.extend({
       } case 'horizontal-rule': {
         return HorizontalRule.create(json);
       } default: {
-        throw new Error(`Unrecognized block type: "${json.type}".`);
+        return Unknown.create(Object.assign(json, { type: 'unknown' }));
       }
     }
   }

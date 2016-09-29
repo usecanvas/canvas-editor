@@ -1,14 +1,10 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
-import CanvasCard from 'canvas-editor/lib/realtime-canvas/canvas-card';
 import HorizontalRule from 'canvas-editor/lib/realtime-canvas/horizontal-rule';
 import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
 import Image from 'canvas-editor/lib/realtime-canvas/image';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import styles from './styles';
-
-const CANVAS_URL = new RegExp(
-  `^https?:\/\/(?:www\.)?${window.location.host}\/([^\/]+)\/([^\/]{22})$`);
 
 /**
  * A component representing a "paragraph" type canvas block's content.
@@ -37,13 +33,7 @@ export default CanvasBlockEditable.extend({
       TextManipulation.getManipulation(this.get('element'));
 
     if (!textAfterSelection) {
-      if (isCanvasURL(textBeforeSelection)) {
-        const canvasBlock =
-          CanvasCard.create({ meta: parseCanvasURL(textBeforeSelection) });
-        this.newBlockInsertedLocally('');
-        this.blockReplacedLocally(canvasBlock);
-        return;
-      } else if (isHorizontalRule(textBeforeSelection)) {
+      if (isHorizontalRule(textBeforeSelection)) {
         const horizontalRule = HorizontalRule.create();
         this.newBlockInsertedLocally('');
         this.blockReplacedLocally(horizontalRule);
@@ -85,10 +75,6 @@ function isUnorderedListItem(content) {
   return (/^-\s/).test(content);
 }
 
-function isCanvasURL(text) {
-  return CANVAS_URL.test(text);
-}
-
 function isHeading(text) {
   return (/^#{1,6}\s/).test(text);
 }
@@ -107,9 +93,4 @@ function isRunKit(text) {
 
 function isURL(text) {
   return (/^https?:\/\/.*$/).test(text);
-}
-
-function parseCanvasURL(url) {
-  const match = url.match(CANVAS_URL);
-  return { id: match[2], team_domain: match[1] }; // eslint-disable-line camelcase
 }

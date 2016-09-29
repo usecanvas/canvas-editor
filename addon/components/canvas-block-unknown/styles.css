@@ -1,0 +1,3 @@
+.canvas-block-unknown {
+  composes: canvas-block-card from 'canvas-editor/components/canvas-block-card/styles';
+}

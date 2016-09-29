@@ -1,9 +1,9 @@
 import Block from './block';
 
 /**
- * A block representing a paragraph.
+ * A block representing a URL.
  *
- * @class CanvasEditor.RealtimeCanvas.Paragraph
+ * @class CanvasEditor.RealtimeCanvas.URL
  * @extends CanvasEditor.RealtimeCanvas.Block
  */
 export default Block.extend({

@@ -1,17 +1,11 @@
 import Ember from 'ember';
 
-/**
- * @module BlockComponentName
- */
+const { getOwner } = Ember;
 
-/**
- * @function
- * @param {Array.<object>} params A list of parameters passed, including a
- *   single block
- * @returns {string} The name of a component for this block.
- */
-export function blockComponentName([type]/*, hash*/) {
-  return `canvas-block-${type}`;
-}
-
-export default Ember.Helper.helper(blockComponentName);
+export default Ember.Helper.extend({
+  compute([type]) {
+    const componentName = `canvas-block-${type}`;
+    const component = getOwner(this).lookup(`component:${componentName}`);
+    return component ? componentName : 'canvas-block-unknown';
+  }
+});

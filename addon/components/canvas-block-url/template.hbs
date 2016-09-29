@@ -11,7 +11,11 @@
   <div local-class="main">
     <div local-class="main-content">
       <div local-class="header">
-        <img local-class="provider-icon" src="{{unfurled.providerIconUrl}}" height="24" width="24">
+        {{#if unfurled.providerIconUrl}}
+          <img local-class="provider-icon" src="{{unfurled.providerIconUrl}}" height="24" width="24">
+        {{else}}
+          {{svg-jar 'Globe' height='24' width='24' local-class='provider-icon'}}
+        {{/if}}
         <a href="{{unfurled.url}}" local-class="title">{{unfurled.title}}</a>
       </div>
 
@@ -58,5 +62,14 @@
 {{/if}}
 
 {{#if unfurled.isRejected}}
-  {{block.meta.url}}: An error occurred unfurling...
+  <div local-class="main">
+    <div local-class="header">
+      {{svg-jar 'Error'
+        height='24'
+        width='24'
+        local-class='provider-icon provider-icon--error'}}
+
+      <a href="{{block.meta.url}}" local-class="title" title="An error occured fetching this URL">{{block.meta.url}}</a>
+    </div>
+  </div>
 {{/if}}

@@ -1,0 +1,51 @@
+<div local-class="main">
+  <div local-class="main-content">
+    <div local-class="header">
+      {{#if unfurled.providerIconUrl}}
+        <img local-class="provider-icon" src="{{unfurled.providerIconUrl}}" height="24" width="24">
+      {{else}}
+        {{svg-jar 'Globe' height='24' width='24' local-class='provider-icon'}}
+      {{/if}}
+      <a href="{{unfurled.url}}" local-class="title">{{unfurled.title}}</a>
+    </div>
+
+    {{#if unfurled.text}}
+      <div local-class="text">{{unfurled.text}}</div>
+    {{/if}}
+  </div>
+
+  {{#if unfurled.thumbnailUrl}}
+    <img local-class="thumbnail" src="{{unfurled.thumbnailUrl}}" height="48" width="48">
+  {{/if}}
+</div>
+
+{{#if unfurled.fields}}
+  <div local-class="fields">
+    {{#each unfurled.fields as |field|}}
+      <div local-class="field" class="{{if field.short styles.field--short}}">
+        <div local-class="field-title">{{field.title}}</div>
+        <div local-class="field-value">{{field.value}}</div>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
+
+{{#if unfurled.labels}}
+  <div local-class="labels">
+    {{#each unfurled.labels as |label|}}
+      <div local-class="label" style="color: {{label.color}}; background-color: {{label.backgroundColor}};">
+        {{#if label.iconUrl}}
+          <img local-class="label-icon" src="{{label.iconUrl}}" height="16" width="16">
+        {{/if}}
+
+        <div local-class="label-value">{{label.value}}</div>
+      </div>
+    {{/each}}
+  </div>
+{{/if}}
+
+{{#if showAuthComponent}}
+  <div local-class="auth-component">
+    {{component authComponent}}
+  </div>
+{{/if}}

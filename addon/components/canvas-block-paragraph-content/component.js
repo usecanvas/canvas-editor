@@ -32,7 +32,7 @@ export default CanvasBlockEditable.extend({
     }
   },
 
-  newBlockAtSplit() {
+  newBlockAtSplit() { // eslint-disable-line max-statements
     const { textBeforeSelection, textAfterSelection } =
       TextManipulation.getManipulation(this.get('element'));
 

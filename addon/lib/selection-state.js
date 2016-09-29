@@ -74,7 +74,7 @@ export default class SelectionState {
    *
    * @return {SelectionState} this
    */
-  restore() {
+  restore() { // eslint-disable-line max-statements
     this.element.focus();
 
     let { start, end } = this;
@@ -83,11 +83,11 @@ export default class SelectionState {
     const restorationRange = document.createRange();
     const iterator = this.getNodeIterator(this.element);
 
-    let didSetStart, didSetEnd;
+    let didSetEnd, didSetStart;
     let position = 0;
     let node;
 
-    while ((node = iterator.nextNode())) {
+    while (node = iterator.nextNode()) { // eslint-disable-line no-cond-assign
       if (didSetStart && didSetEnd) break;
 
       const nodeLength = this.nodeLength(node);
@@ -120,7 +120,7 @@ export default class SelectionState {
     selection.removeAllRanges();
 
     if (this.start > this.end) {
-      let { startContainer, startOffset } = restorationRange;
+      const { startContainer, startOffset } = restorationRange;
       restorationRange.collapse(false);
       selection.addRange(restorationRange);
       selection.extend(startContainer, startOffset);
@@ -161,8 +161,8 @@ export default class SelectionState {
   indexOfNode(node) {
     let index = 0;
 
-    while ((node = node.previousSibling)) {
-      index++;
+    while (node = node.previousSibling) { // eslint-disable-line no-cond-assign
+      index += 1;
     }
 
     return index;
@@ -198,7 +198,7 @@ export default class SelectionState {
     const iterator = this.getNodeIterator(this.element);
     let node;
 
-    while ((node = iterator.nextNode())) {
+    while (node = iterator.nextNode()) { // eslint-disable-line no-cond-assign
       if (node === testNode) break;
       length += this.nodeLength(node);
     }
@@ -223,7 +223,7 @@ export default class SelectionState {
       let innerLength = 0;
       let childNode;
 
-      while ((childNode = iterator.nextNode())) {
+      while (childNode = iterator.nextNode()) { // eslint-disable-line no-cond-assign
         innerLength += this.nodeLength(childNode, recurse);
       }
 

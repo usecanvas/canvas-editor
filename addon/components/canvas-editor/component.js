@@ -145,7 +145,7 @@ export default Ember.Component.extend({
    * @method
    */
   bindKeyDownEvents() {
-    const self = this;
+    const self = this; // eslint-disable-line consistent-this
 
     Ember.$(document).on(nsEvent('focus', this),
                          '.canvas-block-editable', function() {
@@ -527,12 +527,10 @@ export default Ember.Component.extend({
 
       if (nextBlock.get('isCard')) {
         Selection.selectCardBlock(this.$(), nextBlock);
+      } else if (block.get('isCard')) {
+        run.scheduleOnce('afterRender', this, 'focusBlockStart', nextBlock);
       } else {
-        if (block.get('isCard')) {
-          run.scheduleOnce('afterRender', this, 'focusBlockStart', nextBlock);
-        } else {
-          Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
-        }
+        Selection.navigateDownToBlock(this.$(), nextBlock, rangeRect);
       }
     },
 
@@ -595,12 +593,10 @@ export default Ember.Component.extend({
 
       if (prevBlock.get('isCard')) {
         Selection.selectCardBlock(this.$(), prevBlock);
+      } else if (block.get('isCard')) {
+        run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
       } else {
-        if (block.get('isCard')) {
-          run.scheduleOnce('afterRender', this, 'focusBlockEnd', prevBlock);
-        } else {
-          Selection.navigateUpToBlock(this.$(), prevBlock, rangeRect);
-        }
+        Selection.navigateUpToBlock(this.$(), prevBlock, rangeRect);
       }
     },
 

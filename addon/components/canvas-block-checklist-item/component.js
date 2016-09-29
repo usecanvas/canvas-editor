@@ -1,5 +1,4 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
-import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import layout from './template';
 import styles from './styles';
 

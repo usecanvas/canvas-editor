@@ -78,6 +78,7 @@ const SelectionService = Ember.Object.extend({
       boundary: 'bottom' });
   },
 
+  /* eslint-disable max-statements */
   /**
    * Navigate to a specific block, using a range to determine the horizontal
    * position of the selection upon navigation.
@@ -96,14 +97,14 @@ const SelectionService = Ember.Object.extend({
   navigateBlockBasedOnRect({ $container, block, rangeRect, boundary }) {
     const blockElement = this.getEditableBlockElement($container, block);
 
-    let targetRange = Rangy.createRange();
+    const targetRange = Rangy.createRange();
     targetRange.selectNodeContents(blockElement);
     const blockRects = targetRange.nativeRange.getClientRects();
     let blockRect = blockRects[blockRects.length - 1];
     if (boundary === 'top') blockRect = blockRects[0];
 
     let offset = parseInt(getComputedStyle(blockElement).fontSize, 10) / 3;
-    if (boundary === 'bottom') offset = offset * -1;
+    if (boundary === 'bottom') offset *= -1;
 
     /*
      * Create a point using the `left` value from the current range, and the
@@ -144,6 +145,7 @@ const SelectionService = Ember.Object.extend({
     blockElement.focus();
     this.scrollTo(blockElement);
   },
+  /* eslint-enable max-statements */
 
   /**
    * Select a card block (they do not have editable text, and have a special

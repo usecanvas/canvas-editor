@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import styles from './styles';
 
-const { observer, on } = Ember;
+const { on } = Ember;
 
 /**
  * A component that renders a custom checkbox

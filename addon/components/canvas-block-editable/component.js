@@ -44,6 +44,6 @@ export default Ember.Component.extend(BlockEvents, ContentEditable, {
    * https://github.com/salsify/ember-css-modules/issues/48
    */
   isEmptyClass: computed('isEmpty', function() {
-    return this.get('isEmpty') ? this.get('styles.is-empty') : ''
+    return this.get('isEmpty') ? this.get('styles.is-empty') : '';
   })
 });

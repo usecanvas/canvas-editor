@@ -1,8 +1,6 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
-import Ember from 'ember';
 import styles from './styles';
 
-const { computed } = Ember;
 const LEVEL_REG = /^(#{1,6})\s+(.*)$/;
 
 /**
@@ -16,7 +14,7 @@ export default CanvasBlockEditable.extend({
   localClassNames: ['canvas-block-heading-content'],
   styles,
 
-  setBlockContentFromInput(content, preventRerender = true) {
+  setBlockContentFromInput(content, _preventRerender = true) {
     const match = content.match(LEVEL_REG);
 
     if (!match) {
@@ -32,6 +30,6 @@ export default CanvasBlockEditable.extend({
       this.get('block'),
       ['level'],
       oldLevel,
-      newLevel)
+      newLevel);
   }
 });

@@ -1,5 +1,4 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
-import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import layout from './template';
 import styles from './styles';
 

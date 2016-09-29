@@ -3,7 +3,7 @@ import Ember from 'ember';
 import layout from './template';
 import styles from './styles';
 
-const { computed, on } = Ember;
+const { computed } = Ember;
 
 /**
  * A component representing a card.

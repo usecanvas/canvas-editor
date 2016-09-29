@@ -4,7 +4,6 @@
 .canvas-block-unknown {
   composes: canvas-block-card from 'canvas-editor/components/canvas-block-card/styles';
   background: --extra-light-gray;
-  border-color: transparent;
   box-shadow: none;
   color: --dark-gray;
   text-align: center;

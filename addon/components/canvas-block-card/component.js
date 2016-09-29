@@ -44,9 +44,7 @@ export default CanvasBlock.extend({
     return Ember.RSVP.resolve({});
   },
 
-  doUnfurl: on('didInsertElement', function() {
-    this.get('unfurl')(this.get('block')).then(unfurl => {
-      if (this.get('isVisible')) this.set('unfurled', unfurl);
-    });
+  unfurled: computed('block', function() {
+    return this.get('unfurl')(this.get('block'));
   })
 });

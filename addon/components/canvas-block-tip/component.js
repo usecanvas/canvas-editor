@@ -10,7 +10,6 @@ import styles from './styles';
  */
 export default CardBlock.extend({
   classNames: ['canvas-block-tip'],
-  doUnfurl: Ember.K,
   layout,
   localClassNames: ['canvas-block-tip'],
   styles,

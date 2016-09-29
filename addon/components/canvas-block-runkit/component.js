@@ -26,8 +26,6 @@ export default CardBlock.extend({
     }));
   },
 
-  doUnfurl: Ember.K,
-
   onNotebookEvaluate() {
     this.get('notebook').getSource(source => {
       run.join(_ => {

@@ -1,5 +1,10 @@
 {{#if unfurled.isPending}}
-  Loading...
+  <div local-class="main">
+    <div local-class="header">
+      {{ui-spinner local-class="provider-icon"}}
+      <a href="{{block.meta.url}}" local-class="title">{{block.meta.url}}</a>
+    </div>
+  </div>
 {{/if}}
 
 {{#if unfurled.isFulfilled}}

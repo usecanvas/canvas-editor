@@ -1,3 +1,6 @@
 dependencies:
+  cache_directories:
+    - node_modules
+    - bower_components
   post:
     - bower install

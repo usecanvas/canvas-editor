@@ -16,7 +16,7 @@ export default Ember.Component.extend({
   canvasId: computed('unfurled.url', function() {
     const urlSegments  = this.get('unfurled.url').split('/');
 
-    if (!urlSegments || urlSegments[4]) return false;
+    if (!urlSegments || !urlSegments[4]) return false;
     return urlSegments[4];
   }),
 

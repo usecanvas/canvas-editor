@@ -13,6 +13,13 @@ export default Ember.Component.extend({
   localClassNames: ['canvas-block-url-canvas'],
   styles,
 
+  canvasId: computed('unfurled.url', function() {
+    const urlSegments  = this.get('unfurled.url').split('/');
+
+    if (!urlSegments || urlSegments[4]) return false;
+    return urlSegments[4];
+  }),
+
   hasProgress: computed('progress', function() {
     return getValueFromFields(Ember.A(this.get('unfurled.fields')),
       TASKS_TOTAL) > 0;

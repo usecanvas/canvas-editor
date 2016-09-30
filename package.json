@@ -10,7 +10,7 @@
     "build": "ember build",
     "lint": "eslint addon app blueprints config tests",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember test && npm run lint"
   },
   "repository": "",
   "engines": {

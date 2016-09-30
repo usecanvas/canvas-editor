@@ -1,7 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('canvas-block-unordered-list-item-content', 'Integration | Component | canvas block unordered list item content', {
+moduleForComponent('canvas-block-unordered-list-item-content',
+                   'Integration | Component | canvas block unordered list item content', { // eslint-disable-line max-len
   integration: true
 });
 

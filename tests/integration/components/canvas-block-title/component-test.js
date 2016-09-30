@@ -1,7 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('canvas-block-title', 'Integration | Component | canvas block title', {
+moduleForComponent('canvas-block-title',
+                   'Integration | Component | canvas block title', {
   integration: true
 });
 

@@ -6,7 +6,7 @@ module('Unit | Mixin | block events');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  let BlockEventsObject = Ember.Object.extend(BlockEventsMixin);
-  let subject = BlockEventsObject.create();
+  const BlockEventsObject = Ember.Object.extend(BlockEventsMixin);
+  const subject = BlockEventsObject.create();
   assert.ok(subject);
 });

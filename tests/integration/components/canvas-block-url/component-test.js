@@ -1,7 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('canvas-block-url', 'Integration | Component | canvas block url', {
+moduleForComponent('canvas-block-url',
+                   'Integration | Component | canvas block url', {
   integration: true
 });
 

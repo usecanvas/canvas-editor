@@ -1,5 +1,7 @@
+/* eslint-env node */
+
 module.exports = {
-  normalizeEntityName() {},
+  normalizeEntityName() {}, // eslint-disable-line no-empty-function
 
   afterInstall() {
     return this.addBowerPackagesToProject([

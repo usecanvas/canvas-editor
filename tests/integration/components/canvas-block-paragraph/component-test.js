@@ -1,7 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('canvas-block-paragraph', 'Integration | Component | canvas block paragraph', {
+moduleForComponent('canvas-block-paragraph',
+                   'Integration | Component | canvas block paragraph', {
   integration: true
 });
 

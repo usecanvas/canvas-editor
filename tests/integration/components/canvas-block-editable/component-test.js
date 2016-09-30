@@ -1,7 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('canvas-block-editable', 'Integration | Component | canvas block editable', {
+moduleForComponent('canvas-block-editable',
+                   'Integration | Component | canvas block editable', {
   integration: true
 });
 

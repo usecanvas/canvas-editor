@@ -1,7 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('canvas-block-runkit-content', 'Integration | Component | canvas block runkit content', {
+moduleForComponent('canvas-block-runkit-content',
+                   'Integration | Component | canvas block runkit content', {
   integration: true
 });
 

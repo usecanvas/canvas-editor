@@ -6,7 +6,7 @@ const Router = Ember.Router.extend({
   rootURL: config.rootURL
 });
 
-Router.map(function() {
+Router.map(function() { // eslint-disable-line array-callback-return
 });
 
 export default Router;

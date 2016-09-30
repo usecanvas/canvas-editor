@@ -11,13 +11,16 @@ export default function(name, options = {}) {
       this.application = startApp();
 
       if (options.beforeEach) {
-        return options.beforeEach.apply(this, arguments);
+        return Reflect.apply(options.beforeEach, this, arguments);
       }
+
+      return null;
     },
 
     afterEach() {
-      let afterEach = options.afterEach && options.afterEach.apply(this, arguments);
-      return Promise.resolve(afterEach).then(() => destroyApp(this.application));
+      const afterEach =
+        options.afterEach && Reflect.apply(options.afterEach, this, arguments);
+      return Promise.resolve(afterEach).then(_ => destroyApp(this.application));
     }
   });
 }

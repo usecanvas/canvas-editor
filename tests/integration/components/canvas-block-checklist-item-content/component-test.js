@@ -1,7 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('canvas-block-checklist-item-content', 'Integration | Component | canvas block checklist item content', {
+moduleForComponent('canvas-block-checklist-item-content',
+                   'Integration | Component | canvas block checklist item content', { // eslint-disable-line max-len
   integration: true
 });
 

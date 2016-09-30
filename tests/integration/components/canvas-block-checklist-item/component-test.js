@@ -1,7 +1,8 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('canvas-block-checklist-item', 'Integration | Component | canvas block checklist item', {
+moduleForComponent('canvas-block-checklist-item',
+                   'Integration | Component | canvas block checklist item', {
   integration: true
 });
 

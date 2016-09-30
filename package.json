@@ -36,6 +36,7 @@
     "ember-export-application-global": "^1.0.5",
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
+    "ember-svg-jar": "0.9.3",
     "loader.js": "^4.0.1"
   },
   "keywords": [
@@ -47,7 +48,8 @@
     "ember-css-modules": "0.4.3"
   },
   "peerDependencies": {
-    "canvas-colors": "^1.0.1"
+    "canvas-colors": "^1.0.1",
+    "ember-svg-jar": "0.9.3"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

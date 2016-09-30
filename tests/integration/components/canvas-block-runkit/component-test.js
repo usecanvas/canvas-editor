@@ -9,17 +9,6 @@ moduleForComponent('canvas-block-runkit',
 test('it renders', function(assert) {
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
-
   this.render(hbs`{{canvas-block-runkit}}`);
-
   assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#canvas-block-runkit}}
-      template block text
-    {{/canvas-block-runkit}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
 });

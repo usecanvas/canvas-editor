@@ -2,7 +2,14 @@
   <div local-class="main-content">
     <div local-class="header">
       {{svg-jar 'Document' height='24' width='24' local-class='provider-icon'}}
-      <a href="{{unfurled.url}}" local-class="title">{{unfurled.title}}</a>
+
+      {{#if canvasId}}
+        {{#link-to 'team.canvases.show' canvasId local-class='title'}}
+          {{unfurled.title}}
+        {{/link-to}}
+      {{else}}
+        <a href="{{unfurled.url}}" local-class="title">{{unfurled.title}}</a>
+      {{/if}}
     </div>
 
     {{#if unfurled.text}}

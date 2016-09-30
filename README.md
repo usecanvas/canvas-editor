@@ -1,4 +1,4 @@
-# Canvas-editor
+# CanvasEditor [![CircleCI](https://circleci.com/gh/usecanvas/canvas-editor/tree/master.svg?style=svg&circle-token=ab0f7f55d447b8a22904e7a438fc203ddde663c0)](https://circleci.com/gh/usecanvas/canvas-editor/tree/master)
 
 This README outlines the details of collaborating on this Ember addon.
 

@@ -44,6 +44,7 @@ export default Ember.Component.extend({
 
     run.next(_ => {
       if (!this.get('isVisible')) return;
+      if (!this.get('editingEnabled')) return;
       this.focusBlockStart(this.get('canvas.blocks.firstObject'));
     });
   },

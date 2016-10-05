@@ -154,6 +154,8 @@ export default Ember.Component.extend({
     });
 
     Ember.$(document).on(nsEvent('keydown', this), function(evt) {
+      if (!self.get('editingEnabled')) return;
+
       const selectedCardElement =
         self.$('[data-card-block-selected=true]').get(0);
 

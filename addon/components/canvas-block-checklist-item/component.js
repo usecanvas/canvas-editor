@@ -17,6 +17,8 @@ export default CanvasBlock.extend({
 
   actions: {
     onToggleChecked() {
+      if (!this.get('editingEnabled')) return;
+
       const oldValue = this.get('block.meta.checked');
       this.toggleProperty('block.meta.checked');
       this.get('onBlockMetaReplacedLocally')(

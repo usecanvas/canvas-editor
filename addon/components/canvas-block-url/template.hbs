@@ -26,5 +26,7 @@
 
 {{#if unfurled.isFulfilled}}
   {{component (url-block-component-name unfurled.providerName)
-    unfurled=unfurled}}
+    unfurled=unfurled
+    authComponent=authComponent
+    showAuthComponent=showAuthComponent}}
 {{/if}}

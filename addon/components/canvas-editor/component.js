@@ -43,7 +43,7 @@ export default Ember.Component.extend({
     const blocks = this.get('contentBlocks');
     if (!this.get('filterTerm')) return blocks;
 
-    const filterTerm = this.get('filterTerm');
+    const filterTerm = this.get('filterTerm').toLowerCase();
 
     return blocks.filter(function(block) {
       // Disable filtering in lists right now
@@ -51,7 +51,7 @@ export default Ember.Component.extend({
         return false;
       }
 
-      if (block.content.toLowerCase().indexOf(filterTerm.toLowerCase()) !== -1) return true;
+      if (block.content.toLowerCase().indexOf(filterTerm) !== -1) return true;
       return false;
     });
   }),

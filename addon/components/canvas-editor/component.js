@@ -39,6 +39,16 @@ export default Ember.Component.extend({
     return this.get('canvas.blocks').slice(1);
   }),
 
+  filteredContentBlocks: computed('contentBlocks', 'filterTerm', function() {
+    const blocks = this.get('contentBlocks');
+
+    if (!this.get('filterTerm')) return blocks;
+
+    return blocks.filter(block => {
+      return block.content.indexOf(this.get('filterTerm')) !== -1;
+    });
+  }),
+
   didInsertElement() {
     this.bindKeyDownEvents();
 

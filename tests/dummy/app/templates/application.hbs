@@ -1,5 +1,10 @@
+<p>
+  {{input type='text' value=filterTerm}}
+</p>
+
 <main>
   {{canvas-editor-next
     canvas=model
-    editingEnabled=true}}
+    filterTerm=filterTerm
+    editingEnabled=(unless filterTerm true)}}
 </main>

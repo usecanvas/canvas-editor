@@ -15,7 +15,7 @@
   onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
   onTemplateApply=(action 'templateApply')}}
 
-{{#each contentBlocks as |block|}}
+{{#each filteredContentBlocks as |block|}}
   {{component (block-component-name block.type)
     block=block
     githubAuthComponent=githubAuthComponent

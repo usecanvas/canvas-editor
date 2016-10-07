@@ -47,7 +47,7 @@ export default Ember.Component.extend({
 
     return blocks.filter(function(block) {
       // Disable filtering in lists right now
-      if (block.blocks) {
+      if (block.type === 'list') {
         return false;
       }
 

@@ -41,11 +41,18 @@ export default Ember.Component.extend({
 
   filteredContentBlocks: computed('contentBlocks', 'filterTerm', function() {
     const blocks = this.get('contentBlocks');
-
     if (!this.get('filterTerm')) return blocks;
 
-    return blocks.filter(block => {
-      return block.content.indexOf(this.get('filterTerm')) !== -1;
+    const filterTerm = this.get('filterTerm');
+
+    return blocks.filter(function(block) {
+      // Disable filtering in lists right now
+      if (block.blocks) {
+        return false;
+      }
+
+      if (block.content.indexOf(filterTerm) !== -1) return true;
+      return false;
     });
   }),
 

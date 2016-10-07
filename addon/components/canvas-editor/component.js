@@ -51,7 +51,7 @@ export default Ember.Component.extend({
         return false;
       }
 
-      if (block.content.indexOf(filterTerm) !== -1) return true;
+      if (block.content.toLowerCase().indexOf(filterTerm.toLowerCase()) !== -1) return true;
       return false;
     });
   }),

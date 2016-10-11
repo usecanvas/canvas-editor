@@ -39,20 +39,19 @@ export default Ember.Component.extend({
     return this.get('canvas.blocks').slice(1);
   }),
 
-  filteredContentBlocks: computed('contentBlocks', 'filterTerm', function() {
+  filteredContentBlocks: computed('contentBlocks.[]', 'filterTerm', function() {
     const blocks = this.get('contentBlocks');
     if (!this.get('filterTerm')) return blocks;
 
     const filterTerm = this.get('filterTerm').toLowerCase();
 
-    return blocks.filter(function(block) {
+    return blocks.filter(block => {
       // Disable filtering in lists right now
       if (block.type === 'list') {
         return false;
       }
 
-      if (block.content.toLowerCase().indexOf(filterTerm) !== -1) return true;
-      return false;
+      return block.content.toLowerCase().includes(filterTerm);
     });
   }),
 

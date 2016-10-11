@@ -18,6 +18,10 @@ export default BlockComponent.extend({
   styles,
   tagName: 'ul',
 
+  /*
+   * TODO: This is only done here because `isFiltered` is on the component, not
+   * on each block.
+   */
   isFiltered: computed('filterTerm', function() {
     const term = (this.get('filterTerm') || '').toLowerCase();
     if (!term) return true;

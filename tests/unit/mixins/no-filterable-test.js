@@ -6,7 +6,7 @@ module('Unit | Mixin | no filterable');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  let NoFilterableObject = Ember.Object.extend(NoFilterableMixin);
-  let subject = NoFilterableObject.create();
+  const NoFilterableObject = Ember.Object.extend(NoFilterableMixin);
+  const subject = NoFilterableObject.create();
   assert.ok(subject);
 });

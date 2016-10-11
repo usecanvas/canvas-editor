@@ -14,11 +14,13 @@ export default Ember.Component.extend(BlockEvents, {
   attributeBindings: ['block.id:data-block-id'],
   classNames: ['canvas-block'],
   classNameBindings: ['isFocusedClass'],
+  isFiltered: true,
   isFocused: false,
+  isVisible: computed.readOnly('isFiltered'),
   localClassNames: ['canvas-block'],
   styles,
 
   isFocusedClass: computed('isFocused', function() {
     return this.get('isFocused') ? this.get('styles.is-focused') : '';
-  })
+  }),
 });

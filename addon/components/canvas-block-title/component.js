@@ -14,6 +14,7 @@ const { computed, get } = Ember;
  */
 export default CanvasBlock.extend({
   classNames: ['canvas-block-title'],
+  isFiltered: true,
   isShowingSelect: false,
   layout,
   localClassNames: ['canvas-block-title'],

@@ -1,4 +1,5 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
+import ContentFilterable from 'canvas-editor/mixins/content-filterable';
 import layout from './template';
 import styles from './styles';
 
@@ -8,7 +9,7 @@ import styles from './styles';
  * @class CanvasEditor.CanvasBlockChecklistItemComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
-export default CanvasBlock.extend({
+export default CanvasBlock.extend(ContentFilterable, {
   classNames: ['canvas-block-checklist-item'],
   layout,
   localClassNames: ['canvas-block-checklist-item'],

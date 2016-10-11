@@ -1,4 +1,5 @@
 import CardBlock from 'canvas-editor/components/canvas-block-card/component';
+import NoFilterable from 'canvas-editor/mixins/no-filterable';
 import layout from './template';
 import styles from './styles';
 
@@ -8,7 +9,7 @@ import styles from './styles';
  * @class CanvasEditor.CanvasBlockImageComponent
  * @extends CanvasEditor.CanvasBlockCardComponent
  */
-export default CardBlock.extend({
+export default CardBlock.extend(NoFilterable, {
   classNames: ['canvas-block-image'],
   layout,
   localClassNames: ['canvas-block-image'],

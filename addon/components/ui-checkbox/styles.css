@@ -20,6 +20,7 @@
   animation: tick;
   animation-duration: 0;
   background: url('/canvas-editor/images/checkmark.svg') --green;
+  background-size: 100%;
   border-color: --green;
 }
 

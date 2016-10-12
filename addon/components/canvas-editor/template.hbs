@@ -18,6 +18,7 @@
 {{#each contentBlocks as |block|}}
   {{component (block-component-name block.type)
     block=block
+    actionsComponent=(component blockActionsComponent block=block)
     filterTerm=filterTerm
     canvasLinkComponent=canvasLinkComponent
     githubAuthComponent=githubAuthComponent

@@ -4,7 +4,7 @@ import Highlight from 'highlight';
 import SelectionState from 'canvas-editor/lib/selection-state';
 import styles from './styles';
 
-const { computed, observer, run } = Ember;
+const { computed, observer, on, run } = Ember;
 
 /**
  * A component representing a "code" type canvas block's content.
@@ -24,7 +24,8 @@ export default CanvasBlockEditable.extend({
     return new SelectionState(this.get('element'));
   }),
 
-  highlight: observer('block.content', 'block.meta.language', function() {
+  highlight: on('didInsertElement',
+             observer('block.content', 'block.meta.language', function() {
     run.scheduleOnce('afterRender', _ => {
       this.get('selectionState').capture();
 

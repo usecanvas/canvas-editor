@@ -81,7 +81,6 @@ export default Ember.Mixin.create(Selection, {
     if (textBeforeSelection || !this.get('selection.isCollapsed')) return;
     evt.stopPropagation();
     evt.preventDefault();
-    console.log('del');
     this.get('onBlockDeletedLocally')(this.get('block'), textAfterSelection);
   },
 

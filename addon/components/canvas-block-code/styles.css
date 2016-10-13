@@ -1,6 +1,13 @@
+@value --blue from 'canvas-colors/styles/colors';
 @value --dark-gray from 'canvas-colors/styles/colors';
 @value --extra-light-gray from 'canvas-colors/styles/colors';
+@value --gray from 'canvas-colors/styles/colors';
+@value --green from 'canvas-colors/styles/colors';
+@value --light-blue from 'canvas-colors/styles/colors';
 @value --light-gray from 'canvas-colors/styles/colors';
+@value --orange from 'canvas-colors/styles/colors';
+@value --purple: #a626a4;
+@value --red from 'canvas-colors/styles/colors';
 
 .canvas-block-code {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
@@ -20,14 +27,14 @@
   :global {
     .hljs-comment,
     .hljs-quote {
-      color: #a0a1a7;
+      color: --gray;
       font-style: italic;
     }
 
     .hljs-doctag,
     .hljs-keyword,
     .hljs-formula {
-      color: #a626a4;
+      color: --purple;
     }
 
     .hljs-section,
@@ -35,11 +42,11 @@
     .hljs-selector-tag,
     .hljs-deletion,
     .hljs-subst {
-      color: #e45649;
+      color: --red;
     }
 
     .hljs-literal {
-      color: #0184bb;
+      color: --blue;
     }
 
     .hljs-string,
@@ -47,12 +54,12 @@
     .hljs-addition,
     .hljs-attribute,
     .hljs-meta-string {
-      color: #50a14f;
+      color: --green;
     }
 
     .hljs-built_in,
     .hljs-class .hljs-title {
-      color: #c18401;
+      color: --orange;
     }
 
     .hljs-attr,
@@ -63,7 +70,7 @@
     .hljs-selector-attr,
     .hljs-selector-pseudo,
     .hljs-number {
-      color: #986801;
+      color: --orange;
     }
 
     .hljs-symbol,
@@ -72,7 +79,7 @@
     .hljs-meta,
     .hljs-selector-id,
     .hljs-title {
-      color: #4078f2;
+      color: --light-blue;
     }
 
     .hljs-emphasis {

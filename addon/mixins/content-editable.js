@@ -25,7 +25,9 @@ export default Ember.Mixin.create(Selection, {
    * @method
    */
   input() {
-    this.setBlockContentFromInput(this.$().text());
+    const element = this.get('element');
+    const text = element.innerText || element.textContent;
+    this.setBlockContentFromInput(text);
   },
 
   /**

@@ -42,7 +42,7 @@ export default CanvasBlockEditable.extend({
       this.$().html(html.value || '<br>');
       this.get('selectionState').restore();
     });
-  }),
+  })),
 
   keyDown(evt) {
     switch (evt.originalEvent.key || evt.originalEvent.keyCode) {

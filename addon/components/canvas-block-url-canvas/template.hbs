@@ -4,9 +4,9 @@
       {{svg-jar 'Document' height='24' width='24' local-class='provider-icon'}}
 
       {{#if canvasId}}
-        {{#link-to 'team.canvas.show' canvasId local-class='title'}}
+        {{#component canvasLinkComponent id=canvasId local-class='title'}}
           {{unfurled.title}}
-        {{/link-to}}
+        {{/component}}
       {{else}}
         <a href="{{unfurled.url}}" local-class="title">{{unfurled.title}}</a>
       {{/if}}

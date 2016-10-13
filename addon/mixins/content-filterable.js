@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import searchMatch from 'canvas-editor/lib/search-match';
 
 const { computed } = Ember;
 
@@ -11,8 +12,6 @@ const { computed } = Ember;
  */
 export default Ember.Mixin.create({
   isFiltered: computed('block.content', 'filterTerm', function() {
-    const term = (this.get('filterTerm') || '').toLowerCase();
-    if (!term) return true;
-    return this.get('block.content').toLowerCase().includes(term);
+    return searchMatch(this.get('filterTerm'), this.get('block.content'));
   })
 });

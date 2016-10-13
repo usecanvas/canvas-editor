@@ -15,9 +15,11 @@ export default Ember.Mixin.create(Selection, {
   contentEditable: computed.readOnly('editingEnabled'),
   isUpdatingBlockContent: false,
 
-  elementRect: computed(function() {
-    return this.get('element').getClientRects()[0];
-  }).volatile(),
+  getElementRect(side = 'top') {
+    const rects = this.get('element').getClientRects();
+    if (side === 'top') return rects[0];
+    return rects[rects.length - 1];
+  },
 
   /**
    * React to an "input" event, where the user has changed content in the DOM.
@@ -96,7 +98,7 @@ export default Ember.Mixin.create(Selection, {
    * @param {Event} evt The event fired
    */
   navigateDown(evt) {
-    const contentBottom = this.get('elementRect.bottom');
+    const contentBottom = this.getElementRect('bottom').bottom;
     const rangeRect = this.get('currentRangeRect');
     const distanceFromBottom = contentBottom - rangeRect.bottom;
     if (distanceFromBottom > 10) return; // Navigate within this element
@@ -151,7 +153,7 @@ export default Ember.Mixin.create(Selection, {
    * @param {Event} evt The event fired
    */
   navigateUp(evt) {
-    const contentTop = this.get('elementRect.top');
+    const contentTop = this.getElementRect().top;
     const rangeRect = this.get('currentRangeRect');
     const distanceFromTop = rangeRect.top - contentTop;
     if (distanceFromTop > 10) return; // Navigate within this element

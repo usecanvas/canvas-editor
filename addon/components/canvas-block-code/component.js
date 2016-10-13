@@ -12,6 +12,6 @@ import styles from './styles';
 export default CanvasBlock.extend(ContentFilterable, {
   classNames: ['canvas-block-code'],
   layout,
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-code'],
   styles
 });

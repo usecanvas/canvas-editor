@@ -1,7 +1,17 @@
+@value --dark-gray from 'canvas-colors/styles/colors';
+@value --extra-light-gray from 'canvas-colors/styles/colors';
+@value --light-gray from 'canvas-colors/styles/colors';
+
+.canvas-block-code {
+  composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
+}
+
 .content {
+  background: --extra-light-gray;
+  border: 1px solid --light-gray;
+  border-radius: 4px;
+  color: --dark-gray;
   display: block;
   overflow-x: auto;
-  padding: 0.5em;
-  color: #383a42;
-  background: #fafafa;
+  padding: 0.5em 1em;
 }

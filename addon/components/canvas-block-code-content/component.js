@@ -15,7 +15,7 @@ const { computed, observer, on, run } = Ember;
 export default CanvasBlockEditable.extend({
   attributeBindings: ['spellcheck:spellcheck'],
   classNames: ['canvas-block-code-content'],
-  localClassNames: ['component'],
+  localClassNames: ['canvas-block-code-content'],
   spellcheck: 'false',
   styles,
   tagName: 'code',

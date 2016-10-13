@@ -61,5 +61,8 @@ test('it renders', function(assert) {
   this.render(hbs`{{canvas-editor-next canvas=canvas}}`);
   percySnapshot(assert);
 
-  assert.equal(this.$().text().trim(), '');
+  assert.ok(this.$().text()
+    .includes('This is a Canvas that has every element.'));
+  assert.ok(this.$().text().includes('break things up'));
+  assert.ok(this.$().text().includes('Another level 4 Heading'));
 });

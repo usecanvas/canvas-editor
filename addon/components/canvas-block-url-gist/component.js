@@ -1,11 +1,12 @@
 import Ember from 'ember';
 import layout from './template';
-import styles from 'canvas-editor/components/canvas-block-url/styles';
+import styles from 'canvas-editor/components/canvas-block-url-gist/styles';
 
-const { on } = Ember;
+const { computed, on } = Ember;
 
 export default Ember.Component.extend({
   classNames: ['canvas-block-url-gist'],
+  gist: computed.oneWay('unfurled.url'),
   layout,
   localClassNames: ['canvas-block-url-gist'],
   styles,

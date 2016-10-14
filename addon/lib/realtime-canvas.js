@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Code from 'canvas-editor/lib/realtime-canvas/code';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import CLItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
@@ -53,6 +54,8 @@ export default Ember.Object.extend({
         return Heading.create(json);
       } case 'horizontal-rule': {
         return HorizontalRule.create(json);
+      } case 'code': {
+        return Code.create(json);
       } default: {
         return Unknown.create(Object.assign(json, { type: 'unknown' }));
       }

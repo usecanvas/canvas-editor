@@ -1,4 +1,5 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
+import Code from 'canvas-editor/lib/realtime-canvas/code';
 import HorizontalRule from 'canvas-editor/lib/realtime-canvas/horizontal-rule';
 import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
@@ -53,6 +54,11 @@ export default CanvasBlockEditable.extend({
         this.newBlockInsertedLocally('');
         this.blockReplacedLocally(urlBlock);
         return;
+      } else if (isCode(textBeforeSelection)) {
+        const [_, language] = isCode(textBeforeSelection);
+        const code = Code.create({ meta: { language } });
+        this.blockReplacedLocally(code, { focus: true });
+        return;
       }
     }
 
@@ -73,6 +79,10 @@ function getNewType(content) {
 
 function isUnorderedListItem(content) {
   return (/^-\s/).test(content);
+}
+
+function isCode(content) {
+  return content.match(/^```(\S+)?$/);
 }
 
 function isHeading(text) {

@@ -1,0 +1,8 @@
+.canvas-block-code-content {
+  composes: canvas-block-editable from 'canvas-editor/components/canvas-block-editable/styles';
+  white-space: pre;
+}
+
+.is-empty {
+  composes: is-empty from 'canvas-editor/components/canvas-block-editable/styles';
+}

@@ -2,8 +2,24 @@
 
 'use strict';
 
+const autoprefixer = require('autoprefixer');
+const postcssNested = require('postcss-nested');
+
 module.exports = {
   name: 'canvas-editor',
+
+  options: {
+    cssModules: {
+      plugins: {
+        before: [
+          postcssNested
+        ],
+        after: [
+          autoprefixer('last 2 versions')
+        ]
+      }
+    }
+  },
 
   isDevelopingAddon() {
     return process.env.NODE_ENV !== 'production';
@@ -22,5 +38,7 @@ module.exports = {
     app.import('vendor/shims/uuid.js');
     app.import('vendor/runkit.js');
     app.import('vendor/shims/runkit.js');
+    app.import('vendor/shims/highlight.js');
+    app.import('vendor/highlight.js');
   }
 };

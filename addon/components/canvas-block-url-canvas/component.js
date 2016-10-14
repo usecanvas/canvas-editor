@@ -14,10 +14,7 @@ export default Ember.Component.extend({
   styles,
 
   canvasId: computed('unfurled.url', function() {
-    const urlSegments  = this.get('unfurled.url').split('/');
-
-    if (!urlSegments || !urlSegments[4]) return false;
-    return urlSegments[4];
+    return this.get('unfurled.url').split('/')[4];
   }),
 
   hasProgress: computed('progress', function() {

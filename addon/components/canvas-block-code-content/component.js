@@ -13,10 +13,10 @@ const { computed, observer, on, run } = Ember;
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
 export default CanvasBlockEditable.extend({
-  attributeBindings: ['spellcheck:spellcheck'],
+  attributeBindings: ['spellcheck'],
   classNames: ['canvas-block-code-content'],
   localClassNames: ['canvas-block-code-content'],
-  spellcheck: 'false',
+  spellcheck: false,
   styles,
   tagName: 'code',
 

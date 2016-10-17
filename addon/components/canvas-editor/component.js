@@ -140,7 +140,7 @@ export default Ember.Component.extend({
   },
 
   isInEditor(evt) {
-    return $.contains(this.$()[0], evt.target) ||
+    return Ember.$.contains(this.$()[0], evt.target) ||
       this.$('[data-card-block-selected=true]').length;
   },
 

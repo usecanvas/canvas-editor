@@ -15,7 +15,7 @@ const { computed } = Ember;
 export default CardBlock.extend({
   classNames: ['canvas-block-url'],
   layout,
-  localClassNameBindings: ['showAuthComponent:component--needs-auth'],
+  localClassNameBindings: ['showAuthComponent:canvas-block-url--needs-auth'],
   localClassNames: ['canvas-block-url'],
   styles,
 

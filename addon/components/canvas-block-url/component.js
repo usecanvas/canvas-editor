@@ -14,7 +14,6 @@ const { computed } = Ember;
  */
 export default CardBlock.extend({
   classNames: ['canvas-block-url'],
-  frameless: computed.equal('unfurled.providerName', 'GitHub Gist'),
   layout,
   localClassNameBindings: [
     'showAuthComponent:canvas-block-url--needs-auth',
@@ -22,6 +21,13 @@ export default CardBlock.extend({
   ],
   localClassNames: ['canvas-block-url'],
   styles,
+
+  frameless: computed('unfurled.providerName', function() {
+    return [
+      'Framer',
+      'GitHub Gist'
+    ].includes(this.get('unfurled.providerName'));
+  }),
 
   isFiltered: computed('filterTerm',
                        'block.meta.url',

@@ -1,0 +1,29 @@
+@value --blue from 'canvas-colors/styles/colors';
+
+.canvas-block-url-framer {
+  position: relative;
+}
+
+.canvas-block-url-framer iframe {
+  border: 0;
+  display: block;
+  height: 36rem;
+  width: 100%;
+}
+
+.canvas-block-url-framer::after {
+  bottom: 0;
+  content: '';
+  display: none;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+[data-card-block-selected=true] .canvas-block-url-framer::after {
+  box-shadow: 0 0 0 1px --blue,
+              0 0 0 1px --blue inset;
+  display: block;
+}

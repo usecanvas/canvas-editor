@@ -106,3 +106,13 @@
 .canvas-block-url--needs-auth .auth-component {
   padding: 0.75rem;
 }
+
+.canvas-block-url--frameless {
+  border: none;
+  padding: 0;
+}
+
+.canvas-block-url--frameless[data-card-block-selected=true] {
+  border: none;
+  box-shadow: none;
+}

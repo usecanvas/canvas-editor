@@ -1,1 +1,6 @@
-.canvas-block-url-github-gist {}
+@value --blue from 'canvas-colors/styles/colors';
+
+[data-card-block-selected=true] :global(.gist-file) {
+  border-color: --blue !important;
+  box-shadow: 0 0 0 1px --blue !important;
+}

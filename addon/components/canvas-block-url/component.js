@@ -14,8 +14,12 @@ const { computed } = Ember;
  */
 export default CardBlock.extend({
   classNames: ['canvas-block-url'],
+  frameless: computed.equal('unfurled.providerName', 'GitHub Gist'),
   layout,
-  localClassNameBindings: ['showAuthComponent:component--needs-auth'],
+  localClassNameBindings: [
+    'showAuthComponent:canvas-block-url--needs-auth',
+    'frameless:canvas-block-url--frameless'
+  ],
   localClassNames: ['canvas-block-url'],
   styles,
 

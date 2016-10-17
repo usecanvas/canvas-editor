@@ -98,11 +98,21 @@
   color: --dark-gray;
 }
 
-.component--needs-auth {
+.canvas-block-url--needs-auth {
   padding: 0;
 }
 
-.component--needs-auth .main,
-.component--needs-auth .auth-component {
+.canvas-block-url--needs-auth .main,
+.canvas-block-url--needs-auth .auth-component {
   padding: 0.75rem;
+}
+
+.canvas-block-url--frameless {
+  border: none;
+  padding: 0;
+}
+
+.canvas-block-url--frameless[data-card-block-selected=true] {
+  border: none;
+  box-shadow: none;
 }

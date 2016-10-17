@@ -6,6 +6,5 @@ export default Ember.Component.extend({
   classNames: ['canvas-block-url-github-gist'],
   layout,
   localClassNames: ['canvas-block-url-github-gist'],
-  localClassNameBindings: ['isFocused'],
   styles
 });

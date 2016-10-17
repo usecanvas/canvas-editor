@@ -139,6 +139,11 @@ export default Ember.Component.extend({
     }
   },
 
+  isInEditor(evt) {
+    return $.contains(this.$()[0], evt.target) ||
+      this.$('[data-card-block-selected=true]').length;
+  },
+
   /**
    * Bind keyDown events on `document`, because they do not fire on the editor
    * when a card block is selected.
@@ -159,6 +164,15 @@ export default Ember.Component.extend({
 
       const selectedCardElement =
         self.$('[data-card-block-selected=true]').get(0);
+
+      if (evt.originalEvent.keyCode === 27 && self.isInEditor(evt)) {
+        if (selectedCardElement) {
+          selectedCardElement.setAttribute('data-card-block-selected', false);
+        } else {
+          evt.target.blur();
+        }
+        return;
+      }
 
       if (!selectedCardElement) return;
 

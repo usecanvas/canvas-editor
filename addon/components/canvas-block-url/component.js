@@ -23,6 +23,13 @@ export default CardBlock.extend({
   localClassNames: ['canvas-block-url'],
   styles,
 
+  frameless: computed('unfurled.providerName', function() {
+    return [
+      'Framer',
+      'GitHub Gist'
+    ].includes(this.get('unfurled.providerName'));
+  }),
+
   isFiltered: computed('filterTerm',
                        'block.meta.url',
                        'unfurled.title',

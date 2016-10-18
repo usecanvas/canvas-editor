@@ -3,6 +3,7 @@
 
 .canvas-block-heading {
   margin: 2rem 0 0.5rem;
+  position: relative;
 }
 
 .canvas-block-heading + .canvas-block-heading {
@@ -51,4 +52,16 @@
 .heading-level-6 {
   font-size: 0.875rem;
   line-height: 1.75;
+}
+
+.actions {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.canvas-block-heading:hover .actions {
+  opacity: 1;
 }

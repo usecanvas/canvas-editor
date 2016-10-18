@@ -3,7 +3,6 @@
 
 .canvas-block-paragraph {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
-  position: relative;
 }
 
 .is-focused {
@@ -19,16 +18,4 @@
   position: absolute;
   top: 0;
   width: 3px;
-}
-
-.actions {
-  opacity: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transition: opacity 0.2s ease-in-out;
-}
-
-.canvas-block-paragraph:hover .actions {
-  opacity: 1;
 }

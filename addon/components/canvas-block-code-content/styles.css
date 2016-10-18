@@ -1,5 +1,6 @@
 .canvas-block-code-content {
   composes: canvas-block-editable from 'canvas-editor/components/canvas-block-editable/styles';
+  display: block;
   white-space: pre;
 }
 

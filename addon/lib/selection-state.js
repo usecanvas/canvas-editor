@@ -188,6 +188,17 @@ export default class SelectionState {
     } else if (offset > 0) {
       const child = node.childNodes[offset - 1];
       return this.lengthUntil(child) + this.nodeLength(child, true);
+    } else if (node !== this.element &&
+               node.childNodes.length === 1 &&
+               node.firstChild.nodeName === 'BR') {
+      /*
+       * When capturing in contenteditable, we want to ensure that an element
+       * with only a BR inside of it (typically inserted by contenteditable)
+       * is counted as a newline, since browsers actually place the cursor
+       * **before** the BR element. We add 1 to offset this. This is important
+       * for code blocks especially.
+       */
+      return this.lengthUntil(node) + 1;
     }
     return this.lengthUntil(node);
   }

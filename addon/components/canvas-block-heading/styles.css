@@ -1,8 +1,10 @@
 @value --dark-gray from 'canvas-colors/styles/colors';
+@value --extra-light-gray from 'canvas-colors/styles/colors';
 @value --gray from 'canvas-colors/styles/colors';
 
 .canvas-block-heading {
   margin: 2rem 0 0.5rem;
+  position: relative;
 }
 
 .canvas-block-heading + .canvas-block-heading {
@@ -51,4 +53,38 @@
 .heading-level-6 {
   font-size: 0.875rem;
   line-height: 1.75;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+}
+
+.actions {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: -1.1875rem;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 2;
+}
+
+.canvas-block-heading:hover::after {
+  background: --extra-light-gray;
+  border-radius: 4px;
+  bottom: -0.25rem;
+  content: '';
+  display: block;
+  left: -0.25rem;
+  opacity: 0;
+  position: absolute;
+  right: -0.25rem;
+  top: -0.25rem;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 0;
+}
+
+.canvas-block-heading:hover::after,
+.canvas-block-heading:hover .actions {
+  opacity: 1;
 }

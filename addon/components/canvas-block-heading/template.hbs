@@ -15,3 +15,9 @@
     onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
     onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
 </div>
+
+{{#if actionsComponent}}
+  <div local-class="actions">
+    {{component actionsComponent block=block}}
+  </div>
+{{/if}}

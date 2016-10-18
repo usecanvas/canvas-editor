@@ -1,4 +1,5 @@
 @value --blue from 'canvas-colors/styles/colors';
+@value --light-gray from 'canvas-colors/styles/colors';
 
 .canvas-block-paragraph {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';

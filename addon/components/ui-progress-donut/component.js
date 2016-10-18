@@ -7,7 +7,7 @@ const { computed } = Ember;
 export default Ember.Component.extend({
   layout,
   localClassNames: ['ui-progress-donut'],
-  radius: 14,
+  radius: 10,
   styles,
 
   '2radius': computed('radius', function() {

@@ -18,8 +18,9 @@ const log = getLogSinceTag(lastVersion);
 
 spawnSync('git', ['add', '-A']);
 spawnSync('git', ['commit', '-m', `v${newVersion}`]);
-spawnSync('git',
-          ['tag', '-a', newVersion, '-m', buildTagMessage(newVersion, log)]);
+spawnSync(
+  'git',
+  ['tag', '-a', `v${newVersion}`, '-m', buildTagMessage(newVersion, log)]);
 
 function buildTagMessage(version, logLines) {
   return `v${newVersion}\n

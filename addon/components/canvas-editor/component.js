@@ -136,8 +136,12 @@ export default Ember.Component.extend({
         .findBy('id',
                 $target.closest('.canvas-block-card').attr('data-block-id'));
       Selection.selectCardBlock(this.$(), block);
+    } else if (evt.metaKey && evt.shiftKey) {
+      this.get('onMetaSelectText')(evt);
     }
   },
+
+  onMetaSelectText: Ember.K,
 
   isInEditor(evt) {
     return Ember.$.contains(this.$()[0], evt.target) ||

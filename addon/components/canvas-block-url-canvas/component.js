@@ -29,6 +29,15 @@ export default Ember.Component.extend({
 
     if (!tasksTotal) return null;
     return tasksComplete / tasksTotal * 100;
+  }),
+
+  typeIcon: computed('unfurled.type', function() {
+    switch (this.get('unfurled.type')) {
+      case 'canvas:heading':
+        return 'Receipt';
+      default:
+        return 'Document';
+    }
   })
 });
 

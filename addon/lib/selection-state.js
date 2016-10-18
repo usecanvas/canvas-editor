@@ -96,6 +96,10 @@ export default class SelectionState {
       if (!didSetStart && start <= position + nodeLength) {
         if (isText) {
           restorationRange.setStart(node, start - position);
+        } else if (node.nodeName === 'BR' &&
+                   node.getAttribute('data-restore-skip')) {
+          restorationRange.setStart(
+            node.parentNode, this.indexOfNode(node) + 1);
         } else {
           restorationRange.setStart(node.parentNode, this.indexOfNode(node));
         }
@@ -106,6 +110,10 @@ export default class SelectionState {
       if (!didSetEnd && end <= position + nodeLength) {
         if (isText) {
           restorationRange.setEnd(node, end - position);
+        } else if (node.nodeName === 'BR' &&
+                   node.getAttribute('data-restore-skip')) {
+          restorationRange.setStart(
+            node.parentNode, this.indexOfNode(node) + 1);
         } else {
           restorationRange.setEnd(node.parentNode, this.indexOfNode(node));
         }
@@ -143,9 +151,7 @@ export default class SelectionState {
       iteratee,
       NodeFilter.SHOW_ELEMENT + NodeFilter.SHOW_TEXT,
       function onNode(node) {
-        if (node === iteratee) {
-          return NodeFilter.FILTER_SKIP;
-        }
+        if (node === iteratee) return NodeFilter.FILTER_SKIP;
         return NodeFilter.FILTER_ACCEPT;
       }
     );
@@ -224,7 +230,7 @@ export default class SelectionState {
       let childNode;
 
       while (childNode = iterator.nextNode()) { // eslint-disable-line no-cond-assign
-        innerLength += this.nodeLength(childNode, recurse);
+        innerLength += this.nodeLength(childNode, false);
       }
 
       return innerLength;
@@ -233,6 +239,8 @@ export default class SelectionState {
     if (node.nodeType === Node.TEXT_NODE) {
       return node.data.length;
     } else if (node.classList.contains(canvasBlockClass)) {
+      return 1;
+    } else if (node.nodeName === 'BR') {
       return 1;
     }
     return 0;

@@ -32,14 +32,20 @@ export default CanvasBlockEditable.extend({
       const content = this.get('block.content');
       const language = this.get('block.meta.language');
 
-      let html;
+      let highlighted;
       try {
-        html = Highlight.highlight(language, content);
+        highlighted = Highlight.highlight(language, content);
       } catch (_err) {
-        html = Highlight.highlightAuto(content);
+        highlighted = Highlight.highlightAuto(content);
       }
 
-      this.$().html(html.value || '<br>');
+      let html;
+      if (highlighted.value) {
+        html = highlighted.value.replace(
+          /\n/g, '<br data-restore-skip="true">');
+      }
+
+      this.$().html(html || '<br>');
       this.get('selectionState').restore();
     });
   })),

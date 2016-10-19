@@ -1,5 +1,6 @@
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Ember from 'ember';
+import filterBlocks from 'canvas-editor/lib/filter-blocks';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import layout from './template';
 import List from 'canvas-editor/lib/realtime-canvas/list';
@@ -35,8 +36,9 @@ export default Ember.Component.extend({
 
   titleBlock: computed.readOnly('canvas.blocks.firstObject'),
 
-  contentBlocks: computed('canvas.blocks.[]', function() {
-    return this.get('canvas.blocks').slice(1);
+  contentBlocks: computed('canvas.blocks.[]', 'filterTerm', function() {
+    return filterBlocks(this.get('canvas.blocks').slice(1),
+                        this.get('filterTerm'));
   }),
 
   didInsertElement() {

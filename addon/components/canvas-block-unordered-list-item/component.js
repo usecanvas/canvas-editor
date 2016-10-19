@@ -1,5 +1,4 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
-import ContentFilterable from 'canvas-editor/mixins/content-filterable';
 import layout from './template';
 import styles from './styles';
 
@@ -9,7 +8,7 @@ import styles from './styles';
  * @class CanvasEditor.CanvasBlockUnorderedListItemComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
-export default CanvasBlock.extend(ContentFilterable, {
+export default CanvasBlock.extend({
   classNames: ['canvas-block-unordered-list-item'],
   layout,
   localClassNames: ['canvas-block-unordered-list-item'],

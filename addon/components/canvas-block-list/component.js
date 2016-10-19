@@ -1,5 +1,6 @@
 import BlockComponent from 'canvas-editor/components/canvas-block/component';
 import Ember from 'ember';
+import filterBlocks from 'canvas-editor/lib/filter-blocks';
 import layout from './template';
 import styles from './styles';
 
@@ -18,16 +19,7 @@ export default BlockComponent.extend({
   styles,
   tagName: 'ul',
 
-  /*
-   * TODO: This is only done here because `isFiltered` is on the component, not
-   * on each block.
-   */
-  isFiltered: computed('filterTerm', function() {
-    const term = (this.get('filterTerm') || '').toLowerCase();
-    if (!term) return true;
-
-    return this.get('block.blocks').any(block => {
-      return block.get('content').toLowerCase().includes(term);
-    });
+  filteredBlocks: computed('block.blocks.[]', 'filterTerm', function() {
+    return filterBlocks(this.get('block.blocks'), this.get('filterTerm'));
   })
 });

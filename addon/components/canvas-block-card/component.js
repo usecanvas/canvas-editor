@@ -1,6 +1,7 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
+import DS from 'ember-data';
 import Ember from 'ember';
-import NoFilterable from 'canvas-editor/mixins/no-filterable';
+import RSVP from 'rsvp';
 import layout from './template';
 import styles from './styles';
 
@@ -12,7 +13,7 @@ const { computed } = Ember;
  * @class CanvasEditor.CanvasBlockCardComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
-export default CanvasBlock.extend(NoFilterable, {
+export default CanvasBlock.extend({
   classNames: ['canvas-block-card'],
   layout,
   localClassNames: ['canvas-block-card'],
@@ -46,6 +47,13 @@ export default CanvasBlock.extend(NoFilterable, {
   },
 
   unfurled: computed('block', function() {
-    return this.get('unfurl')(this.get('block'));
+    return DS.PromiseObject.create({
+      promise: new RSVP.Promise((resolve, reject) => {
+        this.get('unfurl')(this.get('block')).then(unfurled => {
+          this.get('block').set('unfurled', unfurled);
+          resolve(unfurled);
+        }).catch(reject);
+      })
+    });
   })
 });

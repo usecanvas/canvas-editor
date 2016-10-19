@@ -1,5 +1,4 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
-import ContentFilterable from 'canvas-editor/mixins/content-filterable';
 import Ember from 'ember';
 import layout from './template';
 import styles from './styles';
@@ -12,7 +11,7 @@ const { computed } = Ember;
  * @class CanvasEditor.CanvasBlockHeadingComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
-export default CanvasBlock.extend(ContentFilterable, {
+export default CanvasBlock.extend({
   classNames: ['canvas-block-heading'],
   layout,
   classNameBindings: ['levelClass'],

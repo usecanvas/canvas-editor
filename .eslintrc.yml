@@ -10,7 +10,7 @@ rules:
     - error
     - never
   array-callback-return: error
-  arrow-body-style: 'off'
+  arrow-body-style: off
   arrow-parens:
     - error
     - as-needed
@@ -44,8 +44,8 @@ rules:
     - never
   consistent-return: error
   consistent-this: error
-  curly: 'off'
-  default-case: 'off'
+  curly: off
+  default-case: off
   dot-location:
     - error
     - property
@@ -55,7 +55,7 @@ rules:
   eol-last: error
   eqeqeq: error
   func-call-spacing: error
-  func-names: 'off'
+  func-names: off
   func-style:
     - error
     - declaration
@@ -64,10 +64,10 @@ rules:
   guard-for-in: error
   handle-callback-err: error
   id-blacklist: error
-  id-length: 'off'
+  id-length: off
   id-match: error
-  indent: 'off'
-  init-declarations: 'off'
+  indent: off
+  init-declarations: off
   jsx-quotes: error
   key-spacing: error
   keyword-spacing:
@@ -77,14 +77,14 @@ rules:
   linebreak-style:
     - error
     - unix
-  lines-around-comment: 'off'
+  lines-around-comment: off
   max-depth: error
   max-len:
     - error
     - ignorePattern: '^import|^export'
       ignoreUrls: true
       ignoreTrailingComments: true
-  max-lines: 'off'
+  max-lines: off
   max-nested-callbacks: error
   max-params:
     - error
@@ -92,12 +92,12 @@ rules:
   max-statements:
     - error
     - max: 20
-  max-statements-per-line: 'off'
-  multiline-ternary: 'off'
+  max-statements-per-line: off
+  multiline-ternary: off
   new-parens: error
-  newline-after-var: 'off'
-  newline-before-return: 'off'
-  newline-per-chained-call: 'off'
+  newline-after-var: off
+  newline-before-return: off
+  newline-per-chained-call: off
   no-alert: error
   no-array-constructor: error
   no-bitwise: error
@@ -107,7 +107,7 @@ rules:
   no-console:
     - error
     - allow: ['error', 'warn']
-  no-continue: error
+  no-continue: off
   no-div-regex: error
   no-duplicate-imports: error
   no-else-return: error
@@ -123,18 +123,18 @@ rules:
   no-implicit-coercion: error
   no-implicit-globals: error
   no-implied-eval: error
-  no-inline-comments: 'off'
-  no-invalid-this: 'off'
+  no-inline-comments: off
+  no-invalid-this: off
   no-iterator: error
   no-label-var: error
   no-labels: error
   no-lone-blocks: error
   no-lonely-if: error
   no-loop-func: error
-  no-magic-numbers: 'off'
-  no-mixed-operators: 'off'
+  no-magic-numbers: off
+  no-mixed-operators: off
   no-mixed-requires: error
-  no-multi-spaces: 'off'
+  no-multi-spaces: off
   no-multi-str: error
   no-multiple-empty-lines: error
   no-negated-condition: error
@@ -145,7 +145,7 @@ rules:
   no-new-require: error
   no-new-wrappers: error
   no-octal-escape: error
-  no-param-reassign: 'off'
+  no-param-reassign: off
   no-path-concat: error
   no-plusplus: error
   no-process-env: error
@@ -166,12 +166,12 @@ rules:
   no-sync: error
   no-tabs: error
   no-template-curly-in-string: error
-  no-ternary: 'off'
+  no-ternary: off
   no-throw-literal: error
   no-trailing-spaces: error
   no-undef-init: error
   no-undefined: error
-  no-underscore-dangle: 'off'
+  no-underscore-dangle: off
   no-unmodified-loop-condition: error
   no-unneeded-ternary: error
   no-unsafe-negation: error
@@ -180,7 +180,7 @@ rules:
     - error
     - argsIgnorePattern: '^_'
       varsIgnorePattern: '^_'
-  no-use-before-define: 'off'
+  no-use-before-define: off
   no-useless-call: error
   no-useless-computed-key: error
   no-useless-concat: error
@@ -192,45 +192,45 @@ rules:
   no-warning-comments: error
   no-whitespace-before-property: error
   no-with: error
-  object-curly-newline: 'off'
+  object-curly-newline: off
   object-curly-spacing:
     - error
     - always
-  object-property-newline: 'off'
+  object-property-newline: off
   object-shorthand: error
-  one-var: 'off'
+  one-var: off
   one-var-declaration-per-line: error
   operator-assignment: error
   operator-linebreak: error
-  padded-blocks: 'off'
-  prefer-arrow-callback: 'off'
+  padded-blocks: off
+  prefer-arrow-callback: off
   prefer-const: error
   prefer-reflect: error
-  prefer-rest-params: 'off'
+  prefer-rest-params: off
   prefer-spread: error
   prefer-template: error
-  quote-props: 'off'
+  quote-props: off
   quotes:
     - error
     - single
   radix: error
-  require-jsdoc: 'off'
+  require-jsdoc: off
   rest-spread-spacing:
     - error
     - never
   semi: error
   semi-spacing: error
-  sort-imports: 'off'
-  sort-keys: 'off'
+  sort-imports: off
+  sort-keys: off
   sort-vars: error
   space-before-blocks: error
-  space-before-function-paren: 'off'
+  space-before-function-paren: off
   space-in-parens:
     - error
     - never
   space-infix-ops: error
   space-unary-ops: error
-  spaced-comment: 'off'
+  spaced-comment: off
   strict: error
   template-curly-spacing:
     - error

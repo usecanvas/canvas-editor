@@ -1,7 +1,6 @@
 import CardBlock from 'canvas-editor/components/canvas-block-card/component';
 import Ember from 'ember';
 import layout from './template';
-import searchMatch from 'canvas-editor/lib/search-match';
 import styles from './styles';
 
 const { computed } = Ember;
@@ -27,18 +26,5 @@ export default CardBlock.extend({
       'Framer',
       'GitHub Gist'
     ].includes(this.get('unfurled.providerName'));
-  }),
-
-  isFiltered: computed('filterTerm',
-                       'block.meta.url',
-                       'unfurled.title',
-                       'unfurled.text', function() {
-    const term = this.get('filterTerm');
-
-    return [
-      this.get('block.meta.url'),
-      this.get('unfurled.title'),
-      this.get('unfurled.text')
-    ].any(value => searchMatch(term, value));
   })
 });

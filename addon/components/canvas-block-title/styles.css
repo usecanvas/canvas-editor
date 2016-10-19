@@ -52,13 +52,6 @@
   padding: 0.25rem 0.5rem;
 }
 
-.template:hover {
-  background: --blue;
-  border-radius: 3px;
-  color: white;
-  cursor: pointer;
-}
-
 .template-is-selected {
   background: --blue;
   border-radius: 3px;

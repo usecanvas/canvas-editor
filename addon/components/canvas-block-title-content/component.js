@@ -20,11 +20,22 @@ export default CanvasBlockEditable.extend({
   }),
 
   keyDown(evt) {
-      console.log(evt.keyCode, ':', this.get('showTemplates'));
     if (this.get('showTemplates')) {
-      console.log(evt.keyCode);
-
+      switch (evt.keyCode) {
+        case 38:
+        case 40:
+          this.get('navigateAutocomplete')(evt.keyCode - 39);
+          evt.preventDefault();
+          break;
+        case 13:
+          this.get('selectTemplateByIndex')();
+          evt.preventDefault();
+          break;
+        default:
+          this._super(...arguments);
+      }
+    } else {
+      this._super(...arguments);
     }
-    this._super(...arguments);
   }
 });

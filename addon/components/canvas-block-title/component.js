@@ -4,7 +4,7 @@ import RSVP from 'rsvp';
 import layout from './template';
 import styles from './styles';
 
-const { computed, get } = Ember;
+const { computed, get, observer } = Ember;
 
 /**
  * A component representing a "title" type canvas block.
@@ -19,11 +19,30 @@ export default CanvasBlock.extend({
   layout,
   localClassNames: ['canvas-block-title'],
   styles,
+  selectedIndex: 0,
+
+  resetSelectedIndex: observer('showTemplates', 'block.content', function() {
+    if (this.get('showTemplates')) {
+      this.set('selectedIndex', 0);
+    }
+  }),
 
   showTemplates: computed('searchTerm', 'hasContent', 'isFocused', function() {
     return !this.get('hasContent') &&
       this.get('isFocused');
   }),
+
+  filterTemplates(value) {
+    if (!value) return RSVP.resolve([]);
+
+    return this.get('fetchTemplates')().then(templates => {
+      return templates.filter(template => {
+        return get(template, 'blocks.0.content')
+          .toLowerCase()
+          .indexOf(value.toLowerCase()) > -1;
+      });
+    });
+  },
 
   actions: {
     remainFocused(evt) {
@@ -34,15 +53,21 @@ export default CanvasBlock.extend({
       this.get('onTemplateApply')(template);
     },
 
-    filterTemplates(value) {
-      if (!value) return RSVP.resolve([]);
+    updateSelectedIndex(index) {
+      this.set('selectedIndex', index);
+    },
 
-      return this.get('fetchTemplates')().then(templates => {
-        return templates.filter(template => {
-          return get(template, 'blocks.0.content')
-            .toLowerCase()
-            .indexOf(value.toLowerCase()) > -1;
-        });
+    navigateAutocomplete(direction) {
+      this.filterTemplates(this.get('block.content')).then(content => {
+        const length = content.length;
+        const selectedIndex = (length + this.get('selectedIndex') + direction) % length;
+        this.set('selectedIndex', selectedIndex);
+      });
+    },
+
+    selectTemplateByIndex(index) {
+      this.filterTemplates(this.get('block.content')).then(content => {
+        this.get('onTemplateApply')(content[index]);
       });
     }
   }

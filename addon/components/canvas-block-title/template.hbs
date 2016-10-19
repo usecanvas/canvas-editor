@@ -6,6 +6,8 @@
       editingEnabled=editingEnabled
       showTemplates=showTemplates
       isFocused=(mut isFocused)
+      navigateAutocomplete=(action 'navigateAutocomplete')
+      selectTemplateByIndex=(action "selectTemplateByIndex" selectedIndex)
       onBlockDeletedLocally=onBlockDeletedLocally
       onBlockReplacedLocally=onBlockReplacedLocally
       onNavigateDown=onNavigateDown
@@ -29,12 +31,12 @@
     {{#ui-list-filter
       value=block.content
       isShowingSelect=(mut isShowingSelect)
-      onFilter=(action 'filterTemplates')
+      onFilter=(action filterTemplates)
       as |templates|}}
         {{#if templates}}
           <div local-class="suggestions-content">
-            {{#each templates as |template|}}
-              <div local-class="template {{if false "template-is-selected"}}" onmousedown={{action "remainFocused"}} onclick={{action "selectTemplate" template}}>{{template.blocks.0.content}}</div>
+            {{#each templates as |template index|}}
+              <div local-class="template {{if (eq index selectedIndex) "template-is-selected"}}" onmouseover={{action "updateSelectedIndex" index}} onmousedown={{action "remainFocused"}} onclick={{action "selectTemplate" template}}>{{template.blocks.0.content}}</div>
             {{/each}}
           </div>
         {{/if}}

@@ -47,10 +47,13 @@ export default CanvasBlock.extend({
   },
 
   unfurled: computed('block', function() {
+    const block = this.get('block');
+
     return DS.PromiseObject.create({
       promise: new RSVP.Promise((resolve, reject) => {
-        this.get('unfurl')(this.get('block')).then(unfurled => {
-          this.get('block').set('unfurled', unfurled);
+        this.get('unfurl')(block).then(unfurled => {
+          this.get('cardDidLoad')();
+          block.set('unfurled', unfurled);
           resolve(unfurled);
         }).catch(reject);
       })

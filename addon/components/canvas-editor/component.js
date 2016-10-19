@@ -23,6 +23,7 @@ const { computed, observer, run } = Ember;
  * @extends Ember.Component
  */
 export default Ember.Component.extend({
+  cardLoadIndex: 0, // Counter to increment when cards load
   classNames: ['canvas-editor'],
   hasContent: computed.gt('canvas.blocks.length', 1),
   localClassNames: ['canvas-editor'],
@@ -36,7 +37,8 @@ export default Ember.Component.extend({
 
   titleBlock: computed.readOnly('canvas.blocks.firstObject'),
 
-  contentBlocks: computed('canvas.blocks.[]', 'filterTerm', function() {
+  contentBlocks: computed('canvas.blocks.[]', 'filterTerm', 'cardLoadIndex',
+                 function() {
     return filterBlocks(this.get('canvas.blocks').slice(1),
                         this.get('filterTerm'));
   }),
@@ -542,6 +544,17 @@ export default Ember.Component.extend({
       if (opts.focus) {
         run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);
       }
+    },
+
+    /**
+     * Called when a card unfurls, allowing us to increment a property and react
+     * to that event.
+     *
+     * @method
+     */
+    cardDidLoad() {
+      run.scheduleOnce(
+        'afterRender', this, 'incrementProperty', 'cardLoadIndex');
     },
 
     /**

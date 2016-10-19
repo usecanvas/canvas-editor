@@ -19,6 +19,8 @@ export default CanvasBlock.extend({
   localClassNames: ['canvas-block-card'],
   styles,
 
+  cardDidLoad: Ember.K,
+
   authComponent: computed('unfurled.providerName', function() {
     switch (this.get('unfurled.providerName')) {
       case 'GitHub':

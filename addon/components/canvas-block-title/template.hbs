@@ -4,6 +4,7 @@
       block=block
       changeBlockType=changeBlockType
       editingEnabled=editingEnabled
+      filteredTemplates=filteredTemplates
       showTemplates=showTemplates
       isFocused=(mut isFocused)
       navigateAutocomplete=(action 'navigateAutocomplete')
@@ -32,6 +33,7 @@
       value=block.content
       isShowingSelect=(mut isShowingSelect)
       onFilter=(action filterTemplates)
+      onResolveFilter=(action 'updateFilteredTemplates')
       as |templates|}}
         {{#if templates}}
           <div local-class="suggestions-content">

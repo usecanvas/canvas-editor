@@ -20,7 +20,7 @@ export default CanvasBlockEditable.extend({
   }),
 
   keyDown(evt) {
-    if (this.get('showTemplates')) {
+    if (this.get('showTemplates') && this.get('filteredTemplates.length')) {
       switch (evt.keyCode) {
         case 38:
         case 40:

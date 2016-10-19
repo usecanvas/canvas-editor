@@ -53,6 +53,10 @@ export default CanvasBlock.extend({
       this.get('onTemplateApply')(template);
     },
 
+    updateFilteredTemplates(templates) {
+      this.set('filteredTemplates', templates);
+    },
+
     updateSelectedIndex(index) {
       this.set('selectedIndex', index);
     },

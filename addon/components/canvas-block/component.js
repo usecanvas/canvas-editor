@@ -18,5 +18,10 @@ export default Ember.Component.extend(BlockEvents, {
   isVisible: computed.readOnly('isFiltered'),
   localClassNames: ['canvas-block'],
   localClassNameBindings: ['isFocused'],
-  styles
+  styles,
+
+  init() {
+    this.set('elementId', this.get('block.id'));
+    this._super(...arguments);
+  }
 });

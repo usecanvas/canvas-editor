@@ -4,6 +4,7 @@
       block=block
       changeBlockType=changeBlockType
       editingEnabled=editingEnabled
+      showTemplates=showTemplates
       isFocused=(mut isFocused)
       onBlockDeletedLocally=onBlockDeletedLocally
       onBlockReplacedLocally=onBlockReplacedLocally
@@ -33,7 +34,7 @@
         {{#if templates}}
           <div local-class="suggestions-content">
             {{#each templates as |template|}}
-              <div local-class="template" onmousedown={{action "remainFocused"}} onclick={{action "selectTemplate" template}}>{{template.blocks.0.content}}</div>
+              <div local-class="template {{if false "template-is-selected"}}" onmousedown={{action "remainFocused"}} onclick={{action "selectTemplate" template}}>{{template.blocks.0.content}}</div>
             {{/each}}
           </div>
         {{/if}}

@@ -17,5 +17,14 @@ export default CanvasBlockEditable.extend({
 
   placeholder: computed('block.meta.placeholder', function() {
     return this.getWithDefault('block.meta.placeholder', 'Give me a title...');
-  })
+  }),
+
+  keyDown(evt) {
+      console.log(evt.keyCode, ':', this.get('showTemplates'));
+    if (this.get('showTemplates')) {
+      console.log(evt.keyCode);
+
+    }
+    this._super(...arguments);
+  }
 });

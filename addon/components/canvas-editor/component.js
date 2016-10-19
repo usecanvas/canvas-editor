@@ -141,6 +141,12 @@ export default Ember.Component.extend({
     }
   },
 
+  mouseDown(evt) {
+    if (evt.metaKey && evt.shiftKey) {
+      evt.preventDefault();
+    }
+  },
+
   onMetaSelectText: Ember.K,
 
   isInEditor(evt) {

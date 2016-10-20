@@ -6,12 +6,7 @@ const { observer, on } = Ember;
 export default Ember.Component.extend({
   layout,
 
-  setupResults: on('init', function() {
-    this.set('results', []);
-    this.get('onResolveFilter')([]);
-  }),
-
-  teardownResults: on('willDestroyElement', function() {
+  setupResults: on('init', 'willDestroyElement', function() {
     this.set('results', []);
     this.get('onResolveFilter')([]);
   }),

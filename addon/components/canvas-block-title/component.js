@@ -38,7 +38,7 @@ export default CanvasBlock.extend({
       return templates.filter(template => {
         return get(template, 'blocks.0.content')
           .toLowerCase()
-          .indexOf(value.toLowerCase()) > -1;
+          .includes(value.toLowerCase());
       });
     });
   },

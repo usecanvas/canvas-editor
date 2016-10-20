@@ -1,9 +1,8 @@
-{{#each block.blocks as |child|~}}
+{{#each filteredBlocks as |child|~}}
   {{component (block-component-name child.type)
     block=child
     editingEnabled=editingEnabled
     changeBlockType=changeBlockType
-    filterTerm=filterTerm
     onBlockDeletedLocally=onBlockDeletedLocally
     onNavigateDown=onNavigateDown
     onNavigateLeft=onNavigateLeft

@@ -1,5 +1,6 @@
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Ember from 'ember';
+import filterBlocks from 'canvas-editor/lib/filter-blocks';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import layout from './template';
 import List from 'canvas-editor/lib/realtime-canvas/list';
@@ -22,6 +23,7 @@ const { computed, observer, run } = Ember;
  * @extends Ember.Component
  */
 export default Ember.Component.extend({
+  cardLoadIndex: 0, // Counter to increment when cards load
   classNames: ['canvas-editor'],
   hasContent: computed.gt('canvas.blocks.length', 1),
   localClassNames: ['canvas-editor'],
@@ -35,8 +37,10 @@ export default Ember.Component.extend({
 
   titleBlock: computed.readOnly('canvas.blocks.firstObject'),
 
-  contentBlocks: computed('canvas.blocks.[]', function() {
-    return this.get('canvas.blocks').slice(1);
+  contentBlocks: computed('canvas.blocks.[]', 'filterTerm', 'cardLoadIndex',
+                 function() {
+    return filterBlocks(this.get('canvas.blocks').slice(1),
+                        this.get('filterTerm'));
   }),
 
   didInsertElement() {
@@ -136,12 +140,14 @@ export default Ember.Component.extend({
         .findBy('id',
                 $target.closest('.canvas-block-card').attr('data-block-id'));
       Selection.selectCardBlock(this.$(), block);
+    } else if (evt.metaKey && evt.shiftKey) {
+      this.get('onMetaSelectText')(evt);
     }
   },
 
   mouseDown(evt) {
     if (evt.metaKey && evt.shiftKey) {
-      this.get('onMetaSelectText')(evt);
+      evt.preventDefault();
     }
   },
 
@@ -538,6 +544,17 @@ export default Ember.Component.extend({
       if (opts.focus) {
         run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);
       }
+    },
+
+    /**
+     * Called when a card unfurls, allowing us to increment a property and react
+     * to that event.
+     *
+     * @method
+     */
+    cardDidLoad() {
+      run.scheduleOnce(
+        'afterRender', this, 'incrementProperty', 'cardLoadIndex');
     },
 
     /**

@@ -9,6 +9,7 @@
       isFocused=(mut isFocused)
       navigateAutocomplete=(action 'navigateAutocomplete')
       selectTemplateByIndex=(action "selectTemplateByIndex" selectedIndex)
+      onAutocompleteEscape=(action 'updateFilteredTemplates')
       onBlockDeletedLocally=onBlockDeletedLocally
       onBlockReplacedLocally=onBlockReplacedLocally
       onNavigateDown=onNavigateDown
@@ -34,6 +35,7 @@
       isShowingSelect=(mut isShowingSelect)
       onFilter=(action filterTemplates)
       onResolveFilter=(action 'updateFilteredTemplates')
+      results=filteredTemplates
       as |templates|}}
         {{#if templates}}
           <div local-class="suggestions-content">

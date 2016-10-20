@@ -27,6 +27,11 @@ export default CanvasBlockEditable.extend({
           this.get('navigateAutocomplete')(evt.keyCode - 39);
           evt.preventDefault();
           break;
+        case 27:
+          this.get('onAutocompleteEscape')([]);
+          evt.preventDefault();
+          evt.stopPropagation();
+          break;
         case 13:
           this.get('selectTemplateByIndex')();
           evt.preventDefault();

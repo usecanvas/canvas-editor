@@ -24,7 +24,9 @@ export default CanvasBlockEditable.extend({
       switch (evt.keyCode) {
         case 38:
         case 40:
-          this.get('navigateAutocomplete')(evt.keyCode - 39);
+          // Up & Down offsets are turned into -1 & 1 respectively
+          const offset = evt.keyCode - 39;
+          this.get('navigateAutocomplete')(offset);
           evt.preventDefault();
           break;
         case 27:

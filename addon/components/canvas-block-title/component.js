@@ -63,8 +63,9 @@ export default CanvasBlock.extend({
 
     navigateAutocomplete(direction) {
       this.filterTemplates(this.get('block.content')).then(content => {
-        const length = content.length;
-        const selectedIndex = (length + this.get('selectedIndex') + direction) % length;
+        const len = content.length;
+        const selectedIndex =
+          (len + this.get('selectedIndex') + direction) % len;
         this.set('selectedIndex', selectedIndex);
       });
     },

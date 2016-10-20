@@ -43,13 +43,19 @@ export default Ember.Component.extend({
                         this.get('filterTerm'));
   }),
 
+  initialFocusBlock: computed('canvas.blocks.[]', function() {
+    const id = window.location.hash.slice(1);
+    const block = this.get('canvas.blocks').findBy('id', id);
+    return block || this.get('canvas.blocks.firstObject');
+  }),
+
   didInsertElement() {
     this.bindKeyDownEvents();
 
     run.next(_ => {
       if (!this.get('isVisible')) return;
       if (!this.get('editingEnabled')) return;
-      this.focusBlockStart(this.get('canvas.blocks.firstObject'));
+      this.focusBlockStart(this.get('initialFocusBlock'));
     });
   },
 

@@ -1,5 +1,5 @@
+@value --blue from 'canvas-colors/styles/colors';
 @value --dark-gray from 'canvas-colors/styles/colors';
-@value --extra-light-gray from 'canvas-colors/styles/colors';
 @value --gray from 'canvas-colors/styles/colors';
 
 .canvas-block-heading {
@@ -9,10 +9,6 @@
 
 .canvas-block-heading + .canvas-block-heading {
   margin-top: 1rem;
-}
-
-.is-focused {
-  composes: is-focused from 'canvas-editor/components/canvas-block-paragraph/styles';
 }
 
 .heading-level-1 {
@@ -60,31 +56,34 @@
   z-index: 2;
 }
 
-.actions {
+.block-link {
+  display: block;
+  height: 100%;
+  left: -1rem;
   opacity: 0;
   position: absolute;
-  right: 0;
-  top: -1.1875rem;
-  transition: opacity 0.2s ease-in-out;
-  z-index: 2;
+  top: 0;
+  width: 1rem;
 }
 
-.canvas-block-heading:hover::after {
-  background: --extra-light-gray;
-  border-radius: 4px;
-  bottom: -0.25rem;
+.block-link::before {
+  background: --gray;
+  border-radius: 1000px;
   content: '';
   display: block;
-  left: -0.25rem;
-  opacity: 0;
+  height: 100%;
+  left: 0;
   position: absolute;
-  right: -0.25rem;
-  top: -0.25rem;
-  transition: opacity 0.2s ease-in-out;
-  z-index: 0;
+  width: 3px;
 }
 
-.canvas-block-heading:hover::after,
-.canvas-block-heading:hover .actions {
+.canvas-block-heading:hover .block-link,
+.block-link:focus,
+.is-focused .block-link {
   opacity: 1;
+}
+
+.block-link:focus::before,
+.is-focused .block-link::before {
+  background: --blue;
 }

@@ -3,13 +3,9 @@
     <div local-class="header">
       {{svg-jar typeIcon height='24' width='24' local-class='provider-icon'}}
 
-      {{#if canvasId}}
-        {{#component canvasLinkComponent id=canvasId local-class='title'}}
-          {{unfurled.title}}
-        {{/component}}
-      {{else}}
-        <a href="{{unfurled.url}}" local-class="title">{{unfurled.title}}</a>
-      {{/if}}
+      {{#component canvasLinkComponent url=unfurled.url local-class='title'}}
+        {{unfurled.title}}
+      {{/component}}
     </div>
 
     {{#if unfurled.text}}

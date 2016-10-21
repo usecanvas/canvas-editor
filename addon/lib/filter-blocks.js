@@ -34,6 +34,8 @@ function filterHeading(block, filterTerm, blocks) {
   const index = blocks.indexOf(block);
   const searchBlocks = blocks.slice(index + 1);
 
+  if (searchMatch(block.get('content'), filterTerm)) return true;
+
   for (const searchBlock of searchBlocks) {
     if (searchBlock.get('type') === 'heading' &&
         searchBlock.get('meta.level') <= block.get('meta.level')) {

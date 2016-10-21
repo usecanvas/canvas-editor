@@ -6,17 +6,12 @@ const { computed } = Ember;
 
 const TASKS_COMPLETE = 'Tasks Complete';
 const TASKS_TOTAL = 'Tasks Total';
-const CANVAS_ID_REGEX = /^https?:\/\/[^/]+\/[^/]+\/([^/]{22})/;
 
 export default Ember.Component.extend({
   classNames: ['canvas-block-url-canvas'],
   layout,
   localClassNames: ['canvas-block-url-canvas'],
   styles,
-
-  canvasId: computed('unfurled.url', function() {
-    return this.get('unfurled.url').match(CANVAS_ID_REGEX)[1];
-  }),
 
   hasProgress: computed('progress', function() {
     return getValueFromFields(Ember.A(this.get('unfurled.fields')),

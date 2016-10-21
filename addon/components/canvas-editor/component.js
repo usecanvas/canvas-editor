@@ -44,7 +44,7 @@ export default Ember.Component.extend({
   }),
 
   initialFocusBlock: computed('canvas.blocks.[]', function() {
-    const id = window.location.hash.slice(1);
+    const id = (window.location.search.match(/block=(\w{22})/) || [])[1];
     const block = this.get('canvas.blocks').findBy('id', id);
     return block || this.get('canvas.blocks.firstObject');
   }),

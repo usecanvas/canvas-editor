@@ -78,11 +78,13 @@
 }
 
 .canvas-block-heading:hover .block-link,
+.block-link:active,
 .block-link:focus,
 .is-focused .block-link {
   opacity: 1;
 }
 
+.block-link:active::before,
 .block-link:focus::before,
 .is-focused .block-link::before {
   background: --blue;

@@ -1,5 +1,9 @@
 {{#if canvasLinkComponent}}
-  {{canvas-link blockID=block.id filter=filterTerm class=styles.block-link}}
+  {{component canvasLinkComponent
+    blockID=block.id
+    canvasID=canvasID
+    class=styles.block-link
+    filter=filterTerm}}
 {{/if}}
 
 <div local-class="content">

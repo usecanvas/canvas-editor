@@ -1,6 +1,6 @@
 {
   "name": "@usecanvas/canvas-editor",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "The default blueprint for ember-cli addons.",
   "directories": {
     "doc": "doc",

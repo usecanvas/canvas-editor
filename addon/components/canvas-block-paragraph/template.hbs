@@ -1,3 +1,10 @@
+{{#if canvasLinkComponent}}
+  {{component canvasLinkComponent
+    blockID=block.id
+    class=styles.block-link
+    filter=filterTerm}}
+{{/if}}
+
 <div local-class="content">
   {{canvas-block-paragraph-content
     block=block

@@ -1,3 +1,41 @@
+@value --blue from 'canvas-colors/styles/colors';
+@value --gray from 'canvas-colors/styles/colors';
+
 .canvas-block {
   margin: 0 0 1.5rem;
+  position: relative;
+}
+
+.block-link {
+  display: block;
+  height: 100%;
+  left: -1rem;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  width: 1rem;
+}
+
+.block-link::before {
+  background: --gray;
+  border-radius: 1000px;
+  content: '';
+  display: block;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  width: 3px;
+}
+
+.canvas-block:hover .block-link,
+.block-link:active,
+.block-link:focus,
+.is-focused .block-link {
+  opacity: 1;
+}
+
+.block-link:active::before,
+.block-link:focus::before,
+.is-focused .block-link::before {
+  background: --blue;
 }

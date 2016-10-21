@@ -1,3 +1,10 @@
+{{#if canvasLinkComponent}}
+  {{component canvasLinkComponent
+    blockID=block.id
+    class=styles.block-link
+    filter=filterTerm}}
+{{/if}}
+
 <div local-class="content">
   {{canvas-block-heading-content
     block=block
@@ -15,9 +22,3 @@
     onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
     onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
 </div>
-
-{{#if actionsComponent}}
-  <div local-class="actions">
-    {{component actionsComponent block=block}}
-  </div>
-{{/if}}

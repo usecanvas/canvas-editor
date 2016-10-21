@@ -26,3 +26,11 @@
   top: 0.125em;
   width: 1.125em;
 }
+
+.block-link {
+  composes: block-link from 'canvas-editor/components/canvas-block/styles';
+}
+
+.is-focused {
+  composes: is-focused from 'canvas-editor/components/canvas-block/styles';
+}

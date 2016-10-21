@@ -1,6 +1,7 @@
 {{#each filteredBlocks as |child|~}}
   {{component (block-component-name child.type)
     block=child
+    canvasLinkComponent=canvasLinkComponent
     editingEnabled=editingEnabled
     changeBlockType=changeBlockType
     onBlockDeletedLocally=onBlockDeletedLocally

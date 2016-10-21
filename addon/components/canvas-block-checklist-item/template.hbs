@@ -1,7 +1,12 @@
+{{#if canvasLinkComponent}}
+  {{component canvasLinkComponent
+    blockID=block.id
+    class=styles.block-link
+    filter=filterTerm}}
+{{/if}}
+
 <div local-class="checkbox">
-  {{ui-checkbox
-    checked=block.meta.checked onToggle=(action 'onToggleChecked')
-    isFocused=isFocused}}
+  {{ui-checkbox checked=block.meta.checked onToggle=(action 'onToggleChecked')}}
 </div>
 
 <div local-class="content">

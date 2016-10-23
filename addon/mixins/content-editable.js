@@ -71,6 +71,20 @@ export default Ember.Mixin.create(Selection, {
   },
 
   /**
+   * Called when the user pastes text.
+   *
+   * We check the pasted text and make sure to insert plain text only.
+   *
+   * @method
+   * @param {Event} evt The event fired
+   */
+  paste(evt) {
+    evt.preventDefault();
+    const text = evt.originalEvent.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
+  },
+
+  /**
    * Called when the user presses the backspace key.
    *
    * We analyze the text of the block and join it with the previous block (or

@@ -80,7 +80,7 @@ export default Ember.Mixin.create(Selection, {
    */
   paste(evt) {
     evt.preventDefault();
-    const text = evt.originalEvent.clipboardData.getData("text/plain");
+    const text = evt.originalEvent.clipboardData.getData('text/plain');
     document.execCommand('insertText', false, text);
   },
 

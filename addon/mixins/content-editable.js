@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import Selection from 'canvas-editor/mixins/selection';
+import SelectionState from 'canvas-editor/lib/selection-state';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
+import { highlight } from 'canvas-editor/lib/markdown/parser';
 
 const { computed, observer, on } = Ember;
 
@@ -10,10 +12,14 @@ const { computed, observer, on } = Ember;
  * @class CanvasEditor.ContentEditableMixin
  * @extends Ember.Mixin
  */
-export default Ember.Mixin.create(Selection, {
+export default Ember.Mixin.create(Selection, SelectionState, {
   attributeBindings: ['contentEditable:contenteditable'],
   contentEditable: computed.readOnly('editingEnabled'),
   isUpdatingBlockContent: false,
+
+  selection: computed(function() {
+    return new SelectionState(this.get('element'));
+  }),
 
   getElementRect(side = 'top') {
     const rects = this.get('element').getClientRects();
@@ -30,6 +36,9 @@ export default Ember.Mixin.create(Selection, {
     const element = this.get('element');
     const text = element.innerText || element.textContent;
     this.setBlockContentFromInput(text);
+    this.get('selection').capture();
+    this.renderBlockContent();
+    this.get('selection').restore();
   },
 
   /**
@@ -213,7 +222,7 @@ export default Ember.Mixin.create(Selection, {
       const content = this.get('block.content');
 
       if (content) {
-        this.$().text(content);
+        this.$().html(highlight(content));
       } else {
         this.$().html('<br>');
       }

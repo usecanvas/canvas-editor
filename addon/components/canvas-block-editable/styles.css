@@ -3,6 +3,20 @@
 .canvas-block-editable {
   position: relative;
   white-space: pre-wrap;
+
+  :global {
+    .md-folding {
+      font-size: 0;
+    }
+  }
+}
+
+.is-focused {
+  :global {
+    .md-folding {
+      font-size: inherit;
+    }
+  }
 }
 
 .is-empty::after {

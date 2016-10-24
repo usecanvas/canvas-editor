@@ -505,6 +505,7 @@ export default Ember.Component.extend({
           const newBlock =
             UnorderedListItem.createFromMarkdown(content, {
               id: block.get('id'),
+              meta: { level: block.getWithDefault('meta.level', 1) },
               parent: group
             });
           this.get('onBlockDeletedLocally')(index, block);
@@ -518,7 +519,7 @@ export default Ember.Component.extend({
           const newBlock =
             ChecklistItem.createFromMarkdown(content, {
               id: block.get('id'),
-              meta: { level: block.get('meta.level') },
+              meta: { level: block.getWithDefault('meta.level', 1) },
               parent: group
             });
           this.get('onBlockDeletedLocally')(index, block);

@@ -22,6 +22,19 @@ export default CanvasBlock.extend({
     return this.get('styles')[`checklist-level-${this.get('block.meta.level')}`];
   }),
 
+  offsetLevel(offset) {
+    const oldLevel = this.getWithDefault('block.meta.level', 1);
+    const newLevel = Math.max(1, Math.min(4, offset + oldLevel));
+    if (oldLevel !== newLevel) {
+      this.set('block.meta.level', newLevel);
+      this.get('onBlockMetaReplacedLocally')(
+        this.get('block'),
+        ['level'],
+        oldLevel,
+        newLevel);
+    }
+  },
+
   actions: {
     onToggleChecked() {
       if (!this.get('editingEnabled')) return;

@@ -1,5 +1,6 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
+import IndentableLevels from 'canvas-editor/mixins/indentable-levels';
 import styles from './styles';
 
 /**
@@ -8,28 +9,11 @@ import styles from './styles';
  * @class CanvasEditor.CanvasBlockUnorderedListItemComponent
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
-export default CanvasBlockEditable.extend({
+export default CanvasBlockEditable.extend(IndentableLevels, {
   classNames: ['canvas-block-unordered-list-item-content'],
   localClassNames: ['canvas-block-unordered-list-item-content'],
   nextBlockConstructor: UnorderedList,
   styles,
-
-  keyDown(evt) {
-    if (evt.keyCode === 9) {
-      evt.preventDefault();
-      evt.stopPropagation();
-      if (evt.shiftKey) {
-        this.get('unindentBlock')();
-      } else {
-        this.get('indentBlock')();
-      }
-    } else {
-      this._super(...arguments);
-    }
-  },
-
-  indentBlock: Ember.K,
-  unindentBlock: Ember.K,
 
   newBlockInsertedLocally(content) {
     if (!this.get('block.content')) {

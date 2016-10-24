@@ -1,5 +1,6 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
+import IndentableLevels from 'canvas-editor/mixins/indentable-levels';
 import styles from './styles';
 
 /**
@@ -8,7 +9,7 @@ import styles from './styles';
  * @class CanvasEditor.CanvasBlockChecklistItemContentComponent
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
-export default CanvasBlockEditable.extend({
+export default CanvasBlockEditable.extend(IndentableLevels, {
   classNames: ['canvas-block-checklist-item-content'],
   localClassNames: ['canvas-block-checklist-item-content'],
   nextBlockConstructor: ChecklistItem,

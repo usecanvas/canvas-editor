@@ -14,6 +14,23 @@ export default CanvasBlockEditable.extend({
   nextBlockConstructor: UnorderedList,
   styles,
 
+  keyDown(evt) {
+    if (evt.keyCode === 9) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      if (evt.shiftKey) {
+        this.get('unindentBlock')();
+      } else {
+        this.get('indentBlock')();
+      }
+    } else {
+      this._super(...arguments);
+    }
+  },
+
+  indentBlock: Ember.K,
+  unindentBlock: Ember.K,
+
   newBlockInsertedLocally(content) {
     if (!this.get('block.content')) {
       return this.get('changeBlockType')(

@@ -1,5 +1,7 @@
 import ContentBlock from './content-block';
 
+const { computed } = Ember;
+
 /**
  * A block representing a paragraph.
  *
@@ -7,7 +9,8 @@ import ContentBlock from './content-block';
  * @extends CanvasEditor.RealtimeCanvas.ContentBlock
  */
 export default ContentBlock.extend({
-  type: 'unordered-list-item'
+  type: 'unordered-list-item',
+  meta: computed(_ => Ember.Object.create({ level: 1 }))
 }).reopenClass({
   createFromMarkdown(markdown, properties) {
     const content = markdown.split(/^- /)[1] || '';

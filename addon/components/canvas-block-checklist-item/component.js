@@ -2,6 +2,8 @@ import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import layout from './template';
 import styles from './styles';
 
+const { computed } = Ember;
+
 /**
  * A component representing a checklist item.
  *
@@ -10,10 +12,15 @@ import styles from './styles';
  */
 export default CanvasBlock.extend({
   classNames: ['canvas-block-checklist-item'],
+  classNameBindings: ['levelClass'],
   layout,
   localClassNames: ['canvas-block-checklist-item'],
   styles,
   tagName: 'li',
+
+  levelClass: computed('block.meta.level', function() {
+    return this.get('styles')[`checklist-level-${this.get('block.meta.level')}`];
+  }),
 
   actions: {
     onToggleChecked() {

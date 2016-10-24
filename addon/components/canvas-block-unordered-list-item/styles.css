@@ -1,5 +1,6 @@
 @value --list-bullet-color from "canvas-editor/styles/theme";
 @value --blue from "canvas-editor/styles/theme";
+@value --list-indent: 1.625em;
 
 .canvas-block-unordered-list-item {
   list-style: none;
@@ -22,6 +23,22 @@
   position: absolute;
   top: 0.4375em;
   width: 0.5em;
+}
+
+.unordered-list-level-1 {
+  margin-left: calc(0 * --list-indent);
+}
+
+.unordered-list-level-2 {
+  margin-left: calc(1 * --list-indent);
+}
+
+.unordered-list-level-3 {
+  margin-left: calc(2 * --list-indent);
+}
+
+.unordered-list-level-4 {
+  margin-left: calc(3 * --list-indent);
 }
 
 .is-focused::before {

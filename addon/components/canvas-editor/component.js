@@ -478,7 +478,8 @@ export default Ember.Component.extend({
 
           block.setProperties({
             type: 'unordered-list-item',
-            content: content.slice(2)
+            content: content.slice(2),
+            meta: { level: 1 }
           });
 
           blocks.replace(index, 1, [group]);
@@ -517,6 +518,7 @@ export default Ember.Component.extend({
           const newBlock =
             ChecklistItem.createFromMarkdown(content, {
               id: block.get('id'),
+              meta: { level: block.get('meta.level') },
               parent: group
             });
           this.get('onBlockDeletedLocally')(index, block);

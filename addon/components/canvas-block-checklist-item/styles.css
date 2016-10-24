@@ -1,3 +1,5 @@
+@value --list-indent: 1.625em;
+
 .canvas-block-checklist-item {
   list-style: none;
   padding-left: 1.5em;
@@ -11,4 +13,20 @@
   position: absolute;
   top: 0.125em;
   width: 1.125em;
+}
+
+.checklist-level-1 {
+  margin-left: calc(0 * --list-indent);
+}
+
+.checklist-level-2 {
+  margin-left: calc(1 * --list-indent);
+}
+
+.checklist-level-3 {
+  margin-left: calc(2 * --list-indent);
+}
+
+.checklist-level-4 {
+  margin-left: calc(3 * --list-indent);
 }

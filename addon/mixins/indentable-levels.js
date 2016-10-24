@@ -8,7 +8,7 @@ export default Ember.Mixin.create({
 
   levelClass: computed('block.meta.level', function() {
     /* eslint-disable max-len */
-    return this.get('styles')[`${this.get('levelClassPrefix')}-${this.get('block.meta.level')}`];
+    return this.get('styles')[`${this.get('levelClassPrefix')}-${this.getWithDefault('block.meta.level', 1)}`];
   }),
 
   offsetLevel(offset) {

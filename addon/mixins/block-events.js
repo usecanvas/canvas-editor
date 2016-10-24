@@ -35,6 +35,7 @@ export default Ember.Mixin.create({
     if (this.get('block.parent')) {
       newBlock = this.get('nextBlockConstructor').create({
         content,
+        meta: { level: this.get('block.meta.level') },
         parent: this.get('block.parent')
       });
     } else {

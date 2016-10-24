@@ -12,7 +12,6 @@ import styles from './styles';
 export default CanvasBlock.extend(IndentableLevels, {
   classNames: ['canvas-block-unordered-list-item'],
   layout,
-  levelClassPrefix: 'unordered-list-level',
   localClassNames: ['canvas-block-unordered-list-item'],
   styles,
   tagName: 'li'

@@ -4,11 +4,9 @@ const { computed } = Ember;
 
 export default Ember.Mixin.create({
   classNameBindings: ['levelClass'],
-  levelClassPrefix: '',
 
   levelClass: computed('block.meta.level', function() {
-    /* eslint-disable max-len */
-    return this.get('styles')[`${this.get('levelClassPrefix')}-${this.getWithDefault('block.meta.level', 1)}`];
+    return this.get('styles')[`level-${this.getWithDefault('block.meta.level', 1)}`];
   }),
 
   offsetLevel(offset) {

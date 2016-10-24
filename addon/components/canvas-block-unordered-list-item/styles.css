@@ -1,12 +1,24 @@
 @value --list-bullet-color from "canvas-editor/styles/theme";
 @value --blue from "canvas-editor/styles/theme";
-@value --list-indent: 1.625em;
 
 .canvas-block-unordered-list-item {
-  margin: 0;
-  list-style: none;
-  padding-left: 1.5em;
-  position: relative;
+  composes: canvas-block-list-item from 'canvas-editor/components/canvas-block-list/item';
+}
+
+.level-1 {
+  composes: level-1 from 'canvas-editor/components/canvas-block-list/item';
+}
+
+.level-2 {
+  composes: level-2 from 'canvas-editor/components/canvas-block-list/item';
+}
+
+.level-3 {
+  composes: level-3 from 'canvas-editor/components/canvas-block-list/item';
+}
+
+.level-4 {
+  composes: level-4 from 'canvas-editor/components/canvas-block-list/item';
 }
 
 .canvas-block-unordered-list-item::before {
@@ -20,22 +32,6 @@
   position: absolute;
   top: 0.4375em;
   width: 0.5em;
-}
-
-.unordered-list-level-1 {
-  margin-left: calc(0 * --list-indent);
-}
-
-.unordered-list-level-2 {
-  margin-left: calc(1 * --list-indent);
-}
-
-.unordered-list-level-3 {
-  margin-left: calc(2 * --list-indent);
-}
-
-.unordered-list-level-4 {
-  margin-left: calc(3 * --list-indent);
 }
 
 .is-focused::before {

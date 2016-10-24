@@ -12,7 +12,6 @@ import styles from './styles';
 export default CanvasBlock.extend(IndentableLevels, {
   classNames: ['canvas-block-checklist-item'],
   layout,
-  levelClassPrefix: 'checklist-level',
   localClassNames: ['canvas-block-checklist-item'],
   styles,
   tagName: 'li',

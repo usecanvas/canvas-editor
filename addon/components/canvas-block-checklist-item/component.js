@@ -1,4 +1,5 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
+import IndentableLevels from 'canvas-editor/mixins/indentable-levels';
 import layout from './template';
 import styles from './styles';
 
@@ -8,7 +9,7 @@ import styles from './styles';
  * @class CanvasEditor.CanvasBlockChecklistItemComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
-export default CanvasBlock.extend({
+export default CanvasBlock.extend(IndentableLevels, {
   classNames: ['canvas-block-checklist-item'],
   layout,
   localClassNames: ['canvas-block-checklist-item'],

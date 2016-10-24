@@ -3,13 +3,10 @@
 @value --list-indent: 1.625em;
 
 .canvas-block-unordered-list-item {
+  margin: 0;
   list-style: none;
   padding-left: 1.5em;
   position: relative;
-}
-
-.canvas-block-unordered-list-item ~ .canvas-block-unordered-list-item {
-  margin: 0;
 }
 
 .canvas-block-unordered-list-item::before {

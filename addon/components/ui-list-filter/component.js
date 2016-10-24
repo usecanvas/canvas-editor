@@ -1,13 +1,14 @@
 import Ember from 'ember';
 import layout from './template';
 
-const { observer, on } = Ember;
+const { computed, observer, on } = Ember;
 
 export default Ember.Component.extend({
   layout,
+  results: computed(_ => []),
 
   setupResults: on('init', 'willDestroyElement', function() {
-    this.set('results', []);
+    this.get('results').setObjects([]);
     this.get('onResolveFilter')([]);
   }),
 

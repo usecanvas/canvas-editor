@@ -14,6 +14,7 @@ const { computed, get, observer } = Ember;
  */
 export default CanvasBlock.extend({
   classNames: ['canvas-block-title'],
+  filteredTemplates: computed(_ => []),
   isShowingSelect: false,
   layout,
   localClassNames: ['canvas-block-title'],
@@ -53,7 +54,7 @@ export default CanvasBlock.extend({
     },
 
     updateFilteredTemplates(templates) {
-      this.set('filteredTemplates', templates);
+      this.get('filteredTemplates').setObjects(templates);
     },
 
     updateSelectedIndex(index) {

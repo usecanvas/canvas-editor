@@ -53,7 +53,7 @@ export default Ember.Component.extend({
     this.bindKeyDownEvents();
 
     run.next(_ => {
-      if (!this.get('isVisible')) return;
+      if (!this.get('element')) return;
       if (!this.get('editingEnabled')) return;
       this.focusBlockStart(this.get('initialFocusBlock'));
     });

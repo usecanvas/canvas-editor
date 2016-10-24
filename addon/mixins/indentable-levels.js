@@ -1,20 +1,26 @@
 import Ember from 'ember';
+
+const { computed } = Ember;
+
 export default Ember.Mixin.create({
-  indentBlock: Ember.K,
-  unindentBlock: Ember.K,
+  classNameBindings: ['levelClass'],
+  levelClassPrefix: '',
 
-  keyDown(evt) {
-    if (evt.keyCode === 9) {
-      evt.preventDefault();
-      evt.stopPropagation();
+  levelClass: computed('block.meta.level', function() {
+    /* eslint-disable max-len */
+    return this.get('styles')[`${this.get('levelClassPrefix')}-${this.get('block.meta.level')}`];
+  }),
 
-      if (evt.shiftKey) {
-        this.get('unindentBlock')();
-      } else {
-        this.get('indentBlock')();
-      }
-    } else {
-      this._super(...arguments);
+  offsetLevel(offset) {
+    const oldLevel = this.getWithDefault('block.meta.level', 1);
+    const newLevel = Math.max(1, Math.min(4, offset + oldLevel));
+    if (oldLevel !== newLevel) {
+      this.set('block.meta.level', newLevel);
+      this.get('onBlockMetaReplacedLocally')(
+        this.get('block'),
+        ['level'],
+        oldLevel,
+        newLevel);
     }
   }
 });

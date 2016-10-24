@@ -1,8 +1,7 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
+import IndentableLevels from 'canvas-editor/mixins/indentable-levels';
 import layout from './template';
 import styles from './styles';
-
-const { computed } = Ember;
 
 /**
  * A component representing a "unordered list" type canvas block.
@@ -10,28 +9,11 @@ const { computed } = Ember;
  * @class CanvasEditor.CanvasBlockUnorderedListItemComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
-export default CanvasBlock.extend({
+export default CanvasBlock.extend(IndentableLevels, {
   classNames: ['canvas-block-unordered-list-item'],
-  classNameBindings: ['levelClass'],
   layout,
+  levelClassPrefix: 'unordered-list-level',
   localClassNames: ['canvas-block-unordered-list-item'],
   styles,
-  tagName: 'li',
-
-  levelClass: computed('block.meta.level', function() {
-    return this.get('styles')[`unordered-list-level-${this.get('block.meta.level')}`];
-  }),
-
-  offsetLevel(offset) {
-    const oldLevel = this.getWithDefault('block.meta.level', 1);
-    const newLevel = Math.max(1, Math.min(4, offset + oldLevel));
-    if (oldLevel !== newLevel) {
-      this.set('block.meta.level', newLevel);
-      this.get('onBlockMetaReplacedLocally')(
-        this.get('block'),
-        ['level'],
-        oldLevel,
-        newLevel);
-    }
-  },
+  tagName: 'li'
 });

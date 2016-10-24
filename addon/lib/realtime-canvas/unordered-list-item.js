@@ -1,4 +1,5 @@
 import ContentBlock from './content-block';
+import Ember from 'ember';
 
 const { computed } = Ember;
 

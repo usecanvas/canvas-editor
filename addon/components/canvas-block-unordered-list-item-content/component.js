@@ -1,6 +1,6 @@
 import CanvasBlockEditable from 'canvas-editor/components/canvas-block-editable/component';
 import UnorderedList from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
-import IndentableLevels from 'canvas-editor/mixins/indentable-levels';
+import IndentableLevelsContent from 'canvas-editor/mixins/indentable-levels-content';
 import styles from './styles';
 
 /**
@@ -9,7 +9,7 @@ import styles from './styles';
  * @class CanvasEditor.CanvasBlockUnorderedListItemComponent
  * @extends CanvasEditor.CanvasBlockEditableComponent
  */
-export default CanvasBlockEditable.extend(IndentableLevels, {
+export default CanvasBlockEditable.extend(IndentableLevelsContent, {
   classNames: ['canvas-block-unordered-list-item-content'],
   localClassNames: ['canvas-block-unordered-list-item-content'],
   nextBlockConstructor: UnorderedList,

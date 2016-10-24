@@ -47,30 +47,6 @@ GRAMMAR.link = {
   }
 };
 
-GRAMMAR['link-ref'] = {
-  classes: ['link-ref', 'has-folding'],
-  pattern: /\[[^\[\]]+\]\[[^\[\]]+\]/g,
-  inside: {
-    'ref-value folding': {
-      pattern: /\[[^\[\]]+\]$/,
-      inside: {
-        'bracket-start': /\[/,
-        'ref-href': /[^\[\]]+(?=]$)/,
-        'bracket-end': /\]/
-      }
-    },
-
-    'ref-text': {
-      pattern: /^\[[^\[\]]+\]/,
-      inside: {
-        'bracket-start folding': /^\[/,
-        'ref': /^[^\[\]]+/,
-        'bracket-end folding': /\]$/
-      }
-    }
-  }
-};
-
 GRAMMAR.strong_star = {
   classes: ['strong', 'has-folding'],
   pattern: /([*]){2}(?:(?!\1{2}).)*[*]?\1{2}/g,
@@ -86,6 +62,11 @@ GRAMMAR.em_star = {
   inside: {
     'em-marker folding': /(?:^(?:[*]))|(?:(?:[*])$)/
   }
+};
+
+GRAMMAR.url = {
+  classes: ['url'],
+  pattern: /(?:\s|^)(https?:\/\/.*?)(?:\s|$)/g
 };
 
 GRAMMAR.strong_underscore = {
@@ -109,11 +90,13 @@ GRAMMAR.em_underscore = {
 ['em_star', 'strong_star', 'em_underscore', 'strong_underscore'].forEach(emStrong => {
   GRAMMAR[emStrong].inside = GRAMMAR[emStrong].inside || {};
   GRAMMAR[emStrong].inside.inlines = {
+    url: GRAMMAR.url,
     link: GRAMMAR.link,
-    'link-ref': GRAMMAR['link-ref'],
     'inline-code': GRAMMAR['inline-code']
   };
 });
+
+GRAMMAR['inline-code'].inside.url = GRAMMAR.url;
 
 GRAMMAR.link.inside.ref.inside.inlines = GRAMMAR.link.inside.ref.inside.inlines || {};
 

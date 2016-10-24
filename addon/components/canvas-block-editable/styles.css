@@ -5,8 +5,24 @@
   white-space: pre-wrap;
 
   :global {
+    a {
+      cursor: pointer;
+    }
+
     .md-folding {
       font-size: 0;
+    }
+
+    .md-em {
+      font-style: italic;
+    }
+
+    .md-inline-code {
+      font-family: monospace;
+    }
+
+    .md-strong {
+      font-weight: bold;
     }
   }
 }

@@ -220,13 +220,31 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       if (this.get('isUpdatingBlockContent')) return;
 
       const content = this.get('block.content');
+      const html = highlight(content);
 
       if (content) {
-        this.$().html(highlight(content));
+        this.$().html(html);
+        this.linkifyLinks();
       } else {
         this.$().html('<br>');
       }
     })),
+
+  /**
+   * Turn any Markdown links or plain URLs into actual links.
+   *
+   * @method
+   */
+  linkifyLinks() {
+    this.$('.md-url').each(function() {
+      Ember.$(this).wrap(`<a href="${this.textContent}">`);
+    });
+
+    this.$('.md-link').each(function() {
+      const href = Ember.$(this).find('.md-href').text();
+      Ember.$(this).wrap(`<a href="${href}">`);
+    });
+  },
 
   /**
    * Set the block's content based on user input.

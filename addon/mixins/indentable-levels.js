@@ -6,7 +6,8 @@ export default Ember.Mixin.create({
   classNameBindings: ['levelClass'],
 
   levelClass: computed('block.meta.level', function() {
-    return this.get('styles')[`level-${this.getWithDefault('block.meta.level', 1)}`];
+    const level = this.getWithDefault('block.meta.level', 1);
+    return this.get('styles')[`level-${level}`];
   }),
 
   offsetLevel(offset) {

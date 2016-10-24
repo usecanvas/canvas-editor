@@ -26,10 +26,10 @@ test('it renders', function(assert) {
       List.create({
         blocks: Ember.A([
           ULItem.create({ content: 'List item A' }),
-          ULItem.create({ content: 'List item B' }),
+          ULItem.create({ content: 'List item B', meta: { level: 2 } }),
           ULItem.create({ content: 'List item C' }),
           CLItem.create({ content: 'List item D', meta: { checked: true } }),
-          CLItem.create({ content: 'List item E', meta: { checked: false } }),
+          CLItem.create({ content: 'List item E', meta: { checked: false, level: 2 } }),
           ULItem.create({ content: 'List item F' })
         ])
       }),

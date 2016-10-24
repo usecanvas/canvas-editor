@@ -1,4 +1,4 @@
-@value --list-indent: 1.625em;
+@value --list-indent: 1.5em;
 
 .canvas-block-list-item {
   list-style: none;

@@ -21,6 +21,17 @@ export default Ember.Mixin.create(Selection, SelectionState, {
     return new SelectionState(this.get('element'));
   }),
 
+  click(evt) {
+    let link;
+    if (link = this.$(evt.target).closest('a').get(0)) {
+      if (evt.metaKey) {
+        window.open(link.href);
+      } else {
+        window.location = link.href;
+      }
+    }
+  },
+
   getElementRect(side = 'top') {
     const rects = this.get('element').getClientRects();
     if (side === 'top') return rects[0];

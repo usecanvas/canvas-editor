@@ -1,13 +1,7 @@
-@value --blue from 'canvas-colors/styles/colors';
 @value --dark-gray from 'canvas-colors/styles/colors';
+@value --editor-monospace-font-family from 'canvas-editor/styles/theme';
 @value --extra-light-gray from 'canvas-colors/styles/colors';
-@value --gray from 'canvas-colors/styles/colors';
-@value --green from 'canvas-colors/styles/colors';
-@value --light-blue from 'canvas-colors/styles/colors';
 @value --light-gray from 'canvas-colors/styles/colors';
-@value --orange from 'canvas-colors/styles/colors';
-@value --purple: #a626a4;
-@value --red from 'canvas-colors/styles/colors';
 
 .canvas-block-code {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
@@ -15,83 +9,12 @@
 
 .content {
   background: --extra-light-gray;
-  border: 1px solid --light-gray;
   border-radius: 4px;
+  border: 1px solid --light-gray;
   color: --dark-gray;
   display: block;
+  font-family: --editor-monospace-font-family;
+  font-size: 0.9375em;
   overflow-x: auto;
   padding: 0.5em 1em;
-}
-
-.content {
-  :global {
-    .hljs-comment,
-    .hljs-quote {
-      color: --gray;
-      font-style: italic;
-    }
-
-    .hljs-doctag,
-    .hljs-keyword,
-    .hljs-formula {
-      color: --purple;
-    }
-
-    .hljs-section,
-    .hljs-name,
-    .hljs-selector-tag,
-    .hljs-deletion,
-    .hljs-subst {
-      color: --red;
-    }
-
-    .hljs-literal {
-      color: --blue;
-    }
-
-    .hljs-string,
-    .hljs-regexp,
-    .hljs-addition,
-    .hljs-attribute,
-    .hljs-meta-string {
-      color: --green;
-    }
-
-    .hljs-built_in,
-    .hljs-class .hljs-title {
-      color: --orange;
-    }
-
-    .hljs-attr,
-    .hljs-variable,
-    .hljs-template-variable,
-    .hljs-type,
-    .hljs-selector-class,
-    .hljs-selector-attr,
-    .hljs-selector-pseudo,
-    .hljs-number {
-      color: --orange;
-    }
-
-    .hljs-symbol,
-    .hljs-bullet,
-    .hljs-link,
-    .hljs-meta,
-    .hljs-selector-id,
-    .hljs-title {
-      color: --light-blue;
-    }
-
-    .hljs-emphasis {
-      font-style: italic;
-    }
-
-    .hljs-strong {
-      font-weight: bold;
-    }
-
-    .hljs-link {
-      text-decoration: underline;
-    }
-  }
 }

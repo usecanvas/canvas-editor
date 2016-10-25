@@ -19,6 +19,7 @@
   border-radius: 4px;
   color: --dark-gray;
   display: block;
+  font-family: Menlo, Monaco, monospace;
   overflow-x: auto;
   padding: 0.5em 1em;
 }

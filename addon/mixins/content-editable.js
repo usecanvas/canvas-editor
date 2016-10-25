@@ -17,7 +17,7 @@ export default Ember.Mixin.create(Selection, SelectionState, {
   contentEditable: computed.readOnly('editingEnabled'),
   isUpdatingBlockContent: false,
 
-  selection: computed(function() {
+  selectionState: computed(function() {
     return new SelectionState(this.get('element'));
   }),
 
@@ -47,9 +47,9 @@ export default Ember.Mixin.create(Selection, SelectionState, {
     const element = this.get('element');
     const text = element.innerText || element.textContent;
     this.setBlockContentFromInput(text);
-    this.get('selection').capture();
+    this.get('selectionState').capture();
     this.renderBlockContent();
-    this.get('selection').restore();
+    this.get('selectionState').restore();
   },
 
   /**

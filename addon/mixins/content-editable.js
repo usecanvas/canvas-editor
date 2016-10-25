@@ -4,7 +4,7 @@ import SelectionState from 'canvas-editor/lib/selection-state';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
 import { highlight } from 'canvas-editor/lib/markdown/parser';
 
-const { computed, observer, on } = Ember;
+const { computed, getWithDefault, observer, on } = Ember;
 
 /**
  * A mixin for including text content in a canvas that is user-editable.
@@ -230,7 +230,7 @@ export default Ember.Mixin.create(Selection, SelectionState, {
     function renderBlockContent() {
       if (this.get('isUpdatingBlockContent')) return;
 
-      const content = this.get('block.content');
+      const content = getWithDefault(this, 'block.content', '');
       const html = highlight(content);
 
       if (content) {

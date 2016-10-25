@@ -30,7 +30,9 @@
 import GRAMMAR from './grammar';
 
 export function highlight(source) {
-  return stringify(encode(highlightParse(source)), 'md-');
+  return source.split(/\n/).map(line => {
+    return stringify(encode(highlightParse(line)), 'md-');
+  }).join('\n');
 }
 
 function highlightParse(source) {

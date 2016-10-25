@@ -40,13 +40,27 @@ export default Ember.Mixin.create(Selection, SelectionState, {
   },
 
   /**
+   * Get the current element text.
+   *
+   * This method ensures that an element with the placeholder <br> evaluates
+   * as an empty string.
+   *
+   * @method
+   */
+  getElementText() {
+    const element = this.get('element');
+    if (element.childNodes.length === 1 &&
+        element.firstChild.nodeName === 'BR') return '';
+    return element.innerText || element.textContent;
+  },
+
+  /**
    * React to an "input" event, where the user has changed content in the DOM.
    *
    * @method
    */
   input() {
-    const element = this.get('element');
-    const text = element.innerText || element.textContent;
+    const text = this.getElementText();
     this.setBlockContentFromInput(text);
     if (!this.get('usesMarkdown')) return;
     this.get('selectionState').capture();

@@ -1,5 +1,6 @@
 @value --block-placeholder-color from 'canvas-editor/styles/theme';
 @value --dark-gray from 'canvas-editor/styles/theme';
+@value --editor-monospace-font-family from 'canvas-editor/styles/theme';
 @value --extra-light-gray from 'canvas-editor/styles/theme';
 
 .canvas-block-editable {
@@ -22,7 +23,7 @@
     .md-inline-code {
       background: --extra-light-gray;
       color: --dark-gray;
-      font-family: Menlo, Monaco, monospace;
+      font-family: --editor-monospace-font-family;
       font-size: 0.9375em;
     }
 

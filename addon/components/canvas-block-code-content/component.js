@@ -40,7 +40,13 @@ export default CanvasBlockEditable.extend({
         highlighted = { value: content };
       }
 
-      this.$().html(highlighted.value || '<br>');
+      let html;
+      if (highlighted.value) {
+        html = highlighted.value.replace(
+          /\n/g, '<br data-restore-skip="true">');
+      }
+
+      this.$().html(html || '<br>');
       this.get('selectionState').restore();
     });
   })),
@@ -49,18 +55,10 @@ export default CanvasBlockEditable.extend({
     switch (evt.originalEvent.key || evt.originalEvent.keyCode) {
     case 'Enter':
     case 13:
+      if (!evt.shiftKey) return;
       evt.stopPropagation();
       evt.preventDefault();
-
-      if (evt.metaKey) {
-        this.newBlockAtSplit();
-      } else {
-        this.get('selectionState').capture();
-        this.get('selectionState').offset(1);
-        document.execCommand('insertText', null, '\n');
-        this.get('selectionState').restore();
-      }
-
+      this.newBlockAtSplit();
       break;
     default:
       this._super(...arguments);

@@ -10,8 +10,8 @@
   composes: canvas-block-editable from 'canvas-editor/components/canvas-block-editable/styles';
   color: inherit;
   display: block;
-  font-family: --editor-monospace-font-family;
-  font-size: 0.9375em;
+  font-family: inherit;
+  font-size: inherit;
   white-space: pre;
 
   :global {

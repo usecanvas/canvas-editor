@@ -103,7 +103,6 @@ rules:
   no-bitwise: error
   no-caller: error
   no-catch-shadow: error
-  no-cond-assign: off
   no-confusing-arrow: error
   no-console:
     - error

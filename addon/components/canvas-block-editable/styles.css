@@ -6,39 +6,6 @@
 .canvas-block-editable {
   position: relative;
   white-space: pre-wrap;
-
-  :global {
-    a {
-      cursor: pointer;
-    }
-
-    .md-folding {
-      font-size: 0;
-    }
-
-    .md-em {
-      font-style: italic;
-    }
-
-    .md-inline-code {
-      background: --extra-light-gray;
-      color: --dark-gray;
-      font-family: --editor-monospace-font-family;
-      font-size: 0.9375em;
-    }
-
-    .md-strong {
-      font-weight: 600;
-    }
-  }
-}
-
-.is-focused {
-  :global {
-    .md-folding {
-      font-size: inherit;
-    }
-  }
 }
 
 .is-empty::after {

@@ -37,7 +37,7 @@ export default CanvasBlockEditable.extend({
       try {
         highlighted = Highlight.highlight(language, content);
       } catch (_err) {
-        highlighted = Highlight.highlightAuto(content);
+        highlighted = { value: content };
       }
 
       let html;

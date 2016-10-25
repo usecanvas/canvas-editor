@@ -19,6 +19,7 @@ export default CanvasBlockEditable.extend({
   spellcheck: false,
   styles,
   tagName: 'code',
+  usesMarkdown: false,
 
   selectionState: computed(function() {
     return new SelectionState(this.get('element'));

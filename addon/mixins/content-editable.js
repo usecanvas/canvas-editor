@@ -16,6 +16,7 @@ export default Ember.Mixin.create(Selection, SelectionState, {
   attributeBindings: ['contentEditable:contenteditable'],
   contentEditable: computed.readOnly('editingEnabled'),
   isUpdatingBlockContent: false,
+  usesMarkdown: true,
 
   selectionState: computed(function() {
     return new SelectionState(this.get('element'));
@@ -47,6 +48,7 @@ export default Ember.Mixin.create(Selection, SelectionState, {
     const element = this.get('element');
     const text = element.innerText || element.textContent;
     this.setBlockContentFromInput(text);
+    if (!this.get('usesMarkdown')) return;
     this.get('selectionState').capture();
     this.renderBlockContent();
     this.get('selectionState').restore();
@@ -231,13 +233,18 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       if (this.get('isUpdatingBlockContent')) return;
 
       const content = getWithDefault(this, 'block.content', '');
-      const html = highlight(content);
 
-      if (content) {
+      if (!content) {
+        this.$().html('<br>');
+        return;
+      }
+
+      if (this.get('usesMarkdown')) {
+        const html = highlight(content);
         this.$().html(html);
         this.linkifyLinks();
       } else {
-        this.$().html('<br>');
+        this.$().text(content);
       }
     })),
 

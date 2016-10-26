@@ -8,3 +8,7 @@
   color: --dark-gray;
   text-align: center;
 }
+
+.block-link {
+  composes: block-link from 'canvas-editor/components/canvas-block/styles';
+}

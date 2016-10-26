@@ -1,5 +1,5 @@
 @value --blue from 'canvas-colors/styles/colors';
-@value --gray from 'canvas-colors/styles/colors';
+@value --light-gray from 'canvas-colors/styles/colors';
 
 .block-spacing {
   margin: 0 0 1.5rem;
@@ -21,7 +21,7 @@
 }
 
 .block-link::before {
-  background: --gray;
+  background: --light-gray;
   border-radius: 1000px;
   content: '';
   display: block;

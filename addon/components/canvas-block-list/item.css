@@ -3,7 +3,7 @@
 .canvas-block-list-item {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
   list-style: none;
-  margin: 0;
+  margin: 0 0 0.0625em;
   padding-left: 1.5em;
   position: relative;
 }

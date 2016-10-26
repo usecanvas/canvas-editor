@@ -34,12 +34,14 @@
 .canvas-block:hover .block-link,
 .block-link:active,
 .block-link:focus,
-.is-focused .block-link {
+.is-focused .block-link,
+[data-card-block-selected=true] .block-link {
   opacity: 1;
 }
 
 .block-link:active::before,
 .block-link:focus::before,
-.is-focused .block-link::before {
+.is-focused .block-link::before,
+[data-card-block-selected=true] .block-link::before {
   background: --blue;
 }

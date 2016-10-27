@@ -5,6 +5,7 @@ import SelectionState from 'canvas-editor/lib/selection-state';
 import styles from './styles';
 
 const { computed, observer, on, run } = Ember;
+const isFirefox = window.navigator.userAgent.includes('Firefox');
 
 /**
  * A component representing a "code" type canvas block's content.
@@ -27,6 +28,8 @@ export default CanvasBlockEditable.extend({
 
   highlight: on('didInsertElement',
              observer('block.content', 'block.meta.language', function() {
+    if (isFirefox) return;
+
     run.scheduleOnce('afterRender', _ => {
       this.get('selectionState').capture();
 

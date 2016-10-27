@@ -3,6 +3,8 @@ import Selection from 'canvas-editor/mixins/selection';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
 
 const { computed, observer, on } = Ember;
+const isFirefox = window.navigator.userAgent.includes('Firefox');
+
 
 /**
  * A mixin for including text content in a canvas that is user-editable.
@@ -33,7 +35,10 @@ export default Ember.Mixin.create(Selection, {
     const element = this.get('element');
     if (element.childNodes.length === 1 &&
         element.firstChild.nodeName === 'BR') return '';
-    return element.innerText || element.textContent;
+    let text = element.innerText || element.textContent;
+    // Firefox appends a <br> to the end of contenteditable
+    if (isFirefox) text = text.replace(/\n$/, '');
+    return text;
   },
 
   /**

@@ -1,4 +1,4 @@
-@value --blue from 'canvas-colors/styles/colors';
+@value --blue from 'canvas-editor/styles/theme';
 
 [data-card-block-selected=true] :global(.gist-file) {
   border-color: --blue !important;

@@ -2,17 +2,17 @@
  * Color Palette
  */
 
-@value --black: #292E31;
-@value --dark-gray: #839197;
-@value --gray: #C0CBD1;
-@value --light-gray: #E7EAEC;
-@value --extra-light-gray: #F5F7F9;
+@value --black --black from 'canvas-colors/styles/colors';
+@value --dark-gray from 'canvas-colors/styles/colors';
+@value --gray from 'canvas-colors/styles/colors';
+@value --light-gray from 'canvas-colors/styles/colors';
+@value --extra-light-gray from 'canvas-colors/styles/colors';
 
-@value --blue: #414EF9;
-@value --light-blue: #30A4FF;
-@value --green: #28DB67;
-@value --red: #FF2E55;
-@value --orange: #FF9600;
+@value --blue from 'canvas-colors/styles/colors';
+@value --light-blue from 'canvas-colors/styles/colors';
+@value --green from 'canvas-colors/styles/colors';
+@value --red from 'canvas-colors/styles/colors';
+@value --orange from 'canvas-colors/styles/colors';
 
 /*
  * Editor

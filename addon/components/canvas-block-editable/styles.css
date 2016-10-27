@@ -1,4 +1,7 @@
 @value --block-placeholder-color from 'canvas-editor/styles/theme';
+@value --dark-gray from 'canvas-editor/styles/theme';
+@value --editor-monospace-font-family from 'canvas-editor/styles/theme';
+@value --extra-light-gray from 'canvas-editor/styles/theme';
 
 .canvas-block-editable {
   position: relative;

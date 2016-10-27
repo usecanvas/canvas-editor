@@ -1,5 +1,5 @@
 @value --list-bullet-color from "canvas-editor/styles/theme";
-@value --blue from "canvas-editor/styles/theme";
+@value --list-bullet-color-focused from "canvas-editor/styles/theme";
 
 .canvas-block-unordered-list-item {
   composes: canvas-block-list-item from 'canvas-editor/components/canvas-block-list/item';
@@ -35,5 +35,5 @@
 }
 
 .is-focused::before {
-  background: --blue;
+  background: --list-bullet-color-focused;
 }

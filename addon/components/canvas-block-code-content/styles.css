@@ -1,10 +1,10 @@
-@value --blue from 'canvas-colors/styles/colors';
-@value --gray from 'canvas-colors/styles/colors';
-@value --green from 'canvas-colors/styles/colors';
-@value --light-blue from 'canvas-colors/styles/colors';
-@value --orange from 'canvas-colors/styles/colors';
+@value --blue from 'canvas-editor/styles/theme';
+@value --gray from 'canvas-editor/styles/theme';
+@value --green from 'canvas-editor/styles/theme';
+@value --light-blue from 'canvas-editor/styles/theme';
+@value --orange from 'canvas-editor/styles/theme';
 @value --purple: #a626a4;
-@value --red from 'canvas-colors/styles/colors';
+@value --red from 'canvas-editor/styles/theme';
 
 .canvas-block-code-content {
   composes: canvas-block-editable from 'canvas-editor/components/canvas-block-editable/styles';

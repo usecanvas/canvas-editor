@@ -1,4 +1,4 @@
-@value --blue from 'canvas-colors/styles/colors';
+@value --blue from 'canvas-editor/styles/theme';
 
 .canvas-block-url-framer {
   position: relative;

@@ -1,5 +1,5 @@
-@value --light-gray from 'canvas-colors/styles/colors';
-@value --blue from 'canvas-colors/styles/colors';
+@value --light-gray from 'canvas-editor/styles/theme';
+@value --blue from 'canvas-editor/styles/theme';
 
 .canvas-block-horizontal-rule {
   background: --light-gray;

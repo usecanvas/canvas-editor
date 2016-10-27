@@ -2,7 +2,7 @@
  * Color Palette
  */
 
-@value --black --black from 'canvas-colors/styles/colors';
+@value --black from 'canvas-colors/styles/colors';
 @value --dark-gray from 'canvas-colors/styles/colors';
 @value --gray from 'canvas-colors/styles/colors';
 @value --light-gray from 'canvas-colors/styles/colors';

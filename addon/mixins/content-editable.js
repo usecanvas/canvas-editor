@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import Selection from 'canvas-editor/mixins/selection';
+import SelectionState from 'canvas-editor/lib/selection-state';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
+import { highlight } from 'canvas-editor/lib/markdown/parser';
 
-const { computed, observer, on } = Ember;
+const { computed, getWithDefault, observer, on } = Ember;
 const isFirefox = window.navigator.userAgent.includes('Firefox');
-
 
 /**
  * A mixin for including text content in a canvas that is user-editable.
@@ -12,10 +13,26 @@ const isFirefox = window.navigator.userAgent.includes('Firefox');
  * @class CanvasEditor.ContentEditableMixin
  * @extends Ember.Mixin
  */
-export default Ember.Mixin.create(Selection, {
+export default Ember.Mixin.create(Selection, SelectionState, {
   attributeBindings: ['contentEditable:contenteditable'],
   contentEditable: computed.readOnly('editingEnabled'),
   isUpdatingBlockContent: false,
+  usesMarkdown: true,
+
+  selectionState: computed(function() {
+    return new SelectionState(this.get('element'));
+  }),
+
+  click(evt) {
+    let link;
+    if (link = this.$(evt.target).closest('a').get(0)) {
+      if (evt.metaKey) {
+        window.open(link.href);
+      } else {
+        window.location = link.href;
+      }
+    }
+  },
 
   getElementRect(side = 'top') {
     const rects = this.get('element').getClientRects();
@@ -49,6 +66,10 @@ export default Ember.Mixin.create(Selection, {
   input() {
     const text = this.getElementText();
     this.setBlockContentFromInput(text);
+    if (!this.get('usesMarkdown')) return;
+    this.get('selectionState').capture();
+    this.renderBlockContent();
+    this.get('selectionState').restore();
   },
 
   /**
@@ -229,14 +250,37 @@ export default Ember.Mixin.create(Selection, {
     function renderBlockContent() {
       if (this.get('isUpdatingBlockContent')) return;
 
-      const content = this.get('block.content');
+      const content = getWithDefault(this, 'block.content', '');
 
-      if (content) {
-        this.$().text(content);
-      } else {
+      if (!content) {
         this.$().html('<br>');
+        return;
+      }
+
+      if (this.get('usesMarkdown')) {
+        const html = highlight(content);
+        this.$().html(html);
+        this.linkifyLinks();
+      } else {
+        this.$().text(content);
       }
     })),
+
+  /**
+   * Turn any Markdown links or plain URLs into actual links.
+   *
+   * @method
+   */
+  linkifyLinks() {
+    this.$('.md-url').each(function() {
+      Ember.$(this).wrap(`<a href="${this.textContent}">`);
+    });
+
+    this.$('.md-link').each(function() {
+      const href = Ember.$(this).find('.md-href').text();
+      Ember.$(this).wrap(`<a href="${href}">`);
+    });
+  },
 
   /**
    * Set the block's content based on user input.

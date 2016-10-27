@@ -34,3 +34,4 @@
 
 /* Lists */
 @value --list-bullet-color: --gray;
+@value --list-bullet-color-focused: --blue;

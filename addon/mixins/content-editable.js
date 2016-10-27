@@ -67,6 +67,7 @@ export default Ember.Mixin.create(Selection, SelectionState, {
     const text = this.getElementText();
     this.setBlockContentFromInput(text);
     if (!this.get('usesMarkdown')) return;
+    if (isFirefox) return;
     this.get('selectionState').capture();
     this.renderBlockContent();
     this.get('selectionState').restore();
@@ -257,7 +258,7 @@ export default Ember.Mixin.create(Selection, SelectionState, {
         return;
       }
 
-      if (this.get('usesMarkdown')) {
+      if (!isFirefox && this.get('usesMarkdown')) {
         const html = highlight(content);
         this.$().html(html);
         this.linkifyLinks();

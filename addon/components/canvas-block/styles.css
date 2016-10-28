@@ -1,5 +1,5 @@
-@value --blue from 'canvas-colors/styles/colors';
-@value --light-gray from 'canvas-colors/styles/colors';
+@value --blue from 'canvas-editor/styles/theme';
+@value --light-gray from 'canvas-editor/styles/theme';
 
 .block-spacing {
   margin: 0 0 1.5rem;

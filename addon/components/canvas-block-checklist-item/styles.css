@@ -2,6 +2,10 @@
   composes: canvas-block-list-item from 'canvas-editor/components/canvas-block-list/item';
 }
 
+.container {
+  composes: container from 'canvas-editor/components/canvas-block-list/item';
+}
+
 .level-1 {
   composes: level-1 from 'canvas-editor/components/canvas-block-list/item';
 }

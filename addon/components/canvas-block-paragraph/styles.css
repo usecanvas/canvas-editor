@@ -1,21 +1,11 @@
-@value --blue from 'canvas-editor/styles/theme';
-@value --light-gray from 'canvas-editor/styles/theme';
-
 .canvas-block-paragraph {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
 }
 
-.is-focused {
-  position: relative;
+.block-link {
+  composes: block-link from 'canvas-editor/components/canvas-block/styles';
 }
 
-.is-focused::before {
-  background: --blue;
-  border-radius: 1000px;
-  content: '';
-  height: 100%;
-  left: -1rem;
-  position: absolute;
-  top: 0;
-  width: 3px;
+.is-focused {
+  composes: is-focused from 'canvas-editor/components/canvas-block/styles';
 }

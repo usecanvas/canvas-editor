@@ -1,24 +1,32 @@
-<div local-class="checkbox">
-  {{ui-checkbox
-    checked=block.meta.checked onToggle=(action 'onToggleChecked')
-    isFocused=isFocused}}
-</div>
+{{#if canvasLinkComponent}}
+  {{component canvasLinkComponent
+    blockID=block.id
+    canvasID=canvasID
+    class=styles.block-link
+    filter=filterTerm}}
+{{/if}}
 
-<div local-class="content">
-  {{canvas-block-checklist-item-content
-    block=block
-    editingEnabled=editingEnabled
-    changeBlockType=changeBlockType
-    isFocused=(mut isFocused)
-    indentBlock=(action offsetLevel 1)
-    unindentBlock=(action offsetLevel -1)
-    onBlockDeletedLocally=onBlockDeletedLocally
-    onBlockReplacedLocally=onBlockReplacedLocally
-    onNavigateDown=onNavigateDown
-    onNavigateLeft=onNavigateLeft
-    onNavigateRight=onNavigateRight
-    onNavigateUp=onNavigateUp
-    onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
-    onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
-    onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
+<div class={{levelClass}} local-class="container">
+  <div local-class="checkbox">
+    {{ui-checkbox checked=block.meta.checked onToggle=(action 'onToggleChecked')}}
+  </div>
+
+  <div local-class="content">
+    {{canvas-block-checklist-item-content
+      block=block
+      editingEnabled=editingEnabled
+      changeBlockType=changeBlockType
+      isFocused=(mut isFocused)
+      indentBlock=(action offsetLevel 1)
+      unindentBlock=(action offsetLevel -1)
+      onBlockDeletedLocally=onBlockDeletedLocally
+      onBlockReplacedLocally=onBlockReplacedLocally
+      onNavigateDown=onNavigateDown
+      onNavigateLeft=onNavigateLeft
+      onNavigateRight=onNavigateRight
+      onNavigateUp=onNavigateUp
+      onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
+      onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
+      onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
+  </div>
 </div>

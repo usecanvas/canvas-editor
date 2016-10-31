@@ -11,7 +11,6 @@ import styles from './styles';
 export default CardBlock.extend({
   classNames: ['canvas-block-upload'],
   layout,
-  localClassNameBindings: [],
   localClassNames: ['canvas-block-upload'],
   styles
 });

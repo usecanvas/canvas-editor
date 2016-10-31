@@ -12,6 +12,7 @@ import Unknown from 'canvas-editor/lib/realtime-canvas/unknown';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import Tip from 'canvas-editor/lib/realtime-canvas/tip';
 import HorizontalRule from 'canvas-editor/lib/realtime-canvas/horizontal-rule';
+import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 
 const { computed } = Ember;
 
@@ -56,6 +57,8 @@ export default Ember.Object.extend({
         return HorizontalRule.create(json);
       } case 'code': {
         return Code.create(json);
+      } case 'upload': {
+        return Upload.create(json);
       } default: {
         return Unknown.create(Object.assign(json, { type: 'unknown' }));
       }

@@ -14,7 +14,7 @@
   onNavigateUp=(action 'navigateUp')
   onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
   onTemplateApply=(action 'templateApply')}}
-
+{{canvas-drop-bar afterBlockId='title'}}
 {{#each contentBlocks as |block|}}
   {{component (block-component-name block.type)
     block=block
@@ -36,4 +36,7 @@
     onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
     onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
     unfurl=(action 'unfurl')}}
+  {{#unless block.blocks}}
+    {{canvas-drop-bar afterBlockId=block.id}}
+  {{/unless}}
 {{/each}}

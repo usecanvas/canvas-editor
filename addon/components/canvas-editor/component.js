@@ -14,7 +14,7 @@ import styles from './styles';
 import testTemplates from 'canvas-editor/lib/templates';
 import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 
-const { computed, observer, run } = Ember;
+const { computed, inject, observer, run } = Ember;
 
 /**
  * A component that allows for the editing of a canvas in realtime.
@@ -25,6 +25,7 @@ const { computed, observer, run } = Ember;
 export default Ember.Component.extend({
   cardLoadIndex: 0, // Counter to increment when cards load
   classNames: ['canvas-editor'],
+  dropBar: inject.service(),
   hasContent: computed.gt('canvas.blocks.length', 1),
   localClassNames: ['canvas-editor'],
   layout,
@@ -149,6 +150,29 @@ export default Ember.Component.extend({
     } else if (evt.metaKey && evt.shiftKey) {
       this.get('onMetaSelectText')(evt);
     }
+  },
+
+  dragStart(evt) {
+  },
+
+  dragOver({ clientX, clientY, target, y }) {
+    const { top, height } = target.getBoundingClientRect();
+    const shouldInsertAfter = clientY - top > height / 2;
+    const range = document.caretRangeFromPoint(clientX, clientY);
+    const id = this.$(range.startContainer).closest('.canvas-block')
+      .attr('data-block-id');
+    if (shouldInsertAfter) {
+      this.set('dropBar.insertAfter', id);
+    } else {
+      const blocks = this.getNavigableBlocks();
+      const idx = blocks.indexOf(blocks.findBy('id', id));
+      const newId = blocks.objectAt(Math.max(0, idx - 1)).get('id');
+      this.set('dropBar.insertAfter', newId);
+    }
+  },
+
+  drop(evt) {
+    console.log('drop: ', evt);
   },
 
   mouseDown(evt) {

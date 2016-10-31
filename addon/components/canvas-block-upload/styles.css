@@ -3,11 +3,9 @@
 
 .canvas-block-upload {
   composes: canvas-block-card from 'canvas-editor/components/canvas-block-card/styles';
-  align-items: center;
   background: --extra-light-gray;
   box-shadow: none;
   color: --dark-gray;
-  display: flex;
   position: relative;
 }
 

@@ -12,5 +12,7 @@ export default CardBlock.extend({
   classNames: ['canvas-block-upload'],
   layout,
   localClassNames: ['canvas-block-upload'],
-  styles
+  styles,
+
+  progress: 34
 });

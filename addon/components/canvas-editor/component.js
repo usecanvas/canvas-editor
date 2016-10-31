@@ -172,7 +172,7 @@ export default Ember.Component.extend({
   },
 
   drop(evt) {
-    console.log('drop: ', evt);
+    this.set('dropBar.insertAfter', null);
   },
 
   mouseDown(evt) {

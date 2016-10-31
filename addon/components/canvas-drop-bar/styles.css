@@ -1,0 +1,12 @@
+@value --blue from 'canvas-editor/styles/theme';
+
+.canvas-drop-bar {
+  background: --blue;
+  width: 100%;
+  height: 0;
+  position: absolute;
+}
+
+.is-droppable {
+  height: 2px;
+}

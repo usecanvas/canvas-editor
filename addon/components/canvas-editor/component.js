@@ -157,7 +157,7 @@ export default Ember.Component.extend({
 
   dragOver({ clientX, clientY, target, y }) {
     const { top, height } = target.getBoundingClientRect();
-    const shouldInsertAfter = clientY - top > height / 2;
+    const shouldInsertAfter = top > 0 && clientY - top > height / 2;
     const range = document.caretRangeFromPoint(clientX, clientY);
     const id = this.$(range.startContainer).closest('.canvas-block')
       .attr('data-block-id');

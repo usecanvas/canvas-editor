@@ -161,9 +161,6 @@ export default Ember.Component.extend({
     }
   },
 
-  dragStart(evt) {
-  },
-
   dragOver({ clientX, clientY }) {
     const range = document.caretRangeFromPoint(clientX, clientY);
     const block = this.$(range.startContainer).closest('.canvas-block');
@@ -218,19 +215,18 @@ export default Ember.Component.extend({
     const key = `uploads/${Base62UUID.generate()}/${file.name}`;
 
     this.get('fetchUploadSignature')().then(uploadSignature => {
+      if (!uploadSignature) return;
+
       const onprogress = Ember.run.bind(this, this.updateBlockProgress, block);
       const uploadUrl = uploadSignature.get('uploadUrl');
       const fileUrl = `${uploadUrl}/${key}`;
       const upload = this.generateFileUpload(file, key, uploadSignature);
 
       block.set('meta.url', fileUrl);
-
-      return upload.upload(uploadUrl, onprogress).then(_ => {
-        const resType =
-          file.type.split('/')[0] === 'image' ? 'image' : 'url-card';
-        if (this.get('canvas.blocks').includes(block)) {
-          this.send('changeBlockType', `upload/${resType}`, block);
-        }
+      upload.upload(uploadUrl, onprogress).then(_ => {
+        if (!this.get('canvas.blocks').includes(block)) return;
+        const type = file.type.split('/')[0] === 'image' ? 'image' : 'url-card';
+        this.send('changeBlockType', `upload/${type}`, block);
       });
     });
   },

@@ -33,6 +33,7 @@ export default Ember.Component.extend({
   dropBar: inject.service(),
   hasContent: computed.gt('canvas.blocks.length', 1),
   localClassNames: ['canvas-editor'],
+  localClassNameBindings: ['dragging'],
   layout,
   styles,
 
@@ -161,6 +162,10 @@ export default Ember.Component.extend({
     }
   },
 
+  dragEnter() {
+    this.set('dragging', true);
+  },
+
   dragOver({ clientX, clientY }) {
     const range = document.caretRangeFromPoint(clientX, clientY);
     const block = this.$(range.startContainer).closest('.canvas-block');
@@ -181,6 +186,7 @@ export default Ember.Component.extend({
 
   dragLeave() {
     this.set('dropBar.insertAfter', null);
+    this.set('dragging', false);
   },
 
   drop(evt) {

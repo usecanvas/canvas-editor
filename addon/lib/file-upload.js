@@ -3,12 +3,7 @@ import Ember from 'ember';
 export default class FileUpload {
   constructor(opts) {
     this.form = new FormData();
-
-    for (const key in opts) {
-      if (opts.hasOwnProperty(key)) {
-        this.form.append(key, opts[key]);
-      }
-    }
+    Object.keys(opts).forEach(key => this.form.append(key, opts[key]));
   }
 
   upload(url, onprogress) {

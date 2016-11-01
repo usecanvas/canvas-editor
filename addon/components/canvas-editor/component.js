@@ -199,6 +199,7 @@ export default Ember.Component.extend({
       Upload.create({ meta: { filename: file.name, progress: 0 } });
 
     this.set('dropBar.insertAfter', null);
+    this.set('dragging', false);
 
     if (!block) return;
     this.insertUploadAfterBlock(block, uploadBlock);

@@ -1,7 +1,10 @@
+import Base62UUID from 'canvas-editor/lib/base62-uuid';
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Ember from 'ember';
+import FileUpload from 'canvas-editor/lib/file-upload';
 import filterBlocks from 'canvas-editor/lib/filter-blocks';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
+import Image from 'canvas-editor/lib/realtime-canvas/image';
 import layout from './template';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
@@ -13,6 +16,8 @@ import SelectionState from 'canvas-editor/lib/selection-state';
 import styles from './styles';
 import testTemplates from 'canvas-editor/lib/templates';
 import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
+import Upload from 'canvas-editor/lib/realtime-canvas/upload';
+import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 
 const { computed, inject, observer, run } = Ember;
 
@@ -66,6 +71,10 @@ export default Ember.Component.extend({
 
   fetchTemplates() {
     return RSVP.resolve(testTemplates);
+  },
+
+  fetchUploadSignature() {
+    return RSVP.resolve(null);
   },
 
   /**
@@ -173,8 +182,70 @@ export default Ember.Component.extend({
     }
   },
 
-  drop(evt) {
+  dragLeave() {
     this.set('dropBar.insertAfter', null);
+  },
+
+  drop(evt) {
+    evt.preventDefault();
+    const { dataTransfer: { files: [file] } } = evt;
+    const flatBlocks = this.getNavigableBlocks();
+    const insertId = this.get('dropBar.insertAfter');
+    const block = flatBlocks.findBy('id', insertId);
+    const uploadBlock =
+      Upload.create({ meta: { filename: file.name, progress: 0 } });
+
+    this.set('dropBar.insertAfter', null);
+
+    if (!block) return;
+    this.insertUploadAfterBlock(block, uploadBlock);
+    this.uploadFile(file, uploadBlock);
+  },
+
+  generateFileUpload(file, key, uploadSignature) {
+    return new FileUpload({
+      key,
+      'Content-Type': file.type,
+      AWSAccessKeyId: uploadSignature.get('id'),
+      acl: 'public-read',
+      policy: uploadSignature.get('policy'),
+      signature: uploadSignature.get('signature'),
+      file
+    });
+  },
+
+  uploadFile(file, block) {
+    const key = `uploads/${Base62UUID.generate()}/${file.name}`;
+
+    this.get('fetchUploadSignature')().then(uploadSignature => {
+      const onprogress = Ember.run.bind(this, this.updateBlockProgress, block);
+      const uploadUrl = uploadSignature.get('uploadUrl');
+      const fileUrl = `${uploadUrl}/${key}`;
+      const upload = this.generateFileUpload(file, key, uploadSignature);
+
+      block.set('meta.url', fileUrl);
+
+      return upload.upload(uploadUrl, onprogress).then(_ => {
+        const resType =
+          file.type.split('/')[0] === 'image' ? 'image' : 'url-card';
+        if (this.get('canvas.blocks').includes(block)) {
+          this.send('changeBlockType', `upload/${resType}`, block);
+        }
+      });
+    });
+  },
+
+  updateBlockProgress(block, { loaded, total }) {
+    if (this.get('canvas.blocks').includes(block)) {
+      const oldProgress = block.get('meta.progress');
+      const newProgress = Math.round(100 * loaded / total);
+      block.set('meta.progress', newProgress);
+      this.get('onBlockMetaReplacedLocally')(
+        block,
+        ['progress'],
+        oldProgress,
+        newProgress);
+    }
   },
 
   mouseDown(evt) {
@@ -344,6 +415,34 @@ export default Ember.Component.extend({
     this.get('onBlockDeletedLocally')(index, group);
   },
 
+  insertUploadAfterBlock(block, uploadBlock) {
+    if (!block.get('parent') ||
+        block.get('parent.blocks.lastObject') === block) {
+      const index = this.get('canvas.blocks')
+        .indexOf(block.get('parent') || block);
+      this.get('canvas.blocks').replace(index + 1, 0, [uploadBlock]);
+      this.get('onNewBlockInsertedLocally')(index + 1, uploadBlock);
+      return;
+    }
+
+    const group = block.get('parent');
+    const index = group.get('blocks').indexOf(block);
+    const groupIndex = this.get('canvas.blocks').indexOf(group);
+    const movedGroupBlocks = Ember.A(group.get('blocks').slice(index + 1));
+
+    movedGroupBlocks.forEach(movedGroupBlock => {
+      this.get('onBlockDeletedLocally')(index + 1, movedGroupBlock);
+    });
+
+    const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
+
+    group.get('blocks').replace(index + 1, Infinity, []);
+    this.get('canvas.blocks').replace(groupIndex + 1, 0, [uploadBlock]);
+    this.get('onNewBlockInsertedLocally')(groupIndex + 1, uploadBlock);
+    this.get('canvas.blocks').replace(groupIndex + 2, 0, [newGroup]);
+    this.get('onNewBlockInsertedLocally')(groupIndex + 2, newGroup);
+  },
+
   /**
    * Split a block's group at the block, replacing it with a paragraph.
    *
@@ -495,6 +594,35 @@ export default Ember.Component.extend({
       const blocks = this.get('canvas.blocks');
 
       switch (typeChange) {
+        case 'upload/image': {
+          const index = this.get('canvas.blocks').indexOf(block);
+
+          const newBlock =
+            Image.create({ meta: { url: block.get('meta.url') } });
+          this.get('onBlockDeletedLocally')(index, block);
+          this.get('onNewBlockInsertedLocally')(index, newBlock);
+          this.get('canvas.blocks').replace(index, 1, [newBlock]);
+          run.scheduleOnce('afterRender', _ => {
+            this.$('[data-card-block-selected=true]')
+              .attr('data-card-block-selected', false);
+            Selection.selectCardBlock(this.$(), newBlock);
+          });
+          break;
+        }
+        case 'upload/url-card': {
+          const index = this.get('canvas.blocks').indexOf(block);
+          const newBlock =
+            URLCard.create({ meta: { url: block.get('meta.url') } });
+          this.get('onBlockDeletedLocally')(index, block);
+          this.get('onNewBlockInsertedLocally')(index, newBlock);
+          this.get('canvas.blocks').replace(index, 1, [newBlock]);
+          run.scheduleOnce('afterRender', _ => {
+            this.$('[data-card-block-selected=true]')
+              .attr('data-card-block-selected', false);
+            Selection.selectCardBlock(this.$(), newBlock);
+          });
+          break;
+        }
         case 'paragraph/unordered-list-item': {
           const index = blocks.indexOf(block);
 

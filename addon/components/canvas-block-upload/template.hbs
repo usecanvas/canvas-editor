@@ -4,10 +4,10 @@
 
 <div local-class="main">
   <div local-class="filename">
-    styleguide-book.pdf
+    {{block.meta.filename}}
   </div>
 
   <div local-class="progress">
-    {{ui-progress-bar progress=progress}}
+    {{ui-progress-bar progress=block.meta.progress}}
   </div>
 </div>

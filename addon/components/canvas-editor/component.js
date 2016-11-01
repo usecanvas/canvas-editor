@@ -174,6 +174,8 @@ export default Ember.Component.extend({
     const shouldInsertAfter = clientY - top > height / 2;
     const id = block.attr('data-block-id');
 
+    this.set('dragging', true);
+
     if (shouldInsertAfter) {
       this.set('dropBar.insertAfter', id);
     } else {

@@ -166,7 +166,7 @@ export default Ember.Component.extend({
     this.set('dragging', true);
   },
 
-  dragOver({ clientX, clientY }) {
+  dragFileOver(clientX, clientY) {
     const range = document.caretRangeFromPoint(clientX, clientY);
     const block = this.$(range.startContainer).closest('.canvas-block');
     if (!block.length) return;
@@ -191,9 +191,21 @@ export default Ember.Component.extend({
     this.set('dragging', false);
   },
 
-  drop(evt) {
+  dragOver(evt) {
+    const { clientX, clientY, dataTransfer: { types } } = evt;
+    if (!types.includes('Files')) return;
     evt.preventDefault();
+    this.dragFileOver(clientX, clientY);
+  },
+
+  drop(evt) {
     const { dataTransfer: { files: [file] } } = evt;
+    if (!file) return;
+    this.dropFile(evt, file);
+  },
+
+  dropFile(evt, file) {
+    evt.preventDefault();
     const flatBlocks = this.getNavigableBlocks();
     const insertId = this.get('dropBar.insertAfter');
     const block = flatBlocks.findBy('id', insertId);
@@ -225,7 +237,6 @@ export default Ember.Component.extend({
 
     this.get('fetchUploadSignature')().then(uploadSignature => {
       if (!uploadSignature) return;
-
       const onprogress = Ember.run.bind(this, this.updateBlockProgress, block);
       const uploadUrl = uploadSignature.get('uploadUrl');
       const fileUrl = `${uploadUrl}/${key}`;

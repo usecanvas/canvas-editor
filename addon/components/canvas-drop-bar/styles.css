@@ -9,10 +9,13 @@
   border-radius: 1000px;
   height: 2px;
   opacity: 0;
-  top: -1rem;
   position: absolute;
   transition: opacity 0.2s ease-in-out;
   width: 100%;
+}
+
+.adjust-spacing {
+  top: -1rem;
 }
 
 .is-droppable {

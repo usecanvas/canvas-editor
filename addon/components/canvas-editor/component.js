@@ -167,7 +167,7 @@ export default Ember.Component.extend({
   },
 
   dragFileOver(clientX, clientY) {
-    const range = document.caretRangeFromPoint(clientX, clientY);
+    const range = this.getCaretRangeFromPoint(clientX, clientY);
     const block = this.$(range.startContainer).closest('.canvas-block');
     if (!block.length) return;
     const { top, height } = block[0].getBoundingClientRect();
@@ -193,7 +193,7 @@ export default Ember.Component.extend({
 
   dragOver(evt) {
     const { clientX, clientY, dataTransfer: { types } } = evt;
-    if (!types.includes('Files')) return;
+    if (!Array.from(types).includes('Files')) return;
     evt.preventDefault();
     this.dragFileOver(clientX, clientY);
   },
@@ -218,6 +218,21 @@ export default Ember.Component.extend({
     if (!block) return;
     this.insertUploadAfterBlock(block, uploadBlock);
     this.uploadFile(file, uploadBlock);
+  },
+
+  getCaretRangeFromPoint(x, y) {
+    let range;
+    if (document.caretPositionFromPoint) {
+      const position = document.caretPositionFromPoint(x, y);
+
+      if (position) {
+        range = document.createRange();
+        range.setStart(position.offsetNode, position.offset);
+      }
+    } else if (document.caretRangeFromPoint) {
+      range = document.caretRangeFromPoint(x, y);
+    }
+    return range;
   },
 
   generateFileUpload(file, key, uploadSignature) {

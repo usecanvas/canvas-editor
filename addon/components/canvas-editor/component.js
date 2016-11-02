@@ -307,11 +307,13 @@ export default Ember.Component.extend({
       const upload = this.generateFileUpload(file, key, uploadSignature);
 
       block.set('meta.url', fileUrl);
-      upload.upload(uploadUrl, onprogress).then(_ => {
+      return upload.upload(uploadUrl, onprogress).then(_ => {
         if (!this.get('canvas.blocks').includes(block)) return;
         const type = file.type.split('/')[0] === 'image' ? 'image' : 'url-card';
         this.send('changeBlockType', `upload/${type}`, block);
       });
+    }).catch(_ => {
+      this.send('blockDeletedLocally', block, null, { onlySelf: true });
     });
   },
 

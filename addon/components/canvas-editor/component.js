@@ -1,7 +1,6 @@
 import Base62UUID from 'canvas-editor/lib/base62-uuid';
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Ember from 'ember';
-import FileUpload from 'canvas-editor/lib/file-upload';
 import filterBlocks from 'canvas-editor/lib/filter-blocks';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import Image from 'canvas-editor/lib/realtime-canvas/image';
@@ -240,79 +239,12 @@ export default Ember.Component.extend({
     const insertId = this.get('dropBar.insertAfter');
     const block = flatBlocks.findBy('id', insertId);
     const uploadBlock =
-      Upload.create({ meta: { filename: file.name, progress: 0 } });
+      Upload.create({ file, meta: { filename: file.name, progress: 0 } });
 
     this.set('dropBar.insertAfter', null);
 
     if (!block) return;
     this.insertUploadAfterBlock(block, uploadBlock);
-    this.uploadFile(file, uploadBlock);
-  },
-
-  /**
-   * Creates file upload object with appropriate parameters
-   * @method generateFileUpload
-   * @param {block} file The file to be uploaded
-   * @param {string} key The file path to upload to
-   * @param {CanvasWeb.UploadSignature} uploadSignature The signature model
-   */
-  generateFileUpload(file, key, uploadSignature) {
-    return new FileUpload({
-      key,
-      'Content-Type': file.type,
-      AWSAccessKeyId: uploadSignature.get('id'),
-      acl: 'public-read',
-      policy: uploadSignature.get('policy'),
-      signature: uploadSignature.get('signature'),
-      file
-    });
-  },
-
-  /**
-   * Uploads the files and replaces with upload block with the result block
-   * after success
-   * @method uploadFile
-   * @param {File} file The file to be uploaded
-   * @param {CanvasEditor.CanvasRealtime.Block} block The result block
-   */
-  uploadFile(file, block) {
-    const key = `uploads/${Base62UUID.generate()}/${file.name}`;
-
-    this.get('fetchUploadSignature')().then(uploadSignature => {
-      if (!uploadSignature) return;
-      const onprogress = Ember.run.bind(this, 'updateBlockProgress', block);
-      const uploadUrl = uploadSignature.get('uploadUrl');
-      const fileUrl = `${uploadUrl}/${key}`;
-      const upload = this.generateFileUpload(file, key, uploadSignature);
-
-      block.set('meta.url', fileUrl);
-      return upload.upload(uploadUrl, onprogress).then(_ => {
-        if (!this.get('canvas.blocks').includes(block)) return;
-        const type = file.type.split('/')[0] === 'image' ? 'image' : 'url-card';
-        this.send('changeBlockType', `upload/${type}`, block);
-      });
-    }).catch(_ => {
-      this.send('blockDeletedLocally', block, null, { onlySelf: true });
-    });
-  },
-
-  /**
-   * A listener for the upload that updates the meta progress
-   * @method updateBlockProgress
-   * @param {block} file The file to be uploaded
-   * @param {number} loaded The number of bytes uploaded
-   * @param {number} total The number of bytes in the file
-   */
-  updateBlockProgress(block, { loaded, total }) {
-    if (!this.get('canvas.blocks').includes(block)) return;
-    const oldProgress = block.get('meta.progress');
-    const newProgress = Math.round(100 * loaded / total);
-    block.set('meta.progress', newProgress);
-    this.get('onBlockMetaReplacedLocally')(
-      block,
-      ['progress'],
-      oldProgress,
-      newProgress);
   },
 
   mouseDown(evt) {

@@ -167,6 +167,7 @@ export default Ember.Component.extend({
 
   dragFileOver(clientX, clientY) {
     const range = this.getCaretRangeFromPoint(clientX, clientY);
+    if (!range) return;
     const block = this.$(range.startContainer).closest('.canvas-block');
     if (!block.length) return;
     const { top, height } = block[0].getBoundingClientRect();

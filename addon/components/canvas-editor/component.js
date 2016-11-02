@@ -199,9 +199,9 @@ export default Ember.Component.extend({
   },
 
   drop(evt) {
-    const { dataTransfer: { files: [file] } } = evt;
-    if (!file) return;
-    this.dropFile(evt, file);
+    const { dataTransfer: { files } } = evt;
+    if (!files[0]) return;
+    this.dropFile(evt, files[0]);
   },
 
   dropFile(evt, file) {

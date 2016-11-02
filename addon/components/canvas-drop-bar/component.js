@@ -8,7 +8,6 @@ export default Ember.Component.extend({
   dropBar: inject.service(),
   layout,
   localClassNames: ['canvas-drop-bar'],
-  localClassNameBindings: ['isDroppable'],
   styles,
 
   isDroppable: computed('afterBlockId', 'dropBar.insertAfter', function() {

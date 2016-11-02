@@ -21,7 +21,3 @@
   color: --editor-link-color;
   text-decoration: none;
 }
-
-.canvas-editor.dragging * {
-  pointer-events: none;
-}

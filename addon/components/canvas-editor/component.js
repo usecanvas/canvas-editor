@@ -33,7 +33,6 @@ export default Ember.Component.extend({
   dropBar: inject.service(),
   hasContent: computed.gt('canvas.blocks.length', 1),
   localClassNames: ['canvas-editor'],
-  localClassNameBindings: ['dragging'],
   layout,
   styles,
 
@@ -163,7 +162,7 @@ export default Ember.Component.extend({
   },
 
   dragEnter() {
-    this.set('dragging', true);
+    this.$('*').css('pointer-events', 'none');
   },
 
   dragFileOver(clientX, clientY) {
@@ -173,8 +172,6 @@ export default Ember.Component.extend({
     const { top, height } = block[0].getBoundingClientRect();
     const shouldInsertAfter = clientY - top > height / 2;
     const id = block.attr('data-block-id');
-
-    this.set('dragging', true);
 
     if (shouldInsertAfter) {
       this.set('dropBar.insertAfter', id);
@@ -187,8 +184,8 @@ export default Ember.Component.extend({
   },
 
   dragLeave() {
+    this.$('*').css('pointer-events', 'auto');
     this.set('dropBar.insertAfter', null);
-    this.set('dragging', false);
   },
 
   dragOver(evt) {
@@ -213,7 +210,6 @@ export default Ember.Component.extend({
       Upload.create({ meta: { filename: file.name, progress: 0 } });
 
     this.set('dropBar.insertAfter', null);
-    this.set('dragging', false);
 
     if (!block) return;
     this.insertUploadAfterBlock(block, uploadBlock);

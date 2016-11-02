@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Rangy from 'rangy';
+import { caretRangeFromPoint } from './range-polyfill';
 
 const { computed } = Ember;
 
@@ -112,18 +113,7 @@ const SelectionService = Ember.Object.extend({
      * computed font size of the target element in order to find a valid space.
      */
     const point = [rangeRect.left, blockRect[boundary] + offset];
-
-    let range;
-    if (document.caretPositionFromPoint) {
-      const position = document.caretPositionFromPoint(...point);
-
-      if (position) {
-        range = document.createRange();
-        range.setStart(position.offsetNode, position.offset);
-      }
-    } else if (document.caretRangeFromPoint) {
-      range = document.caretRangeFromPoint(...point);
-    }
+    let range = caretRangeFromPoint(...point);
 
     /**
      * Fall back if a range could not be found.

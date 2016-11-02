@@ -18,6 +18,7 @@ import testTemplates from 'canvas-editor/lib/templates';
 import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
+import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 
 const { computed, inject, observer, run } = Ember;
 
@@ -176,7 +177,7 @@ export default Ember.Component.extend({
    * @param {number} clientY The y coordinate of the cursor
    */
   dragFileOver(clientX, clientY) {
-    const range = this.getCaretRangeFromPoint(clientX, clientY);
+    const range = caretRangeFromPoint(clientX, clientY);
     if (!range) return;
     const block = this.$(range.startContainer).closest('.canvas-block');
     if (!block.length) return;
@@ -246,28 +247,6 @@ export default Ember.Component.extend({
     if (!block) return;
     this.insertUploadAfterBlock(block, uploadBlock);
     this.uploadFile(file, uploadBlock);
-  },
-
-  /**
-   * Universal method for browsers that don't support
-   * document.getCaretRangeFromPoint
-   * @method getCaretRangeFromPoint
-   * @param {number} x the x coordinate of the point
-   * @param {number} y the y coordinate of the point
-   */
-  getCaretRangeFromPoint(x, y) {
-    let range;
-    if (document.caretPositionFromPoint) {
-      const position = document.caretPositionFromPoint(x, y);
-
-      if (position) {
-        range = document.createRange();
-        range.setStart(position.offsetNode, position.offset);
-      }
-    } else if (document.caretRangeFromPoint) {
-      range = document.caretRangeFromPoint(x, y);
-    }
-    return range;
   },
 
   /**

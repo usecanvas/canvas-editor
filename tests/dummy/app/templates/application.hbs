@@ -1,4 +1,8 @@
-<main>
+<div local-class="debug-bar">
+  <div>{{input type="checkbox" checked=debug}} Debug</div>
+</div>
+
+<main local-class="{{if debug 'debug-grid'}}">
   {{canvas-editor-next
     canvas=model
     editingEnabled=(unless filterTerm true)

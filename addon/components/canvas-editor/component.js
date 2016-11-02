@@ -252,7 +252,7 @@ export default Ember.Component.extend({
 
     this.get('fetchUploadSignature')().then(uploadSignature => {
       if (!uploadSignature) return;
-      const onprogress = Ember.run.bind(this, this.updateBlockProgress, block);
+      const onprogress = Ember.run.bind(this, 'updateBlockProgress', block);
       const uploadUrl = uploadSignature.get('uploadUrl');
       const fileUrl = `${uploadUrl}/${key}`;
       const upload = this.generateFileUpload(file, key, uploadSignature);
@@ -267,16 +267,15 @@ export default Ember.Component.extend({
   },
 
   updateBlockProgress(block, { loaded, total }) {
-    if (this.get('canvas.blocks').includes(block)) {
-      const oldProgress = block.get('meta.progress');
-      const newProgress = Math.round(100 * loaded / total);
-      block.set('meta.progress', newProgress);
-      this.get('onBlockMetaReplacedLocally')(
-        block,
-        ['progress'],
-        oldProgress,
-        newProgress);
-    }
+    if (!this.get('canvas.blocks').includes(block)) return;
+    const oldProgress = block.get('meta.progress');
+    const newProgress = Math.round(100 * loaded / total);
+    block.set('meta.progress', newProgress);
+    this.get('onBlockMetaReplacedLocally')(
+      block,
+      ['progress'],
+      oldProgress,
+      newProgress);
   },
 
   mouseDown(evt) {

@@ -161,10 +161,20 @@ export default Ember.Component.extend({
     }
   },
 
+  /**
+   * Handler for dragenter event
+   * @method dragEnter
+   */
   dragEnter() {
     this.$('*').css('pointer-events', 'none');
   },
 
+  /**
+   * Handler for when a file is dragged over the canvas
+   * @method dragFileOver
+   * @param {number} clientX The x coordinate of the cursor
+   * @param {number} clientY The y coordinate of the cursor
+   */
   dragFileOver(clientX, clientY) {
     const range = this.getCaretRangeFromPoint(clientX, clientY);
     if (!range) return;
@@ -184,11 +194,21 @@ export default Ember.Component.extend({
     }
   },
 
+  /**
+   * Handler for dragleave event
+   * @method dragLeave
+   * @param {jQuery.Event} evt The dragleave event
+   */
   dragLeave() {
     this.$('*').css('pointer-events', 'auto');
     this.set('dropBar.insertAfter', null);
   },
 
+  /**
+   * Handler for dragover event
+   * @method dragOver
+   * @param {jQuery.Event} evt The dragover event
+   */
   dragOver(evt) {
     const { clientX, clientY, dataTransfer: { types } } = evt;
     if (!Array.from(types).includes('Files')) return;
@@ -196,12 +216,23 @@ export default Ember.Component.extend({
     this.dragFileOver(clientX, clientY);
   },
 
+  /**
+   * Handler for drop event
+   * @method drop
+   * @param {jQuery.Event} evt The drop event
+   */
   drop(evt) {
     const { dataTransfer: { files } } = evt;
     if (!files[0]) return;
     this.dropFile(evt, files[0]);
   },
 
+  /**
+   * Handler for when a file is dropped into the canvas
+   * @method dropFile
+   * @param {jQuery.Event} evt The drop event
+   * @param {File} file The file that was dropped
+   */
   dropFile(evt, file) {
     evt.preventDefault();
     const flatBlocks = this.getNavigableBlocks();
@@ -217,6 +248,13 @@ export default Ember.Component.extend({
     this.uploadFile(file, uploadBlock);
   },
 
+  /**
+   * Universal method for browsers that don't support
+   * document.getCaretRangeFromPoint
+   * @method getCaretRangeFromPoint
+   * @param {number} x the x coordinate of the point
+   * @param {number} y the y coordinate of the point
+   */
   getCaretRangeFromPoint(x, y) {
     let range;
     if (document.caretPositionFromPoint) {
@@ -232,6 +270,13 @@ export default Ember.Component.extend({
     return range;
   },
 
+  /**
+   * Creates file upload object with appropriate parameters
+   * @method generateFileUpload
+   * @param {block} file The file to be uploaded
+   * @param {string} key The file path to upload to
+   * @param {CanvasWeb.UploadSignature} uploadSignature The signature model
+   */
   generateFileUpload(file, key, uploadSignature) {
     return new FileUpload({
       key,
@@ -244,6 +289,13 @@ export default Ember.Component.extend({
     });
   },
 
+  /**
+   * Uploads the files and replaces with upload block with the result block
+   * after success
+   * @method uploadFile
+   * @param {File} file The file to be uploaded
+   * @param {CanvasEditor.CanvasRealtime.Block} block The result block
+   */
   uploadFile(file, block) {
     const key = `uploads/${Base62UUID.generate()}/${file.name}`;
 
@@ -263,6 +315,13 @@ export default Ember.Component.extend({
     });
   },
 
+  /**
+   * A listener for the upload that updates the meta progress
+   * @method updateBlockProgress
+   * @param {block} file The file to be uploaded
+   * @param {number} loaded The number of bytes uploaded
+   * @param {number} total The number of bytes in the file
+   */
   updateBlockProgress(block, { loaded, total }) {
     if (!this.get('canvas.blocks').includes(block)) return;
     const oldProgress = block.get('meta.progress');
@@ -442,16 +501,39 @@ export default Ember.Component.extend({
     this.get('onBlockDeletedLocally')(index, group);
   },
 
+  /**
+   * Insert the upload block into the canvas after the given block
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block that will be
+   *  before the inserted block
+   * @param {CanvasEditor.CanvasRealtime.Block} uploadBlock The block that will
+   *   be inserted
+   */
   insertUploadAfterBlock(block, uploadBlock) {
-    if (!block.get('parent') ||
-        block.get('parent.blocks.lastObject') === block) {
-      const index = this.get('canvas.blocks')
-        .indexOf(block.get('parent') || block);
-      this.get('canvas.blocks').replace(index + 1, 0, [uploadBlock]);
-      this.get('onNewBlockInsertedLocally')(index + 1, uploadBlock);
+    if (block.get('parent') &&
+        block.get('parent.blocks.lastObject') !== block) {
+      this.splitGroupAtBlock(block, uploadBlock, false);
       return;
     }
+    const index = this.get('canvas.blocks')
+      .indexOf(block.get('parent') || block);
+    this.get('canvas.blocks').replace(index + 1, 0, [uploadBlock]);
+    this.get('onNewBlockInsertedLocally')(index + 1, uploadBlock);
+  },
 
+  /**
+   * Split a block's group at the block, either replacing or inserting after the
+   * block.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block whose group will
+   *   be split
+   * @param {CanvasEditor.CanvasRealtime.Block} insertBlock The block that will
+   *   be added in between the two groups
+   * @param {boolean} shouldReplace Whether the insertBlock should replace or be
+   *   inserted after block
+   */
+  splitGroupAtBlock(block, insertBlock, shouldReplace) {
     const group = block.get('parent');
     const index = group.get('blocks').indexOf(block);
     const groupIndex = this.get('canvas.blocks').indexOf(group);
@@ -462,12 +544,22 @@ export default Ember.Component.extend({
     });
 
     const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
-
     group.get('blocks').replace(index + 1, Infinity, []);
-    this.get('canvas.blocks').replace(groupIndex + 1, 0, [uploadBlock]);
-    this.get('onNewBlockInsertedLocally')(groupIndex + 1, uploadBlock);
-    this.get('canvas.blocks').replace(groupIndex + 2, 0, [newGroup]);
-    this.get('onNewBlockInsertedLocally')(groupIndex + 2, newGroup);
+
+    if (shouldReplace) {
+      group.get('blocks').replace(index, Infinity, []);
+      this.get('onBlockDeletedLocally')(index, block);
+    }
+
+    this.get('canvas.blocks').replace(groupIndex + 1, 0, [insertBlock]);
+    this.get('onNewBlockInsertedLocally')(groupIndex + 1, insertBlock);
+
+    if (newGroup.get('blocks.length')) {
+      this.get('canvas.blocks').replace(groupIndex + 2, 0, [newGroup]);
+      this.get('onNewBlockInsertedLocally')(groupIndex + 2, newGroup);
+    }
+
+    this.removeGroupIfEmpty(group);
   },
 
   /**
@@ -479,30 +571,8 @@ export default Ember.Component.extend({
    * @param {string} content The content for the new block created for the split
    */
   splitGroupAtMember(block, content) {
-    const group = block.get('parent');
-    const index = group.get('blocks').indexOf(block);
-    const groupIndex = this.get('canvas.blocks').indexOf(group);
-    const movedGroupBlocks = Ember.A(group.get('blocks').slice(index + 1));
-
-    movedGroupBlocks.forEach(movedGroupBlock => {
-      this.get('onBlockDeletedLocally')(index + 1, movedGroupBlock);
-    });
-
-    const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
-
-    group.get('blocks').replace(index, Infinity, []);
-    this.get('onBlockDeletedLocally')(index, block);
-
     const paragraph = Paragraph.create({ id: block.get('id'), content });
-    this.get('canvas.blocks').replace(groupIndex + 1, 0, [paragraph]);
-    this.get('onNewBlockInsertedLocally')(groupIndex + 1, paragraph);
-
-    if (movedGroupBlocks.get('length')) {
-      this.get('canvas.blocks').replace(groupIndex + 2, 0, [newGroup]);
-      this.get('onNewBlockInsertedLocally')(groupIndex + 2, newGroup);
-    }
-
-    this.removeGroupIfEmpty(group);
+    this.splitGroupAtBlock(block, paragraph, true);
     run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
   },
 

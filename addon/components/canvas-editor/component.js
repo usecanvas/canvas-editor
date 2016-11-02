@@ -1,4 +1,3 @@
-import Base62UUID from 'canvas-editor/lib/base62-uuid';
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Ember from 'ember';
 import filterBlocks from 'canvas-editor/lib/filter-blocks';

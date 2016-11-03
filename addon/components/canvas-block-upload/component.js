@@ -75,7 +75,8 @@ export default CardBlock.extend({
       const key = `uploads/${Base62UUID.generate()}/${file.name}`;
       const uploadSignature = yield this.get('fetchUploadSignature')();
       if (!uploadSignature) return;
-      const onprogress = Ember.run.bind(this.updateBlockProgress, 'perform');
+      const onprogress =
+        Ember.run.bind(this.get('updateBlockProgress'), 'perform');
       const uploadUrl = uploadSignature.get('uploadUrl');
       const fileUrl = `${uploadUrl}/${key}`;
       const upload = this.generateFileUpload(file, key, uploadSignature);

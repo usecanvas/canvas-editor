@@ -15,6 +15,8 @@
   onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
   onTemplateApply=(action 'templateApply')}}
 
+{{canvas-drop-bar afterBlockId=titleBlock.id}}
+
 {{#each contentBlocks as |block|}}
   {{component (block-component-name block.type)
     block=block
@@ -25,6 +27,7 @@
     githubAuthComponent=githubAuthComponent
     editingEnabled=editingEnabled
     changeBlockType=(action 'changeBlockType')
+    fetchUploadSignature=fetchUploadSignature
     onBlockDeletedLocally=(action 'blockDeletedLocally')
     onBlockReplacedLocally=(action 'blockReplacedLocally')
     onNavigateDown=(action 'navigateDown')
@@ -36,4 +39,8 @@
     onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
     onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
     unfurl=(action 'unfurl')}}
+
+  {{#unless block.blocks}}
+    {{canvas-drop-bar afterBlockId=block.id adjustSpacing=true}}
+  {{/unless}}
 {{/each}}

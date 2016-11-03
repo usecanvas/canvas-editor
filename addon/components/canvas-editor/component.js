@@ -2,6 +2,7 @@ import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Ember from 'ember';
 import filterBlocks from 'canvas-editor/lib/filter-blocks';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
+import Image from 'canvas-editor/lib/realtime-canvas/image';
 import layout from './template';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
@@ -13,8 +14,11 @@ import SelectionState from 'canvas-editor/lib/selection-state';
 import styles from './styles';
 import testTemplates from 'canvas-editor/lib/templates';
 import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
+import Upload from 'canvas-editor/lib/realtime-canvas/upload';
+import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
+import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 
-const { computed, observer, run } = Ember;
+const { computed, inject, observer, run } = Ember;
 
 /**
  * A component that allows for the editing of a canvas in realtime.
@@ -25,6 +29,7 @@ const { computed, observer, run } = Ember;
 export default Ember.Component.extend({
   cardLoadIndex: 0, // Counter to increment when cards load
   classNames: ['canvas-editor'],
+  dropBar: inject.service(),
   hasContent: computed.gt('canvas.blocks.length', 1),
   localClassNames: ['canvas-editor'],
   layout,
@@ -65,6 +70,10 @@ export default Ember.Component.extend({
 
   fetchTemplates() {
     return RSVP.resolve(testTemplates);
+  },
+
+  fetchUploadSignature() {
+    return RSVP.resolve(null);
   },
 
   /**
@@ -149,6 +158,92 @@ export default Ember.Component.extend({
     } else if (evt.metaKey && evt.shiftKey) {
       this.get('onMetaSelectText')(evt);
     }
+  },
+
+  /**
+   * Handler for dragenter event
+   * @method dragEnter
+   */
+  dragEnter() {
+    this.$('*').css('pointer-events', 'none');
+  },
+
+  /**
+   * Handler for when a file is dragged over the canvas
+   * @method dragFileOver
+   * @param {number} clientX The x coordinate of the cursor
+   * @param {number} clientY The y coordinate of the cursor
+   */
+  dragFileOver(clientX, clientY) {
+    const range = caretRangeFromPoint(clientX, clientY);
+    if (!range) return;
+    const block = this.$(range.startContainer).closest('.canvas-block');
+    if (!block.length) return;
+    const { top, height } = block[0].getBoundingClientRect();
+    const shouldInsertAfter = clientY - top > height / 2;
+    const id = block.attr('data-block-id');
+
+    if (shouldInsertAfter) {
+      this.set('dropBar.insertAfter', id);
+    } else {
+      const blocks = this.getNavigableBlocks();
+      const idx = blocks.indexOf(blocks.findBy('id', id));
+      const newId = blocks.objectAt(Math.max(0, idx - 1)).get('id');
+      this.set('dropBar.insertAfter', newId);
+    }
+  },
+
+  /**
+   * Handler for dragleave event
+   * @method dragLeave
+   * @param {jQuery.Event} evt The dragleave event
+   */
+  dragLeave() {
+    this.$('*').css('pointer-events', 'auto');
+    this.set('dropBar.insertAfter', null);
+  },
+
+  /**
+   * Handler for dragover event
+   * @method dragOver
+   * @param {jQuery.Event} evt The dragover event
+   */
+  dragOver(evt) {
+    const { clientX, clientY, dataTransfer: { types } } = evt;
+    if (!Array.from(types).includes('Files')) return;
+    evt.preventDefault();
+    this.dragFileOver(clientX, clientY);
+  },
+
+  /**
+   * Handler for drop event
+   * @method drop
+   * @param {jQuery.Event} evt The drop event
+   */
+  drop(evt) {
+    const { dataTransfer: { files } } = evt;
+    if (!files[0]) return;
+    this.dropFile(evt, files[0]);
+  },
+
+  /**
+   * Handler for when a file is dropped into the canvas
+   * @method dropFile
+   * @param {jQuery.Event} evt The drop event
+   * @param {File} file The file that was dropped
+   */
+  dropFile(evt, file) {
+    evt.preventDefault();
+    const flatBlocks = this.getNavigableBlocks();
+    const insertId = this.get('dropBar.insertAfter');
+    const block = flatBlocks.findBy('id', insertId);
+    const uploadBlock =
+      Upload.create({ file, meta: { filename: file.name, progress: 0 } });
+
+    this.set('dropBar.insertAfter', null);
+
+    if (!block) return;
+    this.insertUploadAfterBlock(block, uploadBlock);
   },
 
   mouseDown(evt) {
@@ -319,14 +414,38 @@ export default Ember.Component.extend({
   },
 
   /**
-   * Split a block's group at the block, replacing it with a paragraph.
+   * Insert the upload block into the canvas after the given block
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block that will be
+   *  before the inserted block
+   * @param {CanvasEditor.CanvasRealtime.Block} uploadBlock The block that will
+   *   be inserted
+   */
+  insertUploadAfterBlock(block, uploadBlock) {
+    if (block.get('parent') &&
+        block.get('parent.blocks.lastObject') !== block) {
+      this.splitGroupAtBlock(block, uploadBlock, false);
+      return;
+    }
+    const index = this.get('canvas.blocks')
+      .indexOf(block.get('parent') || block);
+    this.get('canvas.blocks').replace(index + 1, 0, [uploadBlock]);
+    this.get('onNewBlockInsertedLocally')(index + 1, uploadBlock);
+  },
+
+  /**
+   * Split a block's group at the block, either replacing or inserting after the
+   * block.
    *
    * @method
    * @param {CanvasEditor.CanvasRealtime.Block} block The block whose group will
    *   be split
-   * @param {string} content The content for the new block created for the split
+   * @param {CanvasEditor.CanvasRealtime.Block} insertBlock The block that will
+   *   be added in between the two groups
+   * @param {boolean} shouldReplace Whether the insertBlock should replace or be
+   *   inserted after block
    */
-  splitGroupAtMember(block, content) {
+  splitGroupAtBlock(block, insertBlock, shouldReplace) {
     const group = block.get('parent');
     const index = group.get('blocks').indexOf(block);
     const groupIndex = this.get('canvas.blocks').indexOf(group);
@@ -337,20 +456,35 @@ export default Ember.Component.extend({
     });
 
     const newGroup = group.constructor.create({ blocks: movedGroupBlocks });
+    group.get('blocks').replace(index + 1, Infinity, []);
 
-    group.get('blocks').replace(index, Infinity, []);
-    this.get('onBlockDeletedLocally')(index, block);
+    if (shouldReplace) {
+      group.get('blocks').replace(index, Infinity, []);
+      this.get('onBlockDeletedLocally')(index, block);
+    }
 
-    const paragraph = Paragraph.create({ id: block.get('id'), content });
-    this.get('canvas.blocks').replace(groupIndex + 1, 0, [paragraph]);
-    this.get('onNewBlockInsertedLocally')(groupIndex + 1, paragraph);
+    this.get('canvas.blocks').replace(groupIndex + 1, 0, [insertBlock]);
+    this.get('onNewBlockInsertedLocally')(groupIndex + 1, insertBlock);
 
-    if (movedGroupBlocks.get('length')) {
+    if (newGroup.get('blocks.length')) {
       this.get('canvas.blocks').replace(groupIndex + 2, 0, [newGroup]);
       this.get('onNewBlockInsertedLocally')(groupIndex + 2, newGroup);
     }
 
     this.removeGroupIfEmpty(group);
+  },
+
+  /**
+   * Split a block's group at the block, replacing it with a paragraph.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} block The block whose group will
+   *   be split
+   * @param {string} content The content for the new block created for the split
+   */
+  splitGroupAtMember(block, content) {
+    const paragraph = Paragraph.create({ id: block.get('id'), content });
+    this.splitGroupAtBlock(block, paragraph, true);
     run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
   },
 
@@ -469,6 +603,35 @@ export default Ember.Component.extend({
       const blocks = this.get('canvas.blocks');
 
       switch (typeChange) {
+        case 'upload/image': {
+          const index = this.get('canvas.blocks').indexOf(block);
+
+          const newBlock =
+            Image.create({ meta: { url: block.get('meta.url') } });
+          this.get('onBlockDeletedLocally')(index, block);
+          this.get('onNewBlockInsertedLocally')(index, newBlock);
+          this.get('canvas.blocks').replace(index, 1, [newBlock]);
+          run.scheduleOnce('afterRender', _ => {
+            this.$('[data-card-block-selected=true]')
+              .attr('data-card-block-selected', false);
+            Selection.selectCardBlock(this.$(), newBlock);
+          });
+          break;
+        }
+        case 'upload/url-card': {
+          const index = this.get('canvas.blocks').indexOf(block);
+          const newBlock =
+            URLCard.create({ meta: { url: block.get('meta.url') } });
+          this.get('onBlockDeletedLocally')(index, block);
+          this.get('onNewBlockInsertedLocally')(index, newBlock);
+          this.get('canvas.blocks').replace(index, 1, [newBlock]);
+          run.scheduleOnce('afterRender', _ => {
+            this.$('[data-card-block-selected=true]')
+              .attr('data-card-block-selected', false);
+            Selection.selectCardBlock(this.$(), newBlock);
+          });
+          break;
+        }
         case 'paragraph/unordered-list-item': {
           const index = blocks.indexOf(block);
 

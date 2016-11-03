@@ -1,0 +1,13 @@
+<div local-class="icon">
+  {{svg-jar 'Upload' height=24 width=24}}
+</div>
+
+<div local-class="main">
+  <div local-class="filename">
+    {{block.meta.filename}}
+  </div>
+
+  <div local-class="progress">
+    {{ui-progress-bar progress=block.meta.progress}}
+  </div>
+</div>

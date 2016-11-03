@@ -1,0 +1,33 @@
+@value --dark-gray from 'canvas-editor/styles/theme';
+@value --extra-light-gray from 'canvas-editor/styles/theme';
+
+.canvas-block-upload {
+  composes: canvas-block-card from 'canvas-editor/components/canvas-block-card/styles';
+  align-items: center;
+  background: --extra-light-gray;
+  box-shadow: none;
+  color: --dark-gray;
+  display: flex;
+  position: relative;
+}
+
+.icon {
+  margin-right: 0.5rem;
+}
+
+.icon svg {
+  display: block;
+  fill: --dark-gray;
+}
+
+.main {
+  flex: 1;
+}
+
+.progress {
+  margin-top: 0.5rem;
+}
+
+.block-link {
+  composes: block-link from 'canvas-editor/components/canvas-block/styles';
+}

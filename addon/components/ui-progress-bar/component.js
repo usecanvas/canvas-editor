@@ -2,7 +2,7 @@ import Ember from 'ember';
 import layout from './template';
 import styles from './styles';
 
-const { computed, String } = Ember;
+const { computed } = Ember;
 
 export default Ember.Component.extend({
   layout,
@@ -10,6 +10,6 @@ export default Ember.Component.extend({
   styles,
 
   htmlSafeProgress: computed('progress', function() {
-    return String.htmlSafe(this.get('progress'));
+    return Ember.String.htmlSafe(this.get('progress'));
   })
 });

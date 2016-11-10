@@ -21,7 +21,7 @@ export default CardBlock.extend({
   didInsertElement() {
     const env = [];
     const canvasDownloadURL = this.get('canvasDownloadURL');
-    if (canvasDownloadURL) env.push(canvasDownloadURL);
+    if (canvasDownloadURL) env.push(`CANVAS_URL=${canvasDownloadURL}`);
 
     this.set('notebook', RunKit.createNotebook({
       element: this.$('.runkit').get(0),

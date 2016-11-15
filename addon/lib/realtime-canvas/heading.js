@@ -2,7 +2,7 @@ import ContentBlock from './content-block';
 import Ember from 'ember';
 
 const { computed } = Ember;
-const LEVEL_REG = /^(#{1,6})\s+(.*)$/;
+const LEVEL_REG = /^(#{1,6})\s+([\s\S]*)$/;
 
 /**
  * A block representing a heading.

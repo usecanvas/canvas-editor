@@ -50,8 +50,9 @@ export default Ember.Component.extend({
 
   initialFocusBlock: computed('canvas.blocks.[]', function() {
     const id = (window.location.search.match(/block=(\w{22})/) || [])[1];
-    const block = this.get('canvas.blocks').findBy('id', id);
-    return block || this.get('canvas.blocks.firstObject');
+    const blocks = this.getNavigableBlocks();
+    const block = blocks.findBy('id', id);
+    return block || blocks.get('firstObject');
   }),
 
   didInsertElement() {
@@ -60,7 +61,12 @@ export default Ember.Component.extend({
     run.next(_ => {
       if (!this.get('element')) return;
       if (!this.get('editingEnabled')) return;
-      this.focusBlockStart(this.get('initialFocusBlock'));
+      const block = this.get('initialFocusBlock');
+      if (block.get('isCard')) {
+        Selection.selectCardBlock(this.$(), block);
+      } else {
+        this.focusBlockStart(block);
+      }
     });
 
     window.onbeforeunload = () => {

@@ -305,7 +305,8 @@ export default Ember.Component.extend({
 
       if (!selectedCardElement) return;
 
-      const block = self.get('canvas.blocks')
+      const blocks = self.get('canvas.blocks');
+      const block = blocks
         .findBy('id', selectedCardElement.getAttribute('data-block-id'));
 
       switch (evt.originalEvent.key || evt.originalEvent.keyCode) {
@@ -322,6 +323,8 @@ export default Ember.Component.extend({
       case 'ArrowDown':
       case 40:
         evt.preventDefault();
+        // check if next block exists
+        if (!blocks.objectAt(blocks.indexOf(block) + 1)) return;
         selectedCardElement.setAttribute('data-card-block-selected', false);
         self.send('navigateDown', block);
         break;
@@ -556,9 +559,16 @@ export default Ember.Component.extend({
      */
     blockDeletedLocally(block, remainingContent = '', opts = {}) {
       if (opts.onlySelf) {
-        const index = this.get('canvas.blocks').indexOf(block);
-        this.get('canvas.blocks').removeObject(block);
-        this.get('onBlockDeletedLocally')(index, block);
+        if (block.get('parent')) {
+          const index = block.get('parent.blocks').indexOf(block);
+          block.get('parent.blocks').removeObject(block);
+          this.get('onBlockDeletedLocally')(index, block);
+          this.removeGroupIfEmpty(block.get('parent'));
+        } else {
+          const index = this.get('canvas.blocks').indexOf(block);
+          this.get('canvas.blocks').removeObject(block);
+          this.get('onBlockDeletedLocally')(index, block);
+        }
         return;
       }
 

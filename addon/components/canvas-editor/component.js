@@ -62,10 +62,18 @@ export default Ember.Component.extend({
       if (!this.get('editingEnabled')) return;
       this.focusBlockStart(this.get('initialFocusBlock'));
     });
+
+    window.onbeforeunload = () => {
+      if (this.get('canvas.blocks').filter(block => block.get('file')).length) {
+        return true;
+      }
+      return null;
+    };
   },
 
   willDestroyElement() {
     this.unbindKeyDownEvents();
+    window.onbeforeunload = null;
   },
 
   fetchTemplates() {

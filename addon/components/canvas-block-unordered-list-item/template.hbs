@@ -26,3 +26,9 @@
       onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
   </div>
 </div>
+
+{{#if (and canvas.isTemplate isFocused)}}
+  <div local-class="template-settings">
+    {{canvas-block-template-settings block=block}}
+  </div>
+{{/if}}

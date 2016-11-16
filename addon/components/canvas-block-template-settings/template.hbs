@@ -1,6 +1,4 @@
-{{ui-checkbox
-  checked=hasPlaceholder
-  local-class="checkbox"
-  onToggle=(action 'togglePlaceholder')}}
-
-Use as placeholder
+<div local-class="content">
+  {{input type='checkbox' checked=(mut hasPlaceholder)}}
+  Use as placeholder
+</div>

@@ -1,0 +1,15 @@
+.canvas-block-template-settings {
+  font-size: 0.875rem;
+  position: relative;
+}
+
+.content {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 4px;
+  color: white;
+  padding: 0.25rem;
+  position: absolute;
+  width: 100%;
+  z-index: 99999;
+}

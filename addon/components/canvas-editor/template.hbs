@@ -43,5 +43,9 @@
 
   {{#unless block.blocks}}
     {{canvas-drop-bar afterBlockId=block.id adjustSpacing=true}}
+
+    {{#if canvas.isTemplate}}
+      {{canvas-block-template-settings block=block}}
+    {{/if}}
   {{/unless}}
 {{/each}}

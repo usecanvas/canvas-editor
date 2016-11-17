@@ -14,6 +14,10 @@ export default Ember.Component.extend(Selection, {
     return new SelectionState(this.get('element'));
   }),
 
+  didInsertElement() {
+    this.$().focus();
+  },
+
   getElementText() {
     const element = this.get('element');
     if (element.childNodes.length === 1 &&
@@ -32,6 +36,19 @@ export default Ember.Component.extend(Selection, {
     this.get('selectionState').capture();
     this.renderBlockContent();
     this.get('selectionState').restore();
+  },
+
+  keyDown(evt) {
+    switch (evt.originalEvent.key || evt.originalEvent.keyCode) {
+    case 'p':
+    case 80:
+      if (!(evt.metaKey && evt.ctrlKey)) return;
+      evt.stopPropagation();
+      evt.preventDefault();
+      this.toggleProperty('isEditingPlaceholder');
+      break;
+    }
+
   },
 
   paste(evt) {

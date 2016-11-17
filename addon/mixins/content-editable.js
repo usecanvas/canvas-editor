@@ -150,6 +150,10 @@ export default Ember.Mixin.create(Selection, SelectionState, {
     this.get('onBlockDeletedLocally')(this.get('block'), textAfterSelection);
   },
 
+  onChangeEditPlaceholder: observer('isEditingPlaceholder', function() {
+    if (!this.get('isEditingPlaceholder')) this.$().focus();
+  }),
+
   /**
    * Called when the user wishes to navigate their cursor down.
    *

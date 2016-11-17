@@ -18,7 +18,7 @@ import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 
-const { computed, inject, observer, run } = Ember;
+const { computed, inject, observer, on, run } = Ember;
 
 /**
  * A component that allows for the editing of a canvas in realtime.
@@ -81,6 +81,21 @@ export default Ember.Component.extend({
     this.unbindKeyDownEvents();
     window.onbeforeunload = null;
   },
+
+  bindOutsideClick: on('didInsertElement', function() {
+    const self = this;
+
+    Ember.$(document).on(nsEvent('click', this), evt => {
+      if (!self.get('element').contains(evt.target)) {
+        self.$('[data-card-block-selected=true]')
+          .attr('data-card-block-selected', false);
+      }
+    });
+  }),
+
+  unbindOutsideClick: on('willDestroyElement', function() {
+    Ember.$(document).off(nsEvent('click', this));
+  }),
 
   fetchTemplates() {
     return RSVP.resolve(testTemplates);

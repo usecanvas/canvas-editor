@@ -23,6 +23,14 @@ There are a number of callbacks that can be passed to the editor:
   new block was inserted locally.
 - `onBlockDeletedLocally`: Receives an index and a block after the block was
   deleted locally.
+  
+## Versioning
+
+To release a new version of CanvasEditor:
+
+* `npm run version major|minor|patch` to increment the version
+* `git push origin master` to push the increment commit and tag
+* `npm publish` to release to NPM
 
 ## Running Tests
 

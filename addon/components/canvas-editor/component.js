@@ -30,10 +30,19 @@ export default Ember.Component.extend({
   cardLoadIndex: 0, // Counter to increment when cards load
   classNames: ['canvas-editor'],
   dropBar: inject.service(),
-  hasContent: computed.gt('canvas.blocks.length', 1),
   localClassNames: ['canvas-editor'],
   layout,
   styles,
+
+  hasContent: computed('canvas.blocks.[]', function() {
+    if (this.get('canvas.blocks.length') > 2) return true;
+    if (this.get('canvas.blocks.length') === 1) return false;
+    if (this.get('canvas.blocks.length') < 3 &&
+        this.get('canvas.blocks').objectAt(1).get('content') === '') {
+          return false;
+        }
+    return true;
+  }),
 
   onCanvasTemplateChange: observer('canvas.fillTemplate', function() {
     if (!this.get('canvas.fillTemplate')) return;

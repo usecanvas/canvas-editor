@@ -3,6 +3,7 @@
     block=block
     changeBlockType=changeBlockType
     editingEnabled=editingEnabled
+    isEditingPlaceholder=(mut isEditingPlaceholder)
     isFocused=(mut isFocused)
     onBlockDeletedLocally=onBlockDeletedLocally
     onBlockReplacedLocally=onBlockReplacedLocally
@@ -14,3 +15,11 @@
     onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
     onNewBlockInsertedLocally=onNewBlockInsertedLocally~}}
 </pre>
+
+{{#if isEditingPlaceholder}}
+  {{placeholder-editor
+    block=block
+    editingEnabled=editingEnabled
+    isEditingPlaceholder=(mut isEditingPlaceholder)
+    onBlockMetaReplacedLocally=onBlockMetaReplacedLocally}}
+{{/if}}

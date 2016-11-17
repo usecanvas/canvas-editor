@@ -11,6 +11,7 @@
     block=block
     editingEnabled=editingEnabled
     changeBlockType=changeBlockType
+    isEditingPlaceholder=(mut isEditingPlaceholder)
     isFocused=(mut isFocused)
     onBlockDeletedLocally=onBlockDeletedLocally
     onBlockMetaReplacedLocally=onBlockMetaReplacedLocally
@@ -24,8 +25,10 @@
     onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
 </div>
 
-{{#if (and isTemplate isFocused)}}
-  <div local-class="template-settings">
-    {{canvas-block-template-settings block=block}}
-  </div>
+{{#if isEditingPlaceholder}}
+  {{placeholder-editor
+    block=block
+    editingEnabled=editingEnabled
+    isEditingPlaceholder=(mut isEditingPlaceholder)
+    onBlockMetaReplacedLocally=onBlockMetaReplacedLocally}}
 {{/if}}

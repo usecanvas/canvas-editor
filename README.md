@@ -29,7 +29,8 @@ There are a number of callbacks that can be passed to the editor:
 To release a new version of CanvasEditor:
 
 * `npm run version major|minor|patch` to increment the version
-* `git push origin master` to push the increment commit and tag
+* `git push origin master` to push the increment commit
+* `git push origin master --tags` to push the increment tag
 * `npm publish` to release to NPM
 
 ## Running Tests

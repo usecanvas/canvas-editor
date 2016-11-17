@@ -43,7 +43,7 @@ rules:
     - error
     - never
   consistent-return: error
-  consistent-this: error
+  consistent-this: off
   curly: off
   default-case: off
   dot-location:

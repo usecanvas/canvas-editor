@@ -111,6 +111,7 @@ export default Ember.Mixin.create(Selection, SelectionState, {
     case 'p':
     case 80:
       if (!(evt.metaKey && evt.ctrlKey)) return;
+      if (!this.get('isTemplate')) return;
       evt.stopPropagation();
       evt.preventDefault();
       this.toggleProperty('isEditingPlaceholder');

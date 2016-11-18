@@ -8,5 +8,5 @@ import Block from './block';
  */
 export default Block.extend({
   content: '',
-  lastContent: '',
+  lastContent: ''
 });

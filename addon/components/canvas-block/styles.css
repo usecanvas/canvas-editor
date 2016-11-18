@@ -49,3 +49,13 @@
 [data-card-block-selected=true] .block-link::before {
   background: --blue;
 }
+
+.placeholder-editor {
+  bottom: -0.125rem;
+  left: -0.25rem;
+  position: absolute;
+  position: absolute;
+  right: -0.25rem;
+  top: -0.125rem;
+  z-index: 99999;
+}

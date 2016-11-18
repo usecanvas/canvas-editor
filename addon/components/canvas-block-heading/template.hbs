@@ -11,7 +11,9 @@
     block=block
     editingEnabled=editingEnabled
     changeBlockType=changeBlockType
+    isEditingPlaceholder=(mut isEditingPlaceholder)
     isFocused=(mut isFocused)
+    isTemplate=isTemplate
     onBlockDeletedLocally=onBlockDeletedLocally
     onBlockMetaReplacedLocally=onBlockMetaReplacedLocally
     onBlockReplacedLocally=onBlockReplacedLocally
@@ -23,3 +25,13 @@
     onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
     onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
 </div>
+
+{{#if isEditingPlaceholder}}
+  <div local-class="placeholder-editor">
+    {{placeholder-editor
+      block=block
+      editingEnabled=editingEnabled
+      isEditingPlaceholder=(mut isEditingPlaceholder)
+      onBlockMetaReplacedLocally=onBlockMetaReplacedLocally}}
+  </div>
+{{/if}}

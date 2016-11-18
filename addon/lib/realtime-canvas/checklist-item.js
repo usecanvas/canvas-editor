@@ -17,7 +17,7 @@ export default ContentBlock.extend({
     if (!markdown.startsWith('- ')) markdown = `- ${markdown}`;
     const checked = (/^- \[[Xx]/).test(markdown);
     const level = getWithDefault(properties, 'meta.level', 1);
-    const content = markdown.split(/^- \[.\] /)[1] || '';
+    const content = markdown.split(/^- \[.] /)[1] || '';
 
     return this.create(Object.assign(properties, {
       content,

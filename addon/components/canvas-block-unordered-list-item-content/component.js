@@ -45,5 +45,5 @@ function getNewType(content) {
 }
 
 function isChecklistItem(content) {
-  return (/^\[[ Xx]\]\s/).test(content);
+  return (/^\[[ Xx]]\s/).test(content);
 }

@@ -18,7 +18,7 @@ import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 
-const { computed, inject, observer, on, run } = Ember;
+const { computed, getWithDefault, inject, observer, on, run } = Ember;
 
 /**
  * A component that allows for the editing of a canvas in realtime.
@@ -899,12 +899,20 @@ export default Ember.Component.extend({
       const titleBlock = this.get('canvas.blocks').objectAt(0);
       titleBlock.set('lastContent', titleBlock.get('content'));
       titleBlock.set('content', template.blocks[0].content);
-
       this.get('onBlockContentUpdatedLocally')(titleBlock);
+
+      const paragraphBlock = this.get('canvas.blocks').objectAt(1);
+      if (paragraphBlock) {
+        paragraphBlock.set('lastContent', paragraphBlock.get('content'));
+        paragraphBlock.set('content',
+                           getWithDefault(template, 'blocks.1.content', ''));
+        this.get('onBlockContentUpdatedLocally')(paragraphBlock);
+      }
+
 
       const contentBlocks =
           template.blocks
-            .slice(1)
+            .slice(paragraphBlock ? 2 : 1)
             .map(RealtimeCanvas.createBlockFromJSON.bind(RealtimeCanvas));
 
       const contentBlocksLength = contentBlocks.length;

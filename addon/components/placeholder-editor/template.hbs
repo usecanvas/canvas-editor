@@ -1,0 +1,9 @@
+{{placeholder-editor-content
+  block=block
+  editingEnabled=editingEnabled
+  isEditingPlaceholder=(mut isEditingPlaceholder)
+  onBlockMetaReplacedLocally=onBlockMetaReplacedLocally}}
+
+<button local-class="done" onclick={{action 'toggleIsEditing'}}>
+  Done
+</button>

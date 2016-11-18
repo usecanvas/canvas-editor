@@ -1,0 +1,31 @@
+@value --dark-gray from 'canvas-editor/styles/theme';
+@value --gray from 'canvas-editor/styles/theme';
+@value --light-gray from 'canvas-editor/styles/theme';
+
+.placeholder-editor {
+  background: white;
+  border-radius: 4px;
+  bottom: -0.125rem;
+  box-shadow: 0 0 0 1px --light-gray;
+  color: --dark-gray;
+  left: -0.25rem;
+  padding: 0.125rem 0.25rem;
+  position: absolute;
+  right: -0.25rem;
+  top: -0.125rem;
+  width: 100%;
+  z-index: 99999;
+}
+
+.done {
+  background: --gray;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-size: 0.75rem;
+  outline: none;
+  padding: 0 0.125rem;
+  position: absolute;
+  right: 0.3125rem;
+  top: 0.3125rem;
+}

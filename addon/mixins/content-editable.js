@@ -19,6 +19,11 @@ export default Ember.Mixin.create(Selection, SelectionState, {
   isUpdatingBlockContent: false,
   usesMarkdown: true,
 
+  /**
+   * @member {string} The content being edited
+   */
+  editedContent: computed.alias('block.content'),
+
   selectionState: computed(function() {
     return new SelectionState(this.get('element'));
   }),
@@ -256,14 +261,14 @@ export default Ember.Mixin.create(Selection, SelectionState, {
    * DOM events and update the underlying model based on user changes.
    *
    * @method
-   * @observer block.content
+   * @observer editedContent
    * @on didInsertElement
    */
-  renderBlockContent: observer('block.content', on('didInsertElement',
+  renderBlockContent: observer('editedContent', on('didInsertElement',
     function renderBlockContent() {
       if (this.get('isUpdatingBlockContent')) return;
 
-      const content = getWithDefault(this, 'block.content', '');
+      const content = getWithDefault(this, 'editedContent', '');
 
       if (!content) {
         this.$().html('<br>');
@@ -304,12 +309,12 @@ export default Ember.Mixin.create(Selection, SelectionState, {
    *
    * @method
    * @param {string} content The new content for the block
-   * @param {boolean} preventRerender Whehter to prevent rerenders
+   * @param {boolean} preventRerender Whether to prevent rerenders
    */
   setBlockContentFromInput(content, preventRerender = true) {
     if (preventRerender) { this.set('isUpdatingBlockContent', true); }
-    this.set('block.lastContent', this.get('block.content'));
-    this.set('block.content', content);
+    this.set('block.lastContent', this.get('editedContent'));
+    this.set('editedContent', content);
     if (preventRerender) { this.set('isUpdatingBlockContent', false); }
     this.blockContentUpdatedLocally();
   }

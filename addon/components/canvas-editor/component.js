@@ -35,13 +35,16 @@ export default Ember.Component.extend({
   styles,
 
   hasContent: computed('canvas.blocks.[]', function() {
-    if (this.get('canvas.blocks.length') > 2) return true;
-    if (this.get('canvas.blocks.length') === 1) return false;
-    if (this.get('canvas.blocks.length') < 3 &&
-        this.get('canvas.blocks').objectAt(1).get('content') === '') {
-          return false;
-        }
-    return true;
+    switch (this.get('canvas.blocks.length')) {
+      case 0:
+        return false;
+      case 1:
+        return false;
+      case 2:
+        return this.get('canvas.blocks').objectAt(1).get('content') !== '';
+      default:
+        return true;
+    }
   }),
 
   onCanvasTemplateChange: observer('canvas.fillTemplate', function() {

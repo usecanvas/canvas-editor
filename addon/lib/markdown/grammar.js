@@ -26,7 +26,7 @@ GRAMMAR['inline-code'] = {
 
 GRAMMAR.link = {
   classes: ['link', 'has-folding'],
-  pattern: /\[(?:(?:\\.)|[^\[\]])+\]\([^\(\)\s]+(?:\(\S*?\))??[^\(\)\s]*?(?:\s+(?:['‘][^'’]*['’]|["“][^"”]*["”]))?\)/gm,
+  pattern: /\[(?:(?:\\.)|[^[\]])+]\([^()\s]+(?:\(\S*?\))??[^()\s]*?(?:\s+(?:['‘][^'’]*['’]|["“][^"”]*["”]))?\)/gm,
   inside: {
     'bracket-start folding': {
       pattern: /(^|[^\\])\[/,
@@ -34,11 +34,11 @@ GRAMMAR.link = {
     },
 
     'ref': {
-      pattern: /(?:(?:\\.)|[^\[\]])+(?=\])/,
+      pattern: /(?:(?:\\.)|[^[\]])+(?=])/,
       inside: {}
     },
 
-    'bracket-end folding': /\](?=\s?\()/,
+    'bracket-end folding': /](?=\s?\()/,
     'paren-start folding': /^\(/,
     'paren-end folding': /\)$/,
     'title folding': /\s+['‘"].*?['’”"]$/,

@@ -25,9 +25,11 @@
 </div>
 
 {{#if isEditingPlaceholder}}
-  {{placeholder-editor
-    block=block
-    editingEnabled=editingEnabled
-    isEditingPlaceholder=(mut isEditingPlaceholder)
-    onBlockMetaReplacedLocally=onBlockMetaReplacedLocally}}
+  <div local-class="placeholder-editor">
+    {{placeholder-editor
+      block=block
+      editingEnabled=editingEnabled
+      isEditingPlaceholder=(mut isEditingPlaceholder)
+      onBlockMetaReplacedLocally=onBlockMetaReplacedLocally}}
+  </div>
 {{/if}}

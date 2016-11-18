@@ -27,3 +27,8 @@
 .level-4 {
   margin-left: calc(3 * --list-indent);
 }
+
+.placeholder-editor {
+  composes: placeholder-editor from 'canvas-editor/components/canvas-block/styles';
+  left: 1.25rem;
+}

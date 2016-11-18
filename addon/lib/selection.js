@@ -150,6 +150,11 @@ const SelectionService = Ember.Object.extend({
     this.get('selection').removeAllRanges();
     $container.find(':focus').blur();
     blockElement.setAttribute('data-card-block-selected', true);
+
+    if (block.get('isEditableCard')) {
+      const editable = this.getEditableBlockElement($container, block);
+      if (editable) editable.focus();
+    }
   },
 
   /**

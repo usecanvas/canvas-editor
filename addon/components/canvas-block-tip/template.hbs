@@ -12,5 +12,27 @@
 
 <div local-class="content">
   <div local-class="title">Pro Tip</div>
-  <div local-class="content">{{block.content}}</div>
+
+  <div local-class="content">
+    {{#if isTemplate}}
+      {{canvas-block-tip-content
+        block=block
+        changeBlockType=changeBlockType
+        editingEnabled=editingEnabled
+        isEditingPlaceholder=(mut isEditingPlaceholder)
+        isFocused=(mut isFocused)
+        isTemplate=isTemplate
+        onBlockDeletedLocally=onBlockDeletedLocally
+        onBlockReplacedLocally=onBlockReplacedLocally
+        onNavigateDown=onNavigateDown
+        onNavigateLeft=onNavigateLeft
+        onNavigateRight=onNavigateRight
+        onNavigateUp=onNavigateUp
+        onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
+        onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
+        onNewBlockInsertedLocally=onNewBlockInsertedLocally}}
+    {{else}}
+      {{block.content}}
+    {{/if}}
+  </div>
 </div>

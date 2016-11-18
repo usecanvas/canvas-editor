@@ -762,7 +762,7 @@ export default Ember.Component.extend({
      */
     blockReplacedLocally(block, newBlock, opts = {}) {
       const index = this.get('canvas.blocks').indexOf(block);
-      this.get('canvas.blocks').replace(index, 1, newBlock);
+      this.get('canvas.blocks').replace(index, 1, [newBlock]);
       this.get('onBlockReplacedLocally')(index, block, newBlock);
       if (opts.focus) {
         run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);

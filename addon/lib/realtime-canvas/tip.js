@@ -7,8 +7,9 @@ import Block from './block';
  * @extends CanvasEditor.RealtimeCanvas.Block
  */
 export default Block.extend({
-  content: null,
+  content: '',
   isCard: true,
-  lastContent: null,
+  isEditableCard: true,
+  lastContent: '',
   type: 'tip'
 });

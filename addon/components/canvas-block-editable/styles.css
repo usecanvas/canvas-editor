@@ -12,9 +12,14 @@
       cursor: pointer;
     }
 
+    /**
+     * 1. Prevents ligatures from messing with the spacing around folded
+     *    elements.
+     */
+
     .md-folding {
       font-size: 0;
-      text-rendering: optimizeSpeed;
+      text-rendering: optimizeSpeed; /* 1 */
     }
 
     .md-em {

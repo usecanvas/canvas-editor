@@ -83,7 +83,7 @@ function getNewType(content) {
 }
 
 function isUnorderedListItem(content) {
-  return (/^-\s/).test(content);
+  return (/^[-*+]\s/).test(content);
 }
 
 function isCode(content) {

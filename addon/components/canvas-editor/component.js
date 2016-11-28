@@ -5,6 +5,7 @@ import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import Image from 'canvas-editor/lib/realtime-canvas/image';
 import layout from './template';
 import List from 'canvas-editor/lib/realtime-canvas/list';
+import MultiBlockSelect from 'canvas-editor/mixins/multi-block-select';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Rangy from 'rangy';
 import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
@@ -16,6 +17,7 @@ import testTemplates from 'canvas-editor/lib/templates';
 import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
+import nsEvent from 'canvas-editor/lib/ns-event';
 import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 
 const { computed, getWithDefault, inject, observer, on, run } = Ember;
@@ -26,7 +28,7 @@ const { computed, getWithDefault, inject, observer, on, run } = Ember;
  * @class CanvasEditor.CanvasEditorComponent
  * @extends Ember.Component
  */
-export default Ember.Component.extend({
+export default Ember.Component.extend(MultiBlockSelect, {
   cardLoadIndex: 0, // Counter to increment when cards load
   classNames: ['canvas-editor'],
   dropBar: inject.service(),
@@ -935,7 +937,3 @@ export default Ember.Component.extend({
     }
   }
 });
-
-function nsEvent(event, object) {
-  return `${event}.${Ember.guidFor(object)}`;
-}

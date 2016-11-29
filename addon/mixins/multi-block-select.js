@@ -179,7 +179,7 @@ export default Ember.Mixin.create({
     let endIndex = blocks.indexOf(focus);
     if (isReversed) [startIndex, endIndex] = [endIndex, startIndex];
 
-    for (let i = startIndex; i < endIndex + 1; i += 1) {
+    for (let i = startIndex; i <= endIndex; i += 1) {
       blocks.objectAt(i).set('isSelected', true);
     }
   }

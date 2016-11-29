@@ -67,7 +67,7 @@ export default Ember.Object.extend({
    * @method
    */
   setup() {
-    this.$().on(nsEvent('mousedown', this), this.mouseDown.bind(this));
+    Ember.$(document).on(nsEvent('mousedown', this), this.mouseDown.bind(this));
     Ember.$(document).on(nsEvent('mousemove', this), this.mouseMove.bind(this));
     Ember.$(document).on(nsEvent('mouseup', this), this.mouseUp.bind(this));
   },
@@ -78,6 +78,7 @@ export default Ember.Object.extend({
    * @method
    */
   teardown() {
+    Ember.$(document).off(nsEvent('mousedown', this));
     Ember.$(document).off(nsEvent('mousemove', this));
     Ember.$(document).off(nsEvent('mouseup', this));
   },

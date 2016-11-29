@@ -6,7 +6,7 @@ module('Unit | Mixin | multi block select');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  let MultiBlockSelectObject = Ember.Object.extend(MultiBlockSelectMixin);
-  let subject = MultiBlockSelectObject.create();
+  const MultiBlockSelectObject = Ember.Object.extend(MultiBlockSelectMixin);
+  const subject = MultiBlockSelectObject.create();
   assert.ok(subject);
 });

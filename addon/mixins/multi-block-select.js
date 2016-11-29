@@ -110,7 +110,7 @@ export default Ember.Mixin.create({
    *
    * @method
    * @param {number} yCoord The y coordinate value to find the block at
-   * @param {?number} [searchIncrement=0] The amount by which to offset the y
+   * @param {number} [searchIncrement=0] The amount by which to offset the y
    *   coordinate to search for a block if one is not at the exact coordinate
    * @return {?Element} The block (or null) found at the point
    */

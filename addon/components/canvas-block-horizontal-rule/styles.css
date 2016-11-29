@@ -11,3 +11,7 @@
   background: --blue;
   box-shadow: 0 0 0 1px --blue;
 }
+
+.is-selected {
+  composes: is-selected from 'canvas-editor/components/canvas-block/styles';
+}

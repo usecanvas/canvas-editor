@@ -18,3 +18,7 @@
   overflow-x: auto;
   padding: 0.5em 1em;
 }
+
+.is-selected {
+  composes: is-selected from 'canvas-editor/components/canvas-block/styles';
+}

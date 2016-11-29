@@ -1,3 +1,7 @@
 .canvas-block-runkit {
   /* Removes inherited styles for Runkit */
 }
+
+.is-selected {
+  composes: is-selected from 'canvas-editor/components/canvas-block/styles';
+}

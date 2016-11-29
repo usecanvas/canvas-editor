@@ -14,6 +14,10 @@
   position: relative;
 }
 
+.is-selected {
+  background: blue;
+}
+
 .block-link {
   bottom: 0.0625rem;
   display: block;

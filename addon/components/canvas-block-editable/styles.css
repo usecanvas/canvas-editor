@@ -55,7 +55,3 @@
   position: absolute;
   top: 0;
 }
-
-.is-selected::selection {
-  background: transparent;
-}

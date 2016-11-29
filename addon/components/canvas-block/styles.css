@@ -15,7 +15,8 @@
 }
 
 .is-selected {
-  background: blue;
+  background: #B2D7FF;
+  transition: background 0.15s ease-in-out;
 }
 
 .block-link {

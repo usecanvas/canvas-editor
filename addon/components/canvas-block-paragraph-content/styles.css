@@ -9,3 +9,7 @@
 .is-focused {
   composes: is-focused from 'canvas-editor/components/canvas-block-editable/styles';
 }
+
+.is-selected {
+  composes: is-selected from 'canvas-editor/components/canvas-block-editable/styles';
+}

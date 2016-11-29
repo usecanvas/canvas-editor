@@ -117,7 +117,11 @@ export default Ember.Mixin.create({
     const xCoord = this.get('centerCoordinate');
     const element = document.elementFromPoint(xCoord, yCoord);
 
-    let blockElement = this.$(element).closest('.canvas-block').get(0) || null;
+    let blockElement =
+      this.$(element)
+          .closest('.canvas-block')
+          .not('.canvas-block-list')
+          .get(0) || null;
 
     if (!blockElement && searchIncrement) {
       let offset = 0;

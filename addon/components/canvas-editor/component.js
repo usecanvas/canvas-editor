@@ -70,25 +70,27 @@ export default Ember.Component.extend({
     };
   },
 
-  multiBlockKeydown(evt) {
+  /* eslint-disable no-console */
+  multiBlockKeydown(_evt) {
     console.log('down');
   },
 
-  multiBlockKeypress(evt) {
+  multiBlockKeypress(_evt) {
     console.log('press');
   },
 
-  multiBlockCut() {
+  multiBlockCut(_evt) {
     console.log('cut');
   },
 
-  multiBlockCopy() {
+  multiBlockCopy(_evt) {
     console.log('copy');
   },
 
-  multiBlockPaste() {
+  multiBlockPaste(_evt) {
     console.log('paste');
   },
+  /* eslint-enable no-console */
 
   hasContent: computed('canvas.blocks.[]', function() {
     switch (this.get('canvas.blocks.length')) {

@@ -36,6 +36,11 @@ export default Ember.Object.extend({
   isMouseDown: false,
 
   /**
+   * @member {boolean} Whether a selection exists
+   */
+  isSelecting: false,
+
+  /**
    * The x coordinate halfway across the canvas.
    *
    * @member {number}
@@ -96,6 +101,7 @@ export default Ember.Object.extend({
    * @method
    */
   deSelectAll() {
+    this.set('isSelecting', false);
     this.getNavigableBlocks().setEach('isSelected', false);
   },
 
@@ -191,6 +197,7 @@ export default Ember.Object.extend({
     }
 
     window.getSelection().removeAllRanges();
+    this.set('isSelecting', true);
     this.selectRange(anchorBlock, focusBlock, direction === UP);
   },
 

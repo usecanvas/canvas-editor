@@ -97,12 +97,24 @@ export default Ember.Object.extend({
   },
 
   /**
-   * De-select every block.
+   * De-select every block and set state to de-selected.
    *
    * @method
    */
   deSelectAll() {
     this.set('isSelecting', false);
+    this.deSelectBlocks();
+  },
+
+  /**
+   * De-select every block, but do not change selection state.
+   *
+   * This is because we de-select and select only selected blocks during mouse
+   * movement, but do not want to change `isSelecting`.
+   *
+   * @method
+   */
+  deSelectBlocks() {
     this.getNavigableBlocks().setEach('isSelected', false);
   },
 
@@ -192,7 +204,8 @@ export default Ember.Object.extend({
     const anchorBlock = this.getBlockAtY(this.get('anchorPoint.y'), direction);
     const focusBlock = this.getBlockAtY(yCoord, -direction);
 
-    if (!(anchorBlock && focusBlock) || anchorBlock === focusBlock) {
+    if (!(anchorBlock && focusBlock) ||
+        !this.get('isSelecting') && anchorBlock === focusBlock) {
       this.deSelectAll();
       return;
     }
@@ -226,7 +239,7 @@ export default Ember.Object.extend({
     const anchor = this.getBlockFromElement(anchorEl, blocks);
     const focus = this.getBlockFromElement(focusEl, blocks);
 
-    this.deSelectAll();
+    this.deSelectBlocks();
 
     let startIndex = blocks.indexOf(anchor);
     let endIndex = blocks.indexOf(focus);

@@ -1,11 +1,12 @@
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Ember from 'ember';
 import filterBlocks from 'canvas-editor/lib/filter-blocks';
+import flattenBy from 'canvas-editor/lib/flatten-by';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import Image from 'canvas-editor/lib/realtime-canvas/image';
 import layout from './template';
 import List from 'canvas-editor/lib/realtime-canvas/list';
-import MultiBlockSelect from 'canvas-editor/mixins/multi-block-select';
+import MultiBlockSelect from 'canvas-editor/lib/multi-block-select';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Rangy from 'rangy';
 import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
@@ -28,7 +29,7 @@ const { computed, getWithDefault, inject, observer, on, run } = Ember;
  * @class CanvasEditor.CanvasEditorComponent
  * @extends Ember.Component
  */
-export default Ember.Component.extend(MultiBlockSelect, {
+export default Ember.Component.extend({
   cardLoadIndex: 0, // Counter to increment when cards load
   classNames: ['canvas-editor'],
   dropBar: inject.service(),
@@ -118,6 +119,17 @@ export default Ember.Component.extend(MultiBlockSelect, {
   fetchUploadSignature() {
     return RSVP.resolve(null);
   },
+
+  initMultiSelectManager: on('didInsertElement', function() {
+    this.set('multiBlockSelect', MultiBlockSelect.create({
+      element: this.get('element'),
+      canvas: this.get('canvas')
+    }));
+  }),
+
+  teardownMultiSelectManager: on('willDestroyElement', function() {
+    this.get('multiBlockSelect').teardown();
+  }),
 
   /**
    * A dummy handler for an action that receives a block after it was udpated
@@ -436,13 +448,7 @@ export default Ember.Component.extend(MultiBlockSelect, {
    * @returns {Array<CanvasEditor.CanvasRealtime.Block}
    */
   getNavigableBlocks() {
-    return Ember.A([].concat(...this.get('canvas.blocks').map(block => {
-      if (block.get('isGroup')) {
-        return block.get('blocks');
-      }
-
-      return block;
-    })));
+    return flattenBy(this.get('canvas.blocks'), 'isGroup', 'blocks');
   },
 
   /**

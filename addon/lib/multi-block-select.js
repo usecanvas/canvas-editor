@@ -1,23 +1,34 @@
 import Ember from 'ember';
+import flattenBy from 'canvas-editor/lib/flatten-by';
 import nsEvent from 'canvas-editor/lib/ns-event';
 
-const { computed, on } = Ember;
+const { computed } = Ember;
 const [DOWN, UP] = [10, -10];
 const MAX_SEARCH = 500;
 
 /**
- * A mixin that provides multi-block-selection functionality to the canvas
+ * A class that provides multi-block-selection functionality to the canvas
  * editor.
  *
- * @class CanvasEditor.MultiBlockSelectMixin
- * @extends Ember.Mixin
+ * @class CanvasEditor.MultiBlockSelect
+ * @extends Ember.Object
  */
-export default Ember.Mixin.create({
+export default Ember.Object.extend({
   /**
    * The point to which the user selection is anchored (started at)
    * @member {?object}
    */
   anchorPoint: null,
+
+  /**
+   * @member {?CanvasEditor.RealtimeCanvas} The canvas in the editor
+   */
+  canvas: null,
+
+  /**
+   * @member {?Element} The element to track selection in
+   */
+  element: null,
 
   /**
    * @member {boolean} Whether the mouse is currently down
@@ -36,70 +47,57 @@ export default Ember.Mixin.create({
   }).volatile(),
 
   /**
-   * Bind the `mouseup` event so that we know when a user stops dragging outside
-   * of the editor.
+   * Calls `setup` when the manager is initialized.
    *
    * @method
    */
-  mbBindMouseup: on('didInsertElement', function() {
-    Ember.$(document).on(nsEvent('mouseup', this), this.mbMouseUp.bind(this));
-  }),
+  init() {
+    this._super(...arguments);
+    this.setup();
+  },
 
   /**
-   * Unbind the `mouseup` event.
+   * Set up event bindings.
    *
    * @method
    */
-  mbUnbindMouseup: on('willDestroyElement', function() {
+  setup() {
+    Ember.$(document).on(nsEvent('mouseup', this), this.mouseUp.bind(this));
+    this.$().on(nsEvent('mousedown', this), this.mouseDown.bind(this));
+    this.$().on(nsEvent('mousemove', this), this.mouseMove.bind(this));
+  },
+
+  /**
+   * Tear down event bindings outside of this manager's element.
+   *
+   * @method
+   */
+  teardown() {
     Ember.$(document).off(nsEvent('mouseup', this));
-  }),
+  },
 
   /**
-   * When the user presses mouse down, track the mouse down/up state.
+   * Return a jQuery.Element of this manager's element, finding the selector
+   * within it if provided.
    *
    * @method
-   * @param {jQuery.Event} evt The mousedown event fired
+   * @param {?object} selector The selector to search with
+   * @returns {jQuery.Element}
    */
-  mbMouseDown: on('mouseDown', function(evt) {
-    this.deSelectAll();
-    this.set('isMouseDown', true);
-    this.set('anchorPoint', { x: evt.clientX, y: evt.clientY });
-  }),
+  $(selector) {
+    const $this = Ember.$(this.get('element'));
+    if (selector) return $this.find(selector);
+    return $this;
+  },
 
   /**
-   * Track the position of the pointer when the user is dragging to determine
-   * whether a multi-block selection should begin.
+   * De-select every block.
    *
    * @method
-   * @param {jQuery.Event} evt The mousemove event fired
    */
-  mbMouseMove: on('mouseMove', function(evt) {
-    if (!this.get('isMouseDown')) return;
-
-    const yCoord = evt.clientY;
-    const direction = yCoord > this.get('anchorPoint.y') ? DOWN : UP;
-    const anchorBlock = this.getBlockAtY(this.get('anchorPoint.y'), direction);
-    const focusBlock = this.getBlockAtY(yCoord, -direction);
-
-    if (!(anchorBlock && focusBlock) || anchorBlock === focusBlock) {
-      this.deSelectAll();
-      return;
-    }
-
-    window.getSelection().removeAllRanges();
-    this.selectRange(anchorBlock, focusBlock, direction === UP);
-  }),
-
-  /**
-   * When the user releases mouse, track the mouse down/up state.
-   *
-   * @method
-   * @param {jQuery.Event} evt The mouseup event fired
-   */
-  mbMouseUp: on('mouseUp', function(_evt) {
-    this.set('isMouseDown', false);
-    this.set('anchorPoint', null);
-  }),
+  deSelectAll() {
+    this.getNavigableBlocks().setEach('isSelected', false);
+  },
 
   /**
    * Given a y coordinate, find the block that occupies space at that
@@ -151,12 +149,60 @@ export default Ember.Mixin.create({
   },
 
   /**
-   * De-select every block.
+   * Get the flattened blocks of this manager's canvas.
    *
    * @method
+   * @returns {Ember.Array<CanvasEditor.RealtimeCanvas.Block>}
    */
-  deSelectAll() {
-    this.getNavigableBlocks().setEach('isSelected', false);
+  getNavigableBlocks() {
+    return flattenBy(this.get('canvas.blocks'), 'isGroup', 'blocks');
+  },
+
+  /**
+   * When the user presses mouse down, track the mouse down/up state.
+   *
+   * @method
+   * @param {jQuery.Event} evt The mousedown event fired
+   */
+  mouseDown(evt) {
+    this.deSelectAll();
+    this.set('isMouseDown', true);
+    this.set('anchorPoint', { x: evt.clientX, y: evt.clientY });
+  },
+
+  /**
+   * Track the position of the pointer when the user is dragging to determine
+   * whether a multi-block selection should begin.
+   *
+   * @method
+   * @param {jQuery.Event} evt The mousemove event fired
+   */
+  mouseMove(evt) {
+    if (!this.get('isMouseDown')) return;
+
+    const yCoord = evt.clientY;
+    const direction = yCoord > this.get('anchorPoint.y') ? DOWN : UP;
+    const anchorBlock = this.getBlockAtY(this.get('anchorPoint.y'), direction);
+    const focusBlock = this.getBlockAtY(yCoord, -direction);
+
+    if (!(anchorBlock && focusBlock) || anchorBlock === focusBlock) {
+      this.deSelectAll();
+      return;
+    }
+
+    window.getSelection().removeAllRanges();
+    this.selectRange(anchorBlock, focusBlock, direction === UP);
+  },
+
+  /**
+   * When the user releases mouse, track the mouse down/up state.
+   *
+   * @method
+   * @param {jQuery.Event} evt The mouseup event fired
+   */
+  mouseUp(_evt) {
+    this.set('isMouseDown', false);
+    this.set('anchorPoint', null);
   },
 
   /**

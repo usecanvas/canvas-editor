@@ -34,8 +34,59 @@ export default Ember.Component.extend({
   classNames: ['canvas-editor'],
   dropBar: inject.service(),
   localClassNames: ['canvas-editor'],
+  isMultiBlock: computed.readOnly('multiBlockSelect.isSelecting'),
   layout,
   styles,
+
+  bindMultiBlockVariants: on('didInsertElement', function() {
+    const self = this;
+
+    function wrap(func) {
+      return function _multiBlockHandler(evt) {
+        if (self.get('isMultiBlock')) return func(evt);
+        return null;
+      };
+    }
+
+    Ember.$(document).on(nsEvent('copy', this),
+      wrap(this.multiBlockCopy.bind(this)));
+    Ember.$(document).on(nsEvent('cut', this),
+      wrap(this.multiBlockCut.bind(this)));
+    Ember.$(document).on(nsEvent('keydown', this),
+      wrap(this.multiBlockKeyDown.bind(this)));
+    Ember.$(document).on(nsEvent('keypress', this),
+      wrap(this.multiBlockKeyPress.bind(this)));
+    Ember.$(document).on(nsEvent('paste', this),
+      wrap(this.multiBlockPaste.bind(this)));
+  }),
+
+  unbindMultiBlockVariants: on('willDestroyElement', function() {
+    Ember.$(document).off(nsEvent('copy', this));
+    Ember.$(document).off(nsEvent('cut', this));
+    Ember.$(document).off(nsEvent('keydown', this));
+    Ember.$(document).off(nsEvent('keypress', this));
+    Ember.$(document).off(nsEvent('paste', this));
+  }),
+
+  multiBlockKeyDown(evt) {
+    console.log('down');
+  },
+
+  multiBlockKeyPress(evt) {
+    console.log('press');
+  },
+
+  multiBlockCut() {
+    console.log('cut');
+  },
+
+  multiBlockCopy() {
+    console.log('copy');
+  },
+
+  multiBlockPaste() {
+    console.log('paste');
+  },
 
   hasContent: computed('canvas.blocks.[]', function() {
     switch (this.get('canvas.blocks.length')) {

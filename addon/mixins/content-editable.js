@@ -15,12 +15,9 @@ const isFirefox = window.navigator.userAgent.includes('Firefox');
  */
 export default Ember.Mixin.create(Selection, SelectionState, {
   attributeBindings: ['contentEditable:contenteditable'],
+  contentEditable: computed.readOnly('editingEnabled'),
   isUpdatingBlockContent: false,
   usesMarkdown: true,
-
-  contentEditable: computed('block.isSelected', 'editingEnabled', function() {
-    return this.get('editingEnabled') && !this.get('block.isSelected');
-  }),
 
   /**
    * @member {string} The content being edited

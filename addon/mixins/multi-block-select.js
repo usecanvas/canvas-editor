@@ -81,7 +81,7 @@ export default Ember.Mixin.create({
     const anchorBlock = this.getBlockAtY(this.get('anchorPoint.y'), direction);
     const focusBlock = this.getBlockAtY(yCoord, -direction);
 
-    if (!(anchorBlock && focusBlock)) {
+    if (!(anchorBlock && focusBlock) || anchorBlock === focusBlock) {
       this.deSelectAll();
       return;
     }

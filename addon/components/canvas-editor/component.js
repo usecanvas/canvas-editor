@@ -39,40 +39,42 @@ export default Ember.Component.extend({
   styles,
 
   bindMultiBlockVariants: on('didInsertElement', function() {
-    const self = this;
-
-    function wrap(func) {
-      return function _multiBlockHandler(evt) {
-        if (self.get('isMultiBlock')) return func(evt);
-        return null;
-      };
-    }
-
-    Ember.$(document).on(nsEvent('copy', this),
-      wrap(this.multiBlockCopy.bind(this)));
-    Ember.$(document).on(nsEvent('cut', this),
-      wrap(this.multiBlockCut.bind(this)));
-    Ember.$(document).on(nsEvent('keydown', this),
-      wrap(this.multiBlockKeyDown.bind(this)));
-    Ember.$(document).on(nsEvent('keypress', this),
-      wrap(this.multiBlockKeyPress.bind(this)));
-    Ember.$(document).on(nsEvent('paste', this),
-      wrap(this.multiBlockPaste.bind(this)));
+    ['copy',
+     'cut',
+     'keydown',
+     'keypress',
+     'paste'].forEach(evtName => this.documentBind(evtName));
   }),
 
   unbindMultiBlockVariants: on('willDestroyElement', function() {
-    Ember.$(document).off(nsEvent('copy', this));
-    Ember.$(document).off(nsEvent('cut', this));
-    Ember.$(document).off(nsEvent('keydown', this));
-    Ember.$(document).off(nsEvent('keypress', this));
-    Ember.$(document).off(nsEvent('paste', this));
+    ['copy',
+     'cut',
+     'keydown',
+     'keypress',
+     'paste'].forEach(evtName => {
+       Ember.$(document).off(nsEvent(evtName, this));
+     });
   }),
 
-  multiBlockKeyDown(evt) {
+  documentBind(event) {
+    Ember.$(document).on(nsEvent(event, this),
+      this.multiBlockWrap(this[`multiBlock${event.capitalize()}`].bind(this)));
+  },
+
+  multiBlockWrap(func) {
+    const self = this;
+
+    return function _multiBlockWrapped(evt) {
+      if (self.get('isMultiBlock')) return func(evt);
+      return null;
+    };
+  },
+
+  multiBlockKeydown(evt) {
     console.log('down');
   },
 
-  multiBlockKeyPress(evt) {
+  multiBlockKeypress(evt) {
     console.log('press');
   },
 

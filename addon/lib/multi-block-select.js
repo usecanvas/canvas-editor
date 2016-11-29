@@ -197,7 +197,6 @@ export default Ember.Object.extend({
       return;
     }
 
-    window.getSelection().removeAllRanges();
     this.set('isSelecting', true);
     this.selectRange(anchorBlock, focusBlock, direction === UP);
   },

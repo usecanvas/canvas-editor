@@ -86,6 +86,7 @@ export default Ember.Mixin.create({
       return;
     }
 
+    window.getSelection().removeAllRanges();
     this.selectRange(anchorBlock, focusBlock, direction === UP);
   }),
 

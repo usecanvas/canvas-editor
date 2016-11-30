@@ -1,24 +1,24 @@
 import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Ember from 'ember';
-import filterBlocks from 'canvas-editor/lib/filter-blocks';
-import flattenBy from 'canvas-editor/lib/flatten-by';
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import Image from 'canvas-editor/lib/realtime-canvas/image';
-import layout from './template';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import MultiBlockSelect from 'canvas-editor/lib/multi-block-select';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
+import RSVP from 'rsvp';
 import Rangy from 'rangy';
 import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
-import RSVP from 'rsvp';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
-import styles from './styles';
-import testTemplates from 'canvas-editor/lib/templates';
+import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
 import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
-import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
+import filterBlocks from 'canvas-editor/lib/filter-blocks';
+import flattenBy from 'canvas-editor/lib/flatten-by';
+import layout from './template';
 import nsEvent from 'canvas-editor/lib/ns-event';
+import styles from './styles';
+import testTemplates from 'canvas-editor/lib/templates';
 import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 
 const { computed, getWithDefault, inject, observer, on, run } = Ember;
@@ -39,11 +39,27 @@ export default Ember.Component.extend({
   styles,
 
   bindMultiBlockVariants: on('didInsertElement', function() {
+    const self = this;
+
+    // Bind a document-level event to this component
+    function documentBind(evtName) {
+      Ember.$(document).on(nsEvent(evtName, self),
+        multiBlockWrap(self[`multiBlock${evtName.capitalize()}`].bind(self)));
+    }
+
+    // Return a function that executes a function only if `isMultiBlock`
+    function multiBlockWrap(func) {
+      return function _multiBlockWrapped(evt) {
+        if (self.get('isMultiBlock')) return func(evt);
+        return null;
+      };
+    }
+
     ['copy',
      'cut',
      'keydown',
      'keypress',
-     'paste'].forEach(evtName => this.documentBind(evtName));
+     'paste'].forEach(evtName => documentBind(evtName));
   }),
 
   unbindMultiBlockVariants: on('willDestroyElement', function() {
@@ -56,27 +72,48 @@ export default Ember.Component.extend({
      });
   }),
 
-  documentBind(event) {
-    Ember.$(document).on(nsEvent(event, this),
-      this.multiBlockWrap(this[`multiBlock${event.capitalize()}`].bind(this)));
-  },
-
-  multiBlockWrap(func) {
-    const self = this;
-
-    return function _multiBlockWrapped(evt) {
-      if (self.get('isMultiBlock')) return func(evt);
-      return null;
-    };
-  },
-
   /* eslint-disable no-console */
-  multiBlockKeydown(_evt) {
-    console.log('down');
+  multiBlockKeydown(evt) {
+    let focusBlock;
+
+    switch (evt.key || evt.keyCode) {
+      case 'Escape':
+      case 27:
+        focusBlock =
+          this.getNavigableBlocks().filterBy('isSelected').objectAt(0);
+        this.get('multiBlockSelect').deSelectAll();
+        run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    }
   },
 
-  multiBlockKeypress(_evt) {
-    console.log('press');
+  multiBlockKeypress(evt) {
+    const content = evt.char || String.fromCharCode(evt.charCode);
+
+    let focusBlock;
+
+    this.getNavigableBlocks().filterBy('isSelected').forEach(
+      (replacedBlock, i) => {
+        if (i === 0) {
+          if (replacedBlock.get('type') === 'title') {
+            replacedBlock.set('oldContent', replacedBlock.get('content'));
+            replacedBlock.set('content', content);
+            this.send('blockContentUpdatedLocally', replacedBlock);
+            focusBlock = replacedBlock;
+          } else if (replacedBlock.get('parent')) {
+            focusBlock = this.splitGroupAtMember(replacedBlock, content);
+          } else {
+            const paragraph = Paragraph.create({ content });
+            this.send('blockReplacedLocally', replacedBlock, paragraph);
+            focusBlock = paragraph;
+          }
+        } else {
+          this.send('blockDeletedLocally',
+            replacedBlock, '', { onlySelf: true });
+        }
+      });
+
+    this.get('multiBlockSelect').deSelectAll();
+    run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
   },
 
   multiBlockCut(_evt) {
@@ -588,11 +625,13 @@ export default Ember.Component.extend({
    * @param {CanvasEditor.CanvasRealtime.Block} block The block whose group will
    *   be split
    * @param {string} content The content for the new block created for the split
+   * @returns {CanvasEditor.CanvasRealtime.Block} The new paragraph
    */
   splitGroupAtMember(block, content) {
     const paragraph = Paragraph.create({ id: block.get('id'), content });
     this.splitGroupAtBlock(block, paragraph, true);
     run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
+    return paragraph;
   },
 
   actions: {

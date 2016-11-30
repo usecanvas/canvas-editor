@@ -4,6 +4,7 @@ import RSVP from 'rsvp';
 import Rangy from 'rangy';
 import Selection from 'canvas-editor/lib/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
+import TypeChanges from 'canvas-editor/mixins/type-changes';
 import filterBlocks from 'canvas-editor/lib/filter-blocks';
 import flattenBy from 'canvas-editor/lib/flatten-by';
 import layout from './template';
@@ -40,7 +41,7 @@ const SELECT_EDITABLE = '.canvas-block-editable';
  * @class CanvasEditor.CanvasEditorComponent
  * @extends Ember.Component
  */
-export default Ember.Component.extend({
+export default Ember.Component.extend(TypeChanges, {
   /*
    * SIMPLE PROPERTIES
    * =================
@@ -205,7 +206,7 @@ export default Ember.Component.extend({
     if ($cardBlock.length && evt.target.tagName !== 'A') {
       this.blurEditor();
       const cardBlock = this.getBlockForElement($cardBlock[0]);
-      Selection.selectCardBlock(this.$(), cardBlock);
+      this.selectCardBlock(cardBlock);
     } else if (evt.metaKey && evt.shiftKey) {
       this.get('onMetaSelectText')(evt);
     }
@@ -400,7 +401,7 @@ export default Ember.Component.extend({
       const focusBlock = this.get('initialFocusBlock');
 
       if (focusBlock.get('isCard')) {
-        Selection.selectCardBlock(this.$(), focusBlock);
+        this.selectCardBlock(focusBlock);
       } else {
         this.focusBlockStart(focusBlock);
       }
@@ -544,7 +545,7 @@ export default Ember.Component.extend({
    * @param {Function} func The function to manipulate the range with
    */
   focusBlock(block, func) {
-    let $block = this.$(`#${block.get('id')}`);
+    let $block = this.$(this.getElementForBlock(block));
     const $editable = $block.find(SELECT_EDITABLE);
     if ($editable.length) $block = $editable;
     const focusElement = $block[0];
@@ -670,6 +671,19 @@ export default Ember.Component.extend({
   },
 
   /**
+   * Select a card block by blurring any other card blocks and selecting the
+   * given block.
+   *
+   * @method
+   * @param {CanvasEditor.RealtimeCanvas.Block} cardBlock The card block to
+   *   select
+   */
+  selectCardBlock(cardBlock) {
+    this.blurEditor();
+    Selection.selectCardBlock(this.$(), cardBlock);
+  },
+
+  /**
    * Split a block's parent group at the block, and either replace the block or
    * insert after it.
    *
@@ -728,7 +742,6 @@ export default Ember.Component.extend({
   splitGroupWithContent(block, content) {
     const paragraph = Paragraph.create({ id: block.get('id'), content });
     this.splitGroupAtBlock(block, paragraph, true);
-    run.scheduleOnce('afterRender', this, 'focusBlockStart', paragraph);
     return paragraph;
   },
 
@@ -793,7 +806,7 @@ export default Ember.Component.extend({
           this.send('blockDeletedLocally', block, '', { onlySelf: true });
         }
 
-        Selection.selectCardBlock(this.$(), prevBlock);
+        this.selectCardBlock(prevBlock);
         return;
       }
 
@@ -836,6 +849,27 @@ export default Ember.Component.extend({
      */
     blockTypeUpdatedLocally(block) {
       this.get('onBlockTypeUpdatedLocally')(block);
+    },
+
+    /**
+     * Called when a block's type is changed.
+     *
+     * This calls the `change:BEFORE/AFTER` methods defined on the typeChange
+     * mixin.
+     *
+     * @method
+     * @param {string} typeChange A string representing the "before/after" types
+     *   of the block
+     * @param {CanvasEditor.CanvasRealtime.Block} block The changed block
+     * @param {string} content The content for the block after the change (this
+     *   is important for when we need to strip Markdown prefixes like "- [ ]")
+     */
+    changeBlockType(typeChange, block, content) {
+      if (Ember.typeOf(this[`change:${typeChange}`]) === 'function') {
+        this[`change:${typeChange}`](block, content);
+      } else {
+        throw new Error(`Cannot do type change: "${typeChange}"`);
+      }
     }
   },
 

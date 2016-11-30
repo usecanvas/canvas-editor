@@ -1,14 +1,8 @@
-import ChecklistItem from 'canvas-editor/lib/realtime-canvas/checklist-item';
 import Ember from 'ember';
-import Heading from 'canvas-editor/lib/realtime-canvas/heading';
-import Image from 'canvas-editor/lib/realtime-canvas/image';
-import List from 'canvas-editor/lib/realtime-canvas/list';
 import MultiBlockSelect from 'canvas-editor/lib/multi-block-select';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
 import Selection from 'canvas-editor/lib/selection';
-import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
-import UnorderedListItem from 'canvas-editor/lib/realtime-canvas/unordered-list-item';
 import nsEvent from 'canvas-editor/lib/ns-event';
 
 const { getWithDefault, on, run } = Ember;
@@ -123,105 +117,6 @@ export default Ember.Component.extend({
   }),
 
   actions: {
-    /* eslint-disable max-statements */
-    changeBlockType(typeChange, block, content) {
-      const blocks = this.get('canvas.blocks');
-
-      switch (typeChange) {
-        case 'upload/image': {
-          const index = this.get('canvas.blocks').indexOf(block);
-
-          const newBlock =
-            Image.create({ meta: { url: block.get('meta.url') } });
-          this.get('onBlockDeletedLocally')(index, block);
-          this.get('onNewBlockInsertedLocally')(index, newBlock);
-          this.get('canvas.blocks').replace(index, 1, [newBlock]);
-          run.scheduleOnce('afterRender', _ => {
-            this.$('[data-card-block-selected=true]')
-              .attr('data-card-block-selected', false);
-            Selection.selectCardBlock(this.$(), newBlock);
-          });
-          break;
-        }
-        case 'upload/url-card': {
-          const index = this.get('canvas.blocks').indexOf(block);
-          const newBlock =
-            URLCard.create({ meta: { url: block.get('meta.url') } });
-          this.get('onBlockDeletedLocally')(index, block);
-          this.get('onNewBlockInsertedLocally')(index, newBlock);
-          this.get('canvas.blocks').replace(index, 1, [newBlock]);
-          run.scheduleOnce('afterRender', _ => {
-            this.$('[data-card-block-selected=true]')
-              .attr('data-card-block-selected', false);
-            Selection.selectCardBlock(this.$(), newBlock);
-          });
-          break;
-        }
-        case 'paragraph/unordered-list-item': {
-          const index = blocks.indexOf(block);
-
-          this.get('onBlockDeletedLocally')(index, block);
-
-          const group = List.create({ blocks: Ember.A([block]) });
-
-          block.setProperties({
-            type: 'unordered-list-item',
-            content: content.slice(2),
-            meta: { level: 1 }
-          });
-
-          blocks.replace(index, 1, [group]);
-          this.get('onNewBlockInsertedLocally')(index, group);
-          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
-          break;
-        } case 'paragraph/heading': {
-          const index = this.get('canvas.blocks').indexOf(block);
-          const newBlock =
-            Heading.createFromMarkdown(content, { id: block.get('id') });
-          this.get('onBlockDeletedLocally')(index, block);
-          this.get('onNewBlockInsertedLocally')(index, newBlock);
-          this.get('canvas.blocks').replace(index, 1, [newBlock]);
-          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
-          break;
-        } case 'checklist-item/paragraph':
-          case 'unordered-list-item/paragraph': {
-          this.splitGroupAtMember(block, content);
-          break;
-        } case 'checklist-item/unordered-list-item': {
-          const group = block.get('parent');
-          const index = group.get('blocks').indexOf(block);
-          const newBlock =
-            UnorderedListItem.createFromMarkdown(content, {
-              id: block.get('id'),
-              meta: { level: block.getWithDefault('meta.level', 1) },
-              parent: group
-            });
-          this.get('onBlockDeletedLocally')(index, block);
-          this.get('onNewBlockInsertedLocally')(index, newBlock);
-          group.get('blocks').replace(index, 1, [newBlock]);
-          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
-          break;
-        } case 'unordered-list-item/checklist-item': {
-          const group = block.get('parent');
-          const index = group.get('blocks').indexOf(block);
-          const newBlock =
-            ChecklistItem.createFromMarkdown(content, {
-              id: block.get('id'),
-              meta: { level: block.getWithDefault('meta.level', 1) },
-              parent: group
-            });
-          this.get('onBlockDeletedLocally')(index, block);
-          this.get('onNewBlockInsertedLocally')(index, newBlock);
-          group.get('blocks').replace(index, 1, [newBlock]);
-          run.scheduleOnce('afterRender', this, 'focusBlockStart', block);
-          break;
-        } default: {
-          throw new Error(`Cannot do type change: "${typeChange}"`);
-        }
-      }
-    },
-    /* eslint-enable max-statements */
-
     /**
      * Called when the user replaces a block, such as converting a paragraph
      * to a URL card.

@@ -368,17 +368,13 @@ export default Ember.Component.extend(TypeChanges, {
   keydownMultiBlock(evt) {
     const { key } = new Key(evt.originalEvent);
 
-    if (key !== 'esc') return;
-
-    const focusBlock =
-      this.getNavigableBlocks().filterBy('isSelected').objectAt(0);
-
-    this.get('multiBlockSelect').deSelectAll();
-
-    if (focusBlock.get('isCard')) {
-      run.scheduleOnce('afterRender', this, 'selectCardBlock', focusBlock);
-    } else {
-      run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    switch (key) {
+      case 'esc':
+        this.cancelMultiBlockSelect();
+        break;
+      case 'backspace':
+        this.replaceMultiBlockSelect('');
+        break;
     }
   },
 
@@ -390,30 +386,7 @@ export default Ember.Component.extend(TypeChanges, {
    */
   keypressMultiBlock(evt) {
     const content = evt.char || String.fromCharCode(evt.charCode);
-
-    let focusBlock;
-
-    this.getNavigableBlocks().filterBy('isSelected').forEach((block, i) => {
-      if (i === 0) {
-        if (block.get('type') === 'title') {
-          this.updateBlockContent(block, content);
-          this.send('blockContentUpdatedLocally', block);
-          focusBlock = block;
-        } else if (block.get('parent')) {
-          focusBlock = this.splitGroupWithContent(block, content);
-        } else {
-          const paragraph = Paragraph.create({ content });
-          this.send('blockReplacedLocally', block, paragraph);
-          focusBlock = paragraph;
-        }
-      } else {
-        this.send('blockDeletedLocally',
-          block, '', { onlySelf: true });
-      }
-    });
-
-    this.get('multiBlockSelect').deSelectAll();
-    run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    this.replaceMultiBlockSelect(content);
   },
 
   /**
@@ -629,6 +602,24 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
+   * Cancel a multi-block selection by de-selecting and focusing on the first
+   * block in the selection.
+   *
+   * @method
+   */
+  cancelMultiBlockSelect() {
+    this.get('multiBlockSelect').deSelectAll();
+
+    const focusBlock = this.getSelectedBlocks().objectAt(0);
+
+    if (focusBlock.get('isCard')) {
+      run.scheduleOnce('afterRender', this, 'selectCardBlock', focusBlock);
+    } else {
+      run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    }
+  },
+
+  /**
    * Handle the user dragging a file over the editor by setting the
    * `insertAfter` ID on the `dropBar` service.
    *
@@ -772,6 +763,16 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
+   * Get the multi-block selected blocks.
+   *
+   * @method
+   * @returns {Array<CanvasEditor.RealtimeCanvas.Block>}
+   */
+  getSelectedBlocks() {
+    return this.getNavigableBlocks().filterBy('isSelected');
+  },
+
+  /**
    * Insert an upload block after another given block.
    *
    * @method
@@ -878,6 +879,38 @@ export default Ember.Component.extend(TypeChanges, {
   removeGroupIfEmpty(group) {
     if (group.get('blocks.length') > 0) return;
     this.removeBlock(group);
+  },
+
+  /**
+   * Replace multi-block select with a string.
+   *
+   * @method
+   * @param {string} content The string to replace the selection with
+   */
+  replaceMultiBlockSelect(content) {
+    let focusBlock;
+
+    this.getSelectedBlocks().forEach((block, i) => {
+      if (i === 0) {
+        if (block.get('type') === 'title') {
+          this.updateBlockContent(block, content);
+          this.send('blockContentUpdatedLocally', block);
+          focusBlock = block;
+        } else if (block.get('parent')) {
+          focusBlock = this.splitGroupWithContent(block, content);
+        } else {
+          const paragraph = Paragraph.create({ content });
+          this.send('blockReplacedLocally', block, paragraph);
+          focusBlock = paragraph;
+        }
+      } else {
+        this.send('blockDeletedLocally',
+          block, '', { onlySelf: true });
+      }
+    });
+
+    this.get('multiBlockSelect').deSelectAll();
+    run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
   },
 
   /**

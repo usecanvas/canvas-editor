@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Key from 'canvas-editor/lib/key';
+import MultiBlockSelect from 'canvas-editor/lib/multi-block-select';
 import RSVP from 'rsvp';
 import Rangy from 'rangy';
 import RealtimeCanvas from 'canvas-editor/lib/realtime-canvas';
@@ -21,6 +22,7 @@ const { computed, getWithDefault, inject, observer, on, run } = Ember;
 
 const CARD_BLOCK_SELECTED_ATTR = 'data-card-block-selected';
 const ESCAPE = 27;
+const MULTI_BLOCK_EVENTS = 'copy cut keydown keypress paste'.w();
 const SELECT_BLOCK = '.canvas-block';
 const SELECT_CARD_BLOCK = '.canvas-block-card';
 const SELECT_EDITABLE = '.canvas-block-editable';
@@ -79,11 +81,6 @@ export default Ember.Component.extend(TypeChanges, {
   filterTerm: '',
 
   /**
-   * @member {Array<string>} Localized class names for styling
-   */
-  localClassNames: 'canvas-editor'.w(),
-
-  /**
    * @member {boolean} Whether a multi-block selection is in progress
    */
   isMultiBlock: computed.readOnly('multiBlockSelect.isSelecting'),
@@ -92,6 +89,16 @@ export default Ember.Component.extend(TypeChanges, {
    * @member {object} The component layout template
    */
   layout,
+
+  /**
+   * @member {Array<string>} Localized class names for styling
+   */
+  localClassNames: 'canvas-editor'.w(),
+
+  /**
+   * @member {?CanvasEditor.MultiBLockSelect} A manager for multi-block select
+   */
+  multiBlockSelect: null,
 
   /**
    * @member {object} The component styles
@@ -224,6 +231,26 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
+   * Handle a `copy` event when in multi-block.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `copy` event
+   */
+  copyMultiBlock(_evt) {
+    Ember.K();
+  },
+
+  /**
+   * Handle a `cut` event when in multi-block.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `cut` event
+   */
+  cutMultiBlock(_evt) {
+    Ember.K();
+  },
+
+  /**
    * Handle the `dragenter` event.
    *
    * @method
@@ -333,6 +360,63 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
+   * Handle the `keydown` event when in multi-block.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `keydown` event
+   */
+  keydownMultiBlock(evt) {
+    const { key } = new Key(evt.originalEvent);
+
+    if (key !== 'esc') return;
+
+    const focusBlock =
+      this.getNavigableBlocks().filterBy('isSelected').objectAt(0);
+
+    this.get('multiBlockSelect').deSelectAll();
+
+    if (focusBlock.get('isCard')) {
+      run.scheduleOnce('afterRender', this, 'selectCardBlock', focusBlock);
+    } else {
+      run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    }
+  },
+
+  /**
+   * Handle the `keypress` event when in multi-block.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `keypress` event
+   */
+  keypressMultiBlock(evt) {
+    const content = evt.char || String.fromCharCode(evt.charCode);
+
+    let focusBlock;
+
+    this.getNavigableBlocks().filterBy('isSelected').forEach((block, i) => {
+      if (i === 0) {
+        if (block.get('type') === 'title') {
+          this.updateBlockContent(block, content);
+          this.send('blockContentUpdatedLocally', block);
+          focusBlock = block;
+        } else if (block.get('parent')) {
+          focusBlock = this.splitGroupWithContent(block, content);
+        } else {
+          const paragraph = Paragraph.create({ content });
+          this.send('blockReplacedLocally', block, paragraph);
+          focusBlock = paragraph;
+        }
+      } else {
+        this.send('blockDeletedLocally',
+          block, '', { onlySelf: true });
+      }
+    });
+
+    this.get('multiBlockSelect').deSelectAll();
+    run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+  },
+
+  /**
    * Ignore `mousedown` events with meta+shift for filter word selection.
    *
    * @method
@@ -342,10 +426,29 @@ export default Ember.Component.extend(TypeChanges, {
     if (evt.metaKey && evt.shiftKey) evt.preventDefault();
   },
 
+  /**
+   * Handle the `paste` event when in multi-block.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `paste` event
+   */
+  pasteMultiBlock(_evt) {
+    Ember.K();
+  },
+
   /*
    * Lifecycle Hooks
    * ---------------
    */
+
+  /**
+   * Bind a handler for the `window.onbeforeunload` event.
+   *
+   * @method
+   */
+  bindBeforeunload: on('didInsertElement', function() {
+    window.onbeforeunload = this.beforeUnload.bind(this);
+  }),
 
   /**
    * Bind handlers for document-level `click` events.
@@ -382,12 +485,29 @@ export default Ember.Component.extend(TypeChanges, {
   }),
 
   /**
-   * Bind a handler for the `window.onbeforeunload` event.
+   * Bind handlers for events fired while in the multi-block state.
    *
    * @method
    */
-  bindBeforeunload: on('didInsertElement', function() {
-    window.onbeforeunload = this.beforeUnload.bind(this);
+  bindMultiBlockEvents: on('didInsertElement', function() {
+    // Bind a document-level event to this component
+    const self = this;
+
+    // Bind a document-level event to this component
+    function documentBind(evtName) {
+      Ember.$(document).on(nsEvent(evtName, self),
+        multiBlockWrap(self[`${evtName}MultiBlock`].bind(self)));
+    }
+
+    // Return a function that executes a function only if `isMultiBlock`
+    function multiBlockWrap(func) {
+      return function _multiBlockWrapped(evt) {
+        if (self.get('isMultiBlock')) return func(evt);
+        return null;
+      };
+    }
+
+    MULTI_BLOCK_EVENTS.forEach(evtName => documentBind(evtName));
   }),
 
   /**
@@ -410,6 +530,27 @@ export default Ember.Component.extend(TypeChanges, {
   }),
 
   /**
+   * Initialize the multi-block selection manager.
+   *
+   * @method
+   */
+  initMultiSelectManager: on('didInsertElement', function() {
+    this.set('multiBlockSelect', MultiBlockSelect.create({
+      element: this.get('element'),
+      canvas: this.get('canvas')
+    }));
+  }),
+
+  /**
+   * Teardown the multi-block selection manager.
+   *
+   * @method
+   */
+  teardownMultiSelectManager: on('willDestroyElement', function() {
+    this.get('multiBlockSelect').teardown();
+  }),
+
+  /**
    * Unbind document-level handlers.
    *
    * @method
@@ -425,6 +566,17 @@ export default Ember.Component.extend(TypeChanges, {
    */
   unbindBeforeunload: on('willDestroyElement', function() {
     window.onbeforeunload = null;
+  }),
+
+  /**
+   * Unbind the multi-block event handlers.
+   *
+   * @method
+   */
+  unbindMultiBlockVariants: on('willDestroyElement', function() {
+    MULTI_BLOCK_EVENTS.forEach(evtName => {
+      Ember.$(document).off(nsEvent(evtName, this));
+    });
   }),
 
   /*

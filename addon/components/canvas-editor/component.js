@@ -21,7 +21,6 @@ import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 const { computed, getWithDefault, inject, observer, on, run } = Ember;
 
 const CARD_BLOCK_SELECTED_ATTR = 'data-card-block-selected';
-const ESCAPE = 27;
 const MULTI_BLOCK_EVENTS = 'copy cut keydown keypress paste'.w();
 const SELECT_BLOCK = '.canvas-block';
 const SELECT_CARD_BLOCK = '.canvas-block-card';
@@ -318,10 +317,10 @@ export default Ember.Component.extend(TypeChanges, {
     if (!this.get('editingEnabled')) return;
 
     const selectedCardBlockElement = this.get('selectedCardBlockElement');
+    const key = new Key(evt.originalEvent);
 
-    if (evt.originalEvent.keyCode === ESCAPE ||
-        this.eventTargetInEditor(evt) ||
-        selectedCardBlockElement) {
+    if (key.key === 'esc' &&
+        (this.eventTargetInEditor(evt) || selectedCardBlockElement)) {
       this.blurEditor();
       return;
     }
@@ -329,7 +328,6 @@ export default Ember.Component.extend(TypeChanges, {
     // Below handles only navigation/editing of card blocks.
     if (!selectedCardBlockElement) return;
 
-    const key = new Key(evt.originalEvent);
     const cardBlock = this.getBlockForElement(selectedCardBlockElement);
 
     switch (key.key) {
@@ -608,9 +606,11 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    */
   cancelMultiBlockSelect() {
+    const focusBlock = this.getSelectedBlocks().objectAt(0);
+
     this.get('multiBlockSelect').deSelectAll();
 
-    const focusBlock = this.getSelectedBlocks().objectAt(0);
+    if (!focusBlock) return;
 
     if (focusBlock.get('isCard')) {
       run.scheduleOnce('afterRender', this, 'selectCardBlock', focusBlock);
@@ -910,7 +910,10 @@ export default Ember.Component.extend(TypeChanges, {
     });
 
     this.get('multiBlockSelect').deSelectAll();
-    run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+
+    if (focusBlock) {
+      run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    }
   },
 
   /**

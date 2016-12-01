@@ -17,6 +17,7 @@ import testTemplates from 'canvas-editor/lib/templates';
 import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
+import List from 'canvas-editor/lib/realtime-canvas/list';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 
 const { computed, inject, observer, on, run } = Ember;
@@ -237,11 +238,11 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `copy` event
    */
   copyDocument(evt) {
-    const sliceStart = 1 + Math.round(Math.random() * 3);
-    const blocks = this.getNavigableBlocks().slice(sliceStart, sliceStart + 3);
+    const copyBlocks = this.buildCopyBlocks(this.getNavigableBlocks().filterBy('isSelected', true));
+    const replacer = (k, v) => k === 'parent' ? undefined : v;
     evt.originalEvent.clipboardData.setData('text/plain', 'Shark');
     evt.originalEvent.clipboardData.setData('application/x-canvas',
-      JSON.stringify({ lines: blocks }));
+      JSON.stringify({ lines: copyBlocks }, replacer));
     evt.preventDefault();
   },
 
@@ -676,6 +677,19 @@ export default Ember.Component.extend(TypeChanges, {
     } else {
       this.$(':focus').blur();
     }
+  },
+
+  buildCopyBlocks(blocks) {
+    return blocks.reduce((prev, next) => {
+      if (next.get('parent') && prev.get('lastObject.blocks')) {
+        prev.get('lastObject.blocks').pushObject(next);
+      } else if (next.get('parent')) {
+        prev.pushObject(List.create({ blocks: [next], type: 'list' }));
+      } else {
+        prev.pushObject(next);
+      }
+      return prev;
+    }, []);
   },
 
   /**

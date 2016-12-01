@@ -26,7 +26,7 @@ export default class CopyPaste {
     try {
       const { lines, isInline } = JSON.parse(this.pasteData);
       if (isInline) return lines[0];
-      return lines.map(cleanID).map(RealtimeCanvas.createBlockFromJSON);
+      return lines.map(cleanID).map(RealtimeCanvas.createBlockFromJSON.bind(RealtimeCanvas));
     } catch (err) {
       return null;
     }

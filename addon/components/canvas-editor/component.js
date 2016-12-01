@@ -743,7 +743,7 @@ export default Ember.Component.extend(TypeChanges, {
     this.set('dropBar.insertAfter', null);
 
     if (insertAfterBlock) {
-      this.insertUploadAfterBlock(insertAfterBlock, uploadBlock);
+      this.insertBlockAfter(uploadBlock, insertAfterBlock);
     }
   },
 
@@ -852,24 +852,31 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
-   * Insert an upload block after another given block.
+   * Insert a block after another block.
    *
    * @method
-   * @param {CanvasEditor.CanvasRealtime.Block} block The block that will be
-   *  before the inserted block
-   * @param {CanvasEditor.CanvasRealtime.Block} uploadBlock The block that will
-   *   be inserted
+   * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The inserted block
+   * @param {CanvasEditor.RealtimeCanvas.Block} beforeBlock The block before the
+   *   inserted block
    */
-  insertUploadAfterBlock(block, uploadBlock) {
-    if (block.get('parent') &&
-        block.get('parent.blocks.lastObject') !== block) {
-      this.splitGroupAtBlock(block, uploadBlock, false);
+  insertBlockAfter(newBlock, beforeBlock) {
+    if (beforeBlock.get('parent') &&
+        beforeBlock.get('type') !== newBlock.get('type')) {
+      this.splitGroupAtBlock(beforeBlock, newBlock, false);
       return;
     }
 
-    const index = this.get('blocks').indexOf(block.get('parent') || block);
-    this.get('blocks').replace(index + 1, 0, [uploadBlock]);
-    this.get('onNewBlockInsertedLocally')(index + 1, uploadBlock);
+    let parentBlocks;
+
+    if (beforeBlock.get('parent')) {
+      parentBlocks = beforeBlock.get('parent.blocks');
+    } else {
+      parentBlocks = this.get('blocks');
+    }
+
+    const idx = parentBlocks.indexOf(beforeBlock);
+    parentBlocks.replace(idx + 1, 0, [newBlock]);
+    this.get('onNewBlockInsertedLocally')(idx + 1, newBlock);
   },
 
   /**
@@ -1087,24 +1094,7 @@ export default Ember.Component.extend(TypeChanges, {
   pasteBlocksWithSplit(after, blocks) {
     // Instantiate new groups for list lines?
       //const group = List.create({ blocks: Ember.A([block]) });
-    blocks.reverse().forEach(block =>
-      this.syncedInsertBlockAfter(block, after));
-  },
-
-  syncedInsertBlockAfter(block, after) {
-    if (!after.get('parent')) {
-      const blocks = this.get('canvas.blocks');
-      const insertIndex = blocks.indexOf(after) + 1;
-      blocks.replace(insertIndex, 0, [block]);
-      this.get('onNewBlockInsertedLocally')(insertIndex, block);
-    } else if (after.get('type') === block.get('type')) {
-      const blocks = after.get('parent.blocks');
-      const insertIndex = blocks.indexOf(after) + 1;
-      blocks.replace(insertIndex, 0, [block]);
-      this.get('onNewBlockInsertedLocally')(insertIndex, block);
-    } else {
-      this.splitGroupAtBlock(after, block);
-    }
+    blocks.reverse().forEach(block => this.insertBlockAfter(block, after));
   },
 
   /*

@@ -4,6 +4,7 @@
 @value --extra-light-gray from 'canvas-editor/styles/theme';
 
 .canvas-block-editable {
+  outline: none;
   position: relative;
   white-space: pre-wrap;
 

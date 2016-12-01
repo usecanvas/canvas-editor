@@ -14,6 +14,11 @@
   position: relative;
 }
 
+.is-selected {
+  background: #B2D7FF;
+  transition: background 0.15s ease-in-out;
+}
+
 .block-link {
   bottom: 0.0625rem;
   display: block;

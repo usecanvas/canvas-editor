@@ -45,6 +45,10 @@
   composes: is-focused from 'canvas-editor/components/canvas-block/styles';
 }
 
+.is-selected {
+  composes: is-selected from 'canvas-editor/components/canvas-block/styles';
+}
+
 .placeholder-editor {
   composes: placeholder-editor from 'canvas-editor/components/canvas-block-list/item';
 }

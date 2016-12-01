@@ -88,6 +88,8 @@ export default Ember.Mixin.create(Selection, SelectionState, {
    * @param {Event} evt The event fired
    */
   keyDown(evt) {
+    if (!this.get('contentEditable')) return;
+
     switch (evt.originalEvent.key || evt.originalEvent.keyCode) {
     case 'ArrowLeft':
     case 37:

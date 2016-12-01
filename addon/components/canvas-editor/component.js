@@ -227,7 +227,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `click` event
    */
   clickDocument(evt) {
-    if (this.get('element').contains(evt.target)) this.blurEditor();
+    if (!this.get('element').contains(evt.target)) this.blurEditor();
   },
 
   /**

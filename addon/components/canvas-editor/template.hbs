@@ -17,6 +17,7 @@
   onNavigateRight=(action 'navigateRight')
   onNavigateUp=(action 'navigateUp')
   onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
+  pasteBlocksWithSplit=(action pasteBlocksWithSplit)
   onTemplateApply=(action 'templateApply')}}
 
 {{canvas-drop-bar afterBlockId=titleBlock.id}}
@@ -48,6 +49,7 @@
     onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
     onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
     onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
+    pasteBlocksWithSplit=(action pasteBlocksWithSplit)
     unfurl=(action 'unfurl')}}
 
   {{#unless block.blocks}}

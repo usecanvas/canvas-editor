@@ -1,3 +1,4 @@
+import CopyPaste from 'canvas-editor/lib/copy-paste';
 import Ember from 'ember';
 import Key from 'canvas-editor/lib/key';
 import MultiBlockSelect from 'canvas-editor/lib/multi-block-select';
@@ -230,6 +231,21 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
+   * Handle a `copy` event when in the document.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `copy` event
+   */
+  copyDocument(evt) {
+    const sliceStart = 1 + Math.round(Math.random() * 3);
+    const blocks = this.getNavigableBlocks().slice(sliceStart, sliceStart + 3);
+    evt.originalEvent.clipboardData.setData('text/plain', 'Shark');
+    evt.originalEvent.clipboardData.setData('application/x-canvas',
+      JSON.stringify({ lines: blocks }));
+    evt.preventDefault();
+  },
+
+  /**
    * Handle a `copy` event when in multi-block.
    *
    * @method
@@ -418,6 +434,38 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
+   * Handle the `paste` event.
+   *
+   * This should only fire when a selection is not active inside a block but
+   * rather that a 1 >= blocks is selected
+   *
+   * @method
+   * @param {jQuery.Event} evt The `paste` event
+   */
+  paste(evt) {
+    const blocks = this.getNavigableBlocks();
+    const selectedBlocks = blocks.filterBy('isSelected', true);
+
+    if (!selectedBlocks.length) return;
+
+    evt.preventDefault();
+
+    const { pastedLines } = new CopyPaste(evt);
+
+    const insertIndex = this.get('blocks')
+      .indexOf(blocks.get('lastObject.parent') || blocks.get('lastObject')) + 1;
+
+    // split block if selection inside block
+    //this.get('onBlockDeletedLocally')(index, group);
+    // replace or insert
+    // insert step
+    this.get('canvas.blocks').replace(insertIndex, 0, pastedLines);
+    pastedLines.reverse().forEach(line => {
+      this.get('onNewBlockInsertedLocally')(insertIndex, line);
+    });
+  },
+
+  /**
    * Handle the `paste` event when in multi-block.
    *
    * @method
@@ -450,6 +498,17 @@ export default Ember.Component.extend(TypeChanges, {
     Ember.$(document).on(
       nsEvent('click', this),
       this.clickDocument.bind(this));
+  }),
+
+  /**
+   * Bind handlers for document-level `copy` events.
+   *
+   * @method
+   */
+  bindCopyEvents: on('didInsertElement', function() {
+    Ember.$(document).on(
+      nsEvent('copy', this),
+      this.copyDocument.bind(this));
   }),
 
   /**
@@ -1024,6 +1083,46 @@ export default Ember.Component.extend(TypeChanges, {
     block.set('content', content);
     return block;
   },
+
+  pasteBlocksWithSplit(after, blocks) {
+    // Instantiate new groups for list lines?
+      //const group = List.create({ blocks: Ember.A([block]) });
+    blocks.reverse().forEach(block =>
+      this.syncedInsertBlockAfter(block, after));
+  },
+
+  syncedInsertBlockAfter(block, after) {
+    if (!after.get('parent')) {
+      const blocks = this.get('canvas.blocks');
+      const insertIndex = blocks.indexOf(after) + 1;
+      blocks.replace(insertIndex, 0, [block]);
+      this.get('onNewBlockInsertedLocally')(insertIndex, block);
+    } else if (after.get('type') === block.get('type')) {
+      const blocks = after.get('parent.blocks');
+      const insertIndex = blocks.indexOf(after) + 1;
+      blocks.replace(insertIndex, 0, [block]);
+      this.get('onNewBlockInsertedLocally')(insertIndex, block);
+    } else {
+      this.splitGroupAtBlock(after, block);
+    }
+  },
+
+  syncedDeleteBlock(block) {
+    if (block.get('parent')) {
+      const blocks = block.get('parent.blocks');
+      const index = blocks.indexOf(block);
+      blocks.replace(index, 1, []);
+      this.get('onBlockDeletedLocally')(index, block);
+      this.removeGroupIfEmpty(block.get('parent'));
+
+    } else {
+      const blocks = this.get('canvas.blocks');
+      const index = blocks.indexOf(block);
+      blocks.replace(index, 1, []);
+      this.get('onBlockDeletedLocally')(index, block);
+    }
+  },
+
 
   /*
    * ACTIONS

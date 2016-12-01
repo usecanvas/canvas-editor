@@ -1107,23 +1107,6 @@ export default Ember.Component.extend(TypeChanges, {
     }
   },
 
-  syncedDeleteBlock(block) {
-    if (block.get('parent')) {
-      const blocks = block.get('parent.blocks');
-      const index = blocks.indexOf(block);
-      blocks.replace(index, 1, []);
-      this.get('onBlockDeletedLocally')(index, block);
-      this.removeGroupIfEmpty(block.get('parent'));
-
-    } else {
-      const blocks = this.get('canvas.blocks');
-      const index = blocks.indexOf(block);
-      blocks.replace(index, 1, []);
-      this.get('onBlockDeletedLocally')(index, block);
-    }
-  },
-
-
   /*
    * ACTIONS
    * =======

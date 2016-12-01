@@ -6,7 +6,7 @@ module('Unit | Mixin | type changes');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  let TypeChangesObject = Ember.Object.extend(TypeChangesMixin);
-  let subject = TypeChangesObject.create();
+  const TypeChangesObject = Ember.Object.extend(TypeChangesMixin);
+  const subject = TypeChangesObject.create();
   assert.ok(subject);
 });

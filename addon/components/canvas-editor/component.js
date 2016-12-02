@@ -676,7 +676,7 @@ export default Ember.Component.extend(TypeChanges, {
       if (next.get('parent') && prev.get('lastObject.blocks')) {
         prev.get('lastObject.blocks').pushObject(next);
       } else if (next.get('parent')) {
-        prev.pushObject(List.create({ blocks: [next], type: 'list' }));
+        prev.pushObject(List.create({ blocks: [next] }));
       } else {
         prev.pushObject(next);
       }

@@ -36,6 +36,12 @@ export default Ember.Object.extend({
   isMouseDown: false,
 
   /**
+   * Whether the selection anchor is after the focus
+   * @member {boolean}
+   */
+  isReversed: false,
+
+  /**
    * @member {boolean} Whether a selection exists
    */
   isSelecting: false,
@@ -95,6 +101,25 @@ export default Ember.Object.extend({
     const $this = Ember.$(this.get('element'));
     if (selector) return $this.find(selector);
     return $this;
+  },
+
+  /**
+   * Collapse the selection.
+   *
+   * @method
+   * @param {boolean} toStart Whether to collapse to the start
+   * @returns {CanvasEditor.MultiBlockSelect} this
+   */
+  collapse(toStart) {
+    const blocks = this.getSelectedBlocks();
+
+    if (toStart) {
+      blocks.slice(1).setEach('isSelected', false);
+    } else {
+      blocks.slice(0, blocks.get('length') - 1).setEach('isSelected', false);
+    }
+
+    return this;
   },
 
   /**
@@ -179,6 +204,16 @@ export default Ember.Object.extend({
   },
 
   /**
+   * Get the selected blocks of this manager's canvas.
+   *
+   * @method
+   * @returns {Ember.Array<CanvasEditor.RealtimeCanvas.Block>}
+   */
+  getSelectedBlocks() {
+    return this.getNavigableBlocks().filterBy('isSelected');
+  },
+
+  /**
    * When the user presses mouse down, track the mouse down/up state.
    *
    * @method
@@ -204,6 +239,8 @@ export default Ember.Object.extend({
     const direction = yCoord > this.get('anchorPoint.y') ? DOWN : UP;
     const anchorBlock = this.getBlockAtY(this.get('anchorPoint.y'), direction);
     const focusBlock = this.getBlockAtY(yCoord, -direction);
+
+    this.set('isReversed', direction === UP);
 
     if (!(anchorBlock && focusBlock) ||
         !this.get('isSelecting') && anchorBlock === focusBlock) {
@@ -250,5 +287,77 @@ export default Ember.Object.extend({
     for (let i = startIndex; i <= endIndex; i += 1) {
       blocks.objectAt(i).set('isSelected', true);
     }
+  },
+
+  /**
+   * Move the selection downwards, expanding or contracting depending on whether
+   * `isReversed`.
+   *
+   * @method
+   */
+  selectDown() {
+    const blocks = this.getNavigableBlocks();
+    const selectedBlocks = blocks.filterBy('isSelected');
+
+    if (this.get('isReversed')) {
+      selectedBlocks.get('firstObject').set('isSelected', false);
+    } else {
+      const idx = blocks.indexOf(selectedBlocks.get('lastObject'));
+      if (idx === blocks.get('length')) return;
+      blocks.objectAt(idx + 1).set('isSelected', true);
+    }
+  },
+
+  /**
+   * Move the selection upwards, expanding or contracting depending on whether
+   * `isReversed`.
+   *
+   * @method
+   */
+  selectUp() {
+    const blocks = this.getNavigableBlocks();
+    const selectedBlocks = blocks.filterBy('isSelected');
+
+    if (this.get('isReversed')) {
+      const idx = blocks.indexOf(selectedBlocks.get('firstObject'));
+      if (idx === 0) return;
+      blocks.objectAt(idx - 1).set('isSelected', true);
+    } else {
+      selectedBlocks.get('lastObject').set('isSelected', false);
+    }
+  },
+
+  /**
+   * Shift the selection down.
+   *
+   * @method
+   */
+  shiftDown() {
+    const blocks = this.getNavigableBlocks();
+    const selectedBlocks = blocks.filterBy('isSelected');
+    const idx = blocks.indexOf(selectedBlocks.get('lastObject'));
+    const nextBlock = blocks.objectAt(idx + 1);
+
+    if (!nextBlock) return;
+
+    selectedBlocks.get('firstObject').set('isSelected', false);
+    nextBlock.set('isSelected', true);
+  },
+
+  /**
+   * Shift the selection up.
+   *
+   * @method
+   */
+  shiftUp() {
+    const blocks = this.getNavigableBlocks();
+    const selectedBlocks = blocks.filterBy('isSelected');
+    const idx = blocks.indexOf(selectedBlocks.get('firstObject'));
+    const prevBlock = blocks.objectAt(idx - 1);
+
+    if (!prevBlock) return;
+
+    selectedBlocks.get('lastObject').set('isSelected', false);
+    prevBlock.set('isSelected', true);
   }
 });

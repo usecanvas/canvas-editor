@@ -18,8 +18,8 @@ export default Ember.Mixin.create(Selection, SelectionState, {
   isUpdatingBlockContent: false,
   usesMarkdown: true,
 
-  contentEditable: computed('block.isSelected', 'editingEnabled', function() {
-    return this.get('editingEnabled') && !this.get('block.isSelected');
+  contentEditable: computed('isMultiBlock', 'editingEnabled', function() {
+    return this.get('editingEnabled') && !this.get('isMultiBlock');
   }),
 
   /**

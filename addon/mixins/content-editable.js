@@ -116,12 +116,16 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       this.newBlockAtSplit();
       break;
     case 'p':
-      if (!(evt.metaKey && evt.ctrlKey)) return;
+      if (!key.hasAll('meta', 'ctrl')) return;
       if (!this.get('isTemplate')) return;
       evt.stopPropagation();
       evt.preventDefault();
       this.toggleProperty('isEditingPlaceholder');
       break;
+    }
+
+    if (key.is('meta', 'a')) {
+      this.selectAll(evt);
     }
   },
 
@@ -299,6 +303,28 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       const href = Ember.$(this).find('.md-href').text();
       Ember.$(this).wrap(`<a href="${href}">`);
     });
+  },
+
+  /**
+   * Handle a select-all event.
+   *
+   * If the user already has "all" selected, tell the editor to do a multi-block
+   * select all.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `keydown` event
+   */
+  selectAll(evt) {
+    const element = this.get('element');
+    const range = this.get('currentRange');
+
+    if (range.startContainer === element.firstChild &&
+        range.startOffset === 0 &&
+        range.endContainer === element.lastChild &&
+        range.endOffset === element.lastChild.data.length) {
+      evt.preventDefault();
+      this.get('onDoubleSelectAll')();
+    }
   },
 
   /**

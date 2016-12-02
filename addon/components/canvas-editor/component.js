@@ -1173,6 +1173,19 @@ export default Ember.Component.extend(TypeChanges, {
     },
 
     /**
+     * Called when a user selects all twice.
+     *
+     * We first select all text in a block, and now we do a multi-block
+     * selection of the entire canvas.
+     *
+     * @method
+     */
+    doubleSelectAll() {
+      window.getSelection().removeAllRanges();
+      this.get('multiBlockSelect').selectAll();
+    },
+
+    /**
      * Called when the user wishes to navigate down to the next block from the
      * currently focused block.
      *

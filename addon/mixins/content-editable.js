@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Key from 'canvas-editor/lib/key';
 import Selection from 'canvas-editor/mixins/selection';
 import SelectionState from 'canvas-editor/lib/selection-state';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
@@ -90,36 +91,31 @@ export default Ember.Mixin.create(Selection, SelectionState, {
   keyDown(evt) {
     if (!this.get('contentEditable')) return;
 
-    switch (evt.originalEvent.key || evt.originalEvent.keyCode) {
-    case 'ArrowLeft':
-    case 37:
+    const key = new Key(evt.originalEvent);
+
+    switch (key.key) {
+    case 'left':
       this.navigateLeft(evt);
       break;
-    case 'ArrowUp':
-    case 38:
+    case 'up':
       this.navigateUp(evt);
       break;
-    case 'ArrowRight':
-    case 39:
+    case 'right':
       this.navigateRight(evt);
       break;
-    case 'ArrowDown':
-    case 40:
+    case 'down':
       this.navigateDown(evt);
       break;
-    case 'Backspace':
-    case 8:
+    case 'backspace':
       this.backspace(evt);
       break;
-    case 'Enter':
-    case 13:
+    case 'return':
       if (evt.shiftKey) return;
       evt.stopPropagation();
       evt.preventDefault();
       this.newBlockAtSplit();
       break;
     case 'p':
-    case 80:
       if (!(evt.metaKey && evt.ctrlKey)) return;
       if (!this.get('isTemplate')) return;
       evt.stopPropagation();

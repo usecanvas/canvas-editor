@@ -300,7 +300,15 @@ export default Ember.Object.extend({
     const selectedBlocks = blocks.filterBy('isSelected');
 
     if (this.get('isReversed')) {
-      selectedBlocks.get('firstObject').set('isSelected', false);
+      if (selectedBlocks.get('length') === 1) {
+        const idx = blocks.indexOf(selectedBlocks.get('firstObject'));
+        const nextBlock = blocks.objectAt(idx + 1);
+        if (!nextBlock) return;
+        nextBlock.set('isSelected', true);
+        this.set('isReversed', false);
+      } else {
+        selectedBlocks.get('firstObject').set('isSelected', false);
+      }
     } else {
       const idx = blocks.indexOf(selectedBlocks.get('lastObject'));
       const nextBlock = blocks.objectAt(idx + 1);
@@ -323,6 +331,12 @@ export default Ember.Object.extend({
       const idx = blocks.indexOf(selectedBlocks.get('firstObject'));
       if (idx === 0) return;
       blocks.objectAt(idx - 1).set('isSelected', true);
+    } else if (selectedBlocks.get('length') === 1) {
+      const idx = blocks.indexOf(selectedBlocks.get('firstObject'));
+      const prevBlock = blocks.objectAt(idx - 1);
+      if (!prevBlock) return;
+      prevBlock.set('isSelected', true);
+      this.set('isReversed', true);
     } else {
       selectedBlocks.get('lastObject').set('isSelected', false);
     }

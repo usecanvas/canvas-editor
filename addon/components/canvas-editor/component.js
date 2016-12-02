@@ -238,8 +238,8 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `copy` event
    */
   copyDocument(evt) {
-    const selectedBlocks = this.getNavigableBlocks()
-      .filterBy('isSelected', true);
+    const blocks = this.getNavigableBlocks();
+    const selectedBlocks = blocks.filterBy('isSelected', true);
     const copyBlocks = this.buildCopyBlocks(selectedBlocks);
     if (!copyBlocks.length) return;
     const replacer = (k, v) => { return k === 'parent' ? undefined : v; };
@@ -449,24 +449,13 @@ export default Ember.Component.extend(TypeChanges, {
   paste(evt) {
     const blocks = this.getNavigableBlocks();
     const selectedBlocks = blocks.filterBy('isSelected', true);
-
-    if (!selectedBlocks.length) return;
-
-    evt.preventDefault();
-
     const { pastedLines } = new CopyPaste(evt);
 
-    const insertIndex = this.get('blocks')
-      .indexOf(blocks.get('lastObject.parent') || blocks.get('lastObject')) + 1;
-
-    // split block if selection inside block
-    //this.get('onBlockDeletedLocally')(index, group);
-    // replace or insert
-    // insert step
-    this.get('canvas.blocks').replace(insertIndex, 0, pastedLines);
-    pastedLines.reverse().forEach(line => {
-      this.get('onNewBlockInsertedLocally')(insertIndex, line);
-    });
+    if (!selectedBlocks.length || !pastedLines) return;
+    evt.preventDefault();
+    const prevBlock = blocks.objectAt(blocks.indexOf(selectedBlocks[0]) - 1);
+    selectedBlocks.forEach(block => this.removeBlock(block));
+    pastedLines.reverse().forEach(block => this.insertBlockAfter(block, prevBlock));
   },
 
   /**

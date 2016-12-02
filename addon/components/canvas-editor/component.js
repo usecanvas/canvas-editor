@@ -367,17 +367,32 @@ export default Ember.Component.extend(TypeChanges, {
     const key = new Key(evt.originalEvent);
 
     if (key.key === 'esc') {
+      evt.preventDefault();
       this.cancelMultiBlockSelect();
     } else if (key.key === 'backspace') {
+      evt.preventDefault();
       this.replaceMultiBlockSelect('');
     } else if (key.is('shift', 'up')) {
+      evt.preventDefault();
       this.get('multiBlockSelect').selectUp();
     } else if (key.is('shift', 'down')) {
+      evt.preventDefault();
       this.get('multiBlockSelect').selectDown();
     } else if (key.is('up')) {
+      evt.preventDefault();
       this.get('multiBlockSelect').collapse(true).shiftUp();
     } else if (key.is('down')) {
+      evt.preventDefault();
       this.get('multiBlockSelect').collapse().shiftDown();
+    } else if (key.is('meta', 'shift', 'up')) {
+      evt.preventDefault();
+      this.get('multiBlockSelect').selectToStart();
+    } else if (key.is('meta', 'shift', 'down')) {
+      evt.preventDefault();
+      this.get('multiBlockSelect').selectToEnd();
+    } else if (key.is('meta', 'a')) {
+      evt.preventDefault();
+      this.get('multiBlockSelect').selectAll();
     }
   },
 

@@ -265,6 +265,16 @@ export default Ember.Object.extend({
   },
 
   /**
+   * Select all blocks.
+   *
+   * @method
+   */
+  selectAll() {
+    this.selectToStart();
+    this.selectToEnd();
+  },
+
+  /**
    * Select the range from anchor element to focus element, inclusive.
    *
    * @method
@@ -314,6 +324,36 @@ export default Ember.Object.extend({
       const nextBlock = blocks.objectAt(idx + 1);
       if (!nextBlock) return;
       nextBlock.set('isSelected', true);
+    }
+  },
+
+  /**
+   * Expand the selection to the end.
+   *
+   * @method
+   */
+  selectToEnd() {
+    const blocks = this.getNavigableBlocks();
+
+    for (let i = blocks.get('length') - 1; i >= 0; i -= 1) {
+      const block = blocks.objectAt(i);
+      if (block.get('isSelected')) break;
+      block.set('isSelected', true);
+    }
+  },
+
+  /**
+   * Expand the selection to the start.
+   *
+   * @method
+   */
+  selectToStart() {
+    const blocks = this.getNavigableBlocks();
+
+    for (let i = 0, len = blocks.get('length'); i < len; i += 1) {
+      const block = blocks.objectAt(i);
+      if (block.get('isSelected')) break;
+      block.set('isSelected', true);
     }
   },
 

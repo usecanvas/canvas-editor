@@ -270,6 +270,7 @@ export default Ember.Object.extend({
    * @method
    */
   selectAll() {
+    this.set('isSelecting', true);
     this.selectToStart();
     this.selectToEnd();
   },

@@ -265,8 +265,9 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `cut` event
    */
-  cutMultiBlock(_evt) {
-    Ember.K();
+  cutMultiBlock(evt) {
+    this.copyDocument(evt);
+    this.getSelectedBlocks().forEach(block => this.removeBlock(block));
   },
 
   /**
@@ -676,7 +677,9 @@ export default Ember.Component.extend(TypeChanges, {
       if (next.get('parent') && prev.get('lastObject.blocks')) {
         prev.get('lastObject.blocks').pushObject(next);
       } else if (next.get('parent')) {
-        prev.pushObject(List.create({ blocks: [next] }));
+        const lst = List.create({ blocks: [] });
+        lst.get('blocks').pushObject(next);
+        prev.pushObject(lst);
       } else {
         prev.pushObject(next);
       }

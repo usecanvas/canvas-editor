@@ -364,15 +364,20 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `keydown` event
    */
   keydownMultiBlock(evt) {
-    const { key } = new Key(evt.originalEvent);
+    const key = new Key(evt.originalEvent);
 
-    switch (key) {
-      case 'esc':
-        this.cancelMultiBlockSelect();
-        break;
-      case 'backspace':
-        this.replaceMultiBlockSelect('');
-        break;
+    if (key.key === 'esc') {
+      this.cancelMultiBlockSelect();
+    } else if (key.key === 'backspace') {
+      this.replaceMultiBlockSelect('');
+    } else if (key.is('shift', 'up')) {
+      this.get('multiBlockSelect').selectUp();
+    } else if (key.is('shift', 'down')) {
+      this.get('multiBlockSelect').selectDown();
+    } else if (key.is('up')) {
+      this.get('multiBlockSelect').collapse(true).shiftUp();
+    } else if (key.is('down')) {
+      this.get('multiBlockSelect').collapse().shiftDown();
     }
   },
 

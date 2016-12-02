@@ -238,9 +238,12 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `copy` event
    */
   copyDocument(evt) {
-    const copyBlocks = this.buildCopyBlocks(this.getNavigableBlocks().filterBy('isSelected', true));
-    const replacer = (k, v) => k === 'parent' ? undefined : v;
-    evt.originalEvent.clipboardData.setData('text/plain', 'Shark');
+    const selectedBlocks = this.getNavigableBlocks()
+      .filterBy('isSelected', true);
+    const copyBlocks = this.buildCopyBlocks(selectedBlocks);
+    if (!copyBlocks.length) return;
+    const replacer = (k, v) => { return k === 'parent' ? undefined : v; };
+    evt.originalEvent.clipboardData.setData('text/plain', 'Copied blocks');
     evt.originalEvent.clipboardData.setData('application/x-canvas',
       JSON.stringify({ lines: copyBlocks }, replacer));
     evt.preventDefault();

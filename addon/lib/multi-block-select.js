@@ -107,10 +107,10 @@ export default Ember.Object.extend({
    * Collapse the selection.
    *
    * @method
-   * @param {boolean} toStart Whether to collapse to the start
+   * @param {boolean} [toStart=false] Whether to collapse to the start
    * @returns {CanvasEditor.MultiBlockSelect} this
    */
-  collapse(toStart) {
+  collapse(toStart = false) {
     const blocks = this.getSelectedBlocks();
 
     if (toStart) {

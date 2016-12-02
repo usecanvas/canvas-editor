@@ -303,8 +303,9 @@ export default Ember.Object.extend({
       selectedBlocks.get('firstObject').set('isSelected', false);
     } else {
       const idx = blocks.indexOf(selectedBlocks.get('lastObject'));
-      if (idx === blocks.get('length')) return;
-      blocks.objectAt(idx + 1).set('isSelected', true);
+      const nextBlock = blocks.objectAt(idx + 1);
+      if (!nextBlock) return;
+      nextBlock.set('isSelected', true);
     }
   },
 

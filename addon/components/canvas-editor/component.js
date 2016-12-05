@@ -1133,7 +1133,8 @@ export default Ember.Component.extend(TypeChanges, {
   pasteBlocksAfter(after, blocks, shouldReplace = false) {
     if (after.get('type') === 'title' && blocks[0].get('type') !== 'title') {
       shouldReplace = false;
-    } else if (after.get('type') !== 'title' && blocks[0].get('type') === 'title') {
+    } else if (after.get('type') !== 'title' &&
+               blocks[0].get('type') === 'title') {
       const newLine = Heading.create(blocks[0].getProperties('content'));
       blocks.replace(0, 1, [newLine]);
     }

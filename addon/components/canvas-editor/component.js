@@ -23,7 +23,7 @@ import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 
 const { $, computed, inject, observer, on, run } = Ember;
 const CARD_BLOCK_SELECTED_ATTR = 'data-card-block-selected';
-const MULTI_BLOCK_EVENTS = 'copy cut keydown keypress keyup paste'.w();
+const MULTI_BLOCK_EVENTS = 'keydown keypress keyup'.w();
 const SELECT_BLOCK = '.canvas-block';
 const SELECT_CARD_BLOCK = '.canvas-block-card';
 const SELECT_EDITABLE = '.canvas-block-editable';
@@ -246,7 +246,8 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `copy` event
    */
   copyDocument(evt) {
-    const selectedBlocks = this.getSelectedBlocks();
+    const selectedBlocks = this.getSelectedBlocks()
+      .concat(this.get('selectedCardBlock')).compact();
     const copyBlocks = this.buildCopyBlocks(selectedBlocks);
     if (!copyBlocks.length) return;
     const copyPaste = new CopyPaste(evt);
@@ -269,9 +270,10 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `cut` event
    */
-  cutMultiBlock(evt) {
+  cutDocument(evt) {
     this.copyDocument(evt);
-    const [first, ...rest] = this.getSelectedBlocks();
+    const [first, ...rest] = this.getSelectedBlocks()
+      .concat(this.get('selectedCardBlock')).compact();
     let focusBlock;
 
     if (first.get('type') === 'title') {
@@ -560,6 +562,9 @@ export default Ember.Component.extend(TypeChanges, {
     Ember.$(document).on(
       nsEvent('copy', this),
       Ember.run.bind(this, this.copyDocument));
+    Ember.$(document).on(
+      nsEvent('cut', this),
+      Ember.run.bind(this, this.cutDocument));
     Ember.$(document).on(
       nsEvent('paste', this),
       Ember.run.bind(this, this.pasteDocument));

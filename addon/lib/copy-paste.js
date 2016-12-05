@@ -11,7 +11,7 @@ export default class CopyPaste {
   }
 
   /**
-   * @member {?CanvasEditor.RealtimeCanvas.Block} Blocks extracted from a
+   * @member {?Array<CanvasEditor.RealtimeCanvas.Block>} Blocks extracted from a
    *   `paste` event
    */
   get pastedLines() {

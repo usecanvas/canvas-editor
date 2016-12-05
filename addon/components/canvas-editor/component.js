@@ -1186,6 +1186,34 @@ export default Ember.Component.extend(TypeChanges, {
     },
 
     /**
+     * Called when the user wishes to multi-block select down from the given
+     * block.
+     *
+     * @method
+     * @param {CanvasEditor.RealtimeCanvas.Block} block The block to select down
+     *   from
+     */
+    multiBlockSelectDown(block) {
+      window.getSelection().removeAllRanges();
+      this.get('multiBlockSelect').selectBlock(block);
+      this.get('multiBlockSelect').selectDown();
+    },
+
+    /**
+     * Called when the user wishes to multi-block select up from the given
+     * block.
+     *
+     * @method
+     * @param {CanvasEditor.RealtimeCanvas.Block} block The block to select up
+     *   from
+     */
+    multiBlockSelectUp(block) {
+      window.getSelection().removeAllRanges();
+      this.get('multiBlockSelect').selectBlock(block);
+      this.get('multiBlockSelect').selectUp();
+    },
+
+    /**
      * Called when the user wishes to navigate down to the next block from the
      * currently focused block.
      *

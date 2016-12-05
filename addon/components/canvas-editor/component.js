@@ -251,10 +251,9 @@ export default Ember.Component.extend(TypeChanges, {
     const selectedBlocks = blocks.filterBy('isSelected', true);
     const copyBlocks = this.buildCopyBlocks(selectedBlocks);
     if (!copyBlocks.length) return;
-    const replacer = (k, v) => { return k === 'parent' ? undefined : v; };
     evt.originalEvent.clipboardData.setData('text/plain', 'Copied blocks');
     evt.originalEvent.clipboardData.setData('application/x-canvas',
-      JSON.stringify({ lines: copyBlocks }, replacer));
+      JSON.stringify({ lines: copyBlocks }));
     evt.preventDefault();
   },
 

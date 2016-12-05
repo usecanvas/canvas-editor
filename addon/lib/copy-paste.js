@@ -10,7 +10,7 @@ function cleanID(line) {
 
 function extractPasteData({ originalEvent: { clipboardData } }) {
   const { types } = clipboardData;
-  if (types.contains('application/x-canvas')) {
+  if (types.includes('application/x-canvas')) {
     return clipboardData.getData('application/x-canvas');
   }
   return clipboardData.getData('text/plain');

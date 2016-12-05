@@ -16,6 +16,7 @@ import styles from './styles';
 import testTemplates from 'canvas-editor/lib/templates';
 import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 
+import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
@@ -151,6 +152,14 @@ export default Ember.Component.extend(TypeChanges, {
     const block = blocks.findBy('id', id);
     return block || blocks.get('firstObject');
   }),
+
+  /**
+   * @member {?Element} The currently selected card block element
+   */
+  selectedCardBlock: computed(function() {
+    const elem = this.get('selectedCardBlockElement');
+    return elem && this.getBlockForElement(elem);
+  }).volatile(),
 
   /**
    * @member {?Element} The currently selected card block element
@@ -439,7 +448,7 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
-   * Handle the `paste` event.
+   * Handle the `paste` event that is bubbled up to document.
    *
    * This should only fire when a selection is not active inside a block but
    * rather that a 1 >= blocks is selected
@@ -447,16 +456,27 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `paste` event
    */
-  paste(evt) {
+  pasteDocument(evt) {
     const blocks = this.getNavigableBlocks();
-    const selectedBlocks = blocks.filterBy('isSelected', true);
     const { pastedLines } = new CopyPaste(evt);
+    const selectedBlocks = blocks.filterBy('isSelected', true)
+      .concat(this.get('selectedCardBlock')).compact();
 
     if (!selectedBlocks.length || !pastedLines) return;
+    if (selectedBlocks[0].get('type') === 'title' &&
+        pastedLines[0].get('type') !== 'title') {
+      selectedBlocks[0].set('isSelected', false);
+      selectedBlocks.replace(0, 1, []);
+    } else if (selectedBlocks[0].get('type') !== 'title' &&
+        pastedLines[0].get('type') === 'title') {
+      const newLine = Heading.create(pastedLines[0].getProperties('content'));
+      pastedLines.replace(0, 1, [newLine]);
+    }
     evt.preventDefault();
+    pastedLines.reverse();
     const prevBlock = blocks.objectAt(blocks.indexOf(selectedBlocks[0]) - 1);
     selectedBlocks.forEach(block => this.removeBlock(block));
-    pastedLines.reverse().forEach(block => this.insertBlockAfter(block, prevBlock));
+    pastedLines.forEach(block => this.insertBlockAfter(block, prevBlock));
 
     const focusBlock = pastedLines.get('firstObject.blocks.lastObject') ||
       pastedLines.get('firstObject');
@@ -507,10 +527,13 @@ export default Ember.Component.extend(TypeChanges, {
    *
    * @method
    */
-  bindCopyEvents: on('didInsertElement', function() {
+  bindCopyPasteEvents: on('didInsertElement', function() {
     Ember.$(document).on(
       nsEvent('copy', this),
-      this.copyDocument.bind(this));
+      Ember.run.bind(this, this.copyDocument));
+    Ember.$(document).on(
+      nsEvent('paste', this),
+      Ember.run.bind(this, this.pasteDocument));
   }),
 
   /**
@@ -1109,6 +1132,13 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   pasteBlocksAfter(after, blocks, shouldReplace = false) {
+    if (after.get('type') === 'title' && blocks[0].get('type') !== 'title') {
+      shouldReplace = false;
+    } else if (after.get('type') !== 'title' && blocks[0].get('type') === 'title') {
+      const newLine = Heading.create(blocks[0].getProperties('content'));
+      blocks.replace(0, 1, [newLine]);
+    }
+
     blocks.reverse().forEach(block => this.insertBlockAfter(block, after));
     if (shouldReplace) {
        this.removeBlock(after);

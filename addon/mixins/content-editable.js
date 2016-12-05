@@ -135,9 +135,9 @@ export default Ember.Mixin.create(Selection, SelectionState, {
    */
   paste(evt) {
     if (this.get('block.isSelected')) return;
+    const { pastedLines } = new CopyPaste(evt);
     evt.preventDefault();
     evt.stopPropagation();
-    const { pastedLines } = new CopyPaste(evt);
     if (pastedLines === null) {
       const text = evt.originalEvent.clipboardData.getData('text/plain');
       document.execCommand('insertText', false, text);

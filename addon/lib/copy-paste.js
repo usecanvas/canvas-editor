@@ -13,10 +13,10 @@ export default class CopyPaste {
 
   copyBlocksToClipboard(blocks) {
     const { originalEvent: { clipboardData } } = this.evt;
+    clipboardData.setData('application/json',
+      JSON.stringify({ lines: blocks }));
     clipboardData.setData('text/plain', blocksToMarkdown(blocks));
     clipboardData.setData('text/rich', blocksToMarkdown(blocks));
-    clipboardData.setData('application/x-canvas',
-      JSON.stringify({ lines: blocks }));
     this.evt.preventDefault();
   }
 
@@ -47,9 +47,9 @@ function cleanID(line) {
 }
 
 function extractPasteData({ originalEvent: { clipboardData } }) {
-  const { types } = clipboardData;
-  if (types.includes('application/x-canvas')) {
-    return clipboardData.getData('application/x-canvas');
+  const types = Array.from(clipboardData.types);
+  if (types.includes('application/json')) {
+    return clipboardData.getData('application/json');
   }
   return clipboardData.getData('text/plain');
 }

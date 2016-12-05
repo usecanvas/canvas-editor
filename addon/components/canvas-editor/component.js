@@ -21,10 +21,9 @@ import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 
-const { computed, inject, observer, on, run } = Ember;
-
+const { $, computed, inject, observer, on, run } = Ember;
 const CARD_BLOCK_SELECTED_ATTR = 'data-card-block-selected';
-const MULTI_BLOCK_EVENTS = 'copy cut keydown keypress paste'.w();
+const MULTI_BLOCK_EVENTS = 'copy cut keydown keypress keyup paste'.w();
 const SELECT_BLOCK = '.canvas-block';
 const SELECT_CARD_BLOCK = '.canvas-block-card';
 const SELECT_EDITABLE = '.canvas-block-editable';
@@ -272,7 +271,21 @@ export default Ember.Component.extend(TypeChanges, {
    */
   cutMultiBlock(evt) {
     this.copyDocument(evt);
-    this.getSelectedBlocks().forEach(block => this.removeBlock(block));
+    const [first, ...rest] = this.getSelectedBlocks();
+    let focusBlock;
+
+    if (first.get('type') === 'title') {
+      focusBlock = first;
+      first.set('isSelected', false);
+      this.updateBlockContent(first, '');
+      this.get('onBlockContentUpdatedLocally')(first);
+    } else {
+      focusBlock = Paragraph.create({});
+      this.insertBlockAfter(focusBlock, first);
+      this.removeBlock(first);
+    }
+    rest.forEach(block => this.removeBlock(block));
+    run.scheduleOnce('afterRender', this, 'focusBlockStart', focusBlock);
   },
 
   /**
@@ -419,6 +432,13 @@ export default Ember.Component.extend(TypeChanges, {
     } else if (key.is('meta', 'a')) {
       evt.preventDefault();
       this.get('multiBlockSelect').selectAll();
+    } else if (key.is('meta')) {
+      // Insert temporary element to catch clipboard events for Safari & FF
+      const $temp = $('<input style="position:absolute;left:-999px;">');
+      $(document.body).append($temp);
+      $temp.focus();
+      $temp.val('temp').select();
+      this._$tempElem = $temp;
     }
   },
 
@@ -429,8 +449,17 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `keypress` event
    */
   keypressMultiBlock(evt) {
-    const content = evt.char || String.fromCharCode(evt.charCode);
-    this.replaceMultiBlockSelect(content);
+    if (!evt.metaKey) {
+      const content = evt.char || String.fromCharCode(evt.charCode);
+      this.replaceMultiBlockSelect(content);
+    }
+  },
+
+  keyupMultiBlock(_evt) {
+    if (this._$tempElem) {
+      this._$tempElem.remove();
+      this._$tempElem = null;
+    }
   },
 
   /**

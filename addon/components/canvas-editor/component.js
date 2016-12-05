@@ -449,8 +449,8 @@ export default Ember.Component.extend(TypeChanges, {
   /**
    * Handle the `paste` event that is bubbled up to document.
    *
-   * This should only fire when a selection is not active inside a block but
-   * rather that a 1 >= blocks is selected
+   * This should only fire when >= 1 blocks is selected (not when selected
+   * inside a block).
    *
    * @method
    * @param {jQuery.Event} evt The `paste` event
@@ -462,16 +462,20 @@ export default Ember.Component.extend(TypeChanges, {
       .concat(this.get('selectedCardBlock')).compact();
 
     if (!selectedBlocks.length || !pastedLines) return;
-    if (selectedBlocks[0].get('type') === 'title' &&
-        pastedLines[0].get('type') !== 'title') {
+
+    evt.preventDefault();
+
+    const firstSelectedType = selectedBlocks[0].get('type');
+    const firstPastedType = pastedLines[0].get('type');
+
+    if (firstSelectedType === 'title' && firstPastedType !== 'title') {
       selectedBlocks[0].set('isSelected', false);
       selectedBlocks.replace(0, 1, []);
-    } else if (selectedBlocks[0].get('type') !== 'title' &&
-        pastedLines[0].get('type') === 'title') {
+    } else if (firstSelectedType !== 'title' && firstPastedType === 'title') {
       const newLine = Heading.create(pastedLines[0].getProperties('content'));
       pastedLines.replace(0, 1, [newLine]);
     }
-    evt.preventDefault();
+
     pastedLines.reverse();
     const after = selectedBlocks.get('lastObject');
     pastedLines.forEach(block => this.insertBlockAfter(block, after));

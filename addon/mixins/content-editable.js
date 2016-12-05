@@ -88,44 +88,39 @@ export default Ember.Mixin.create(Selection, SelectionState, {
    * @method
    * @param {Event} evt The event fired
    */
-  keyDown(evt) {
+  keyDown(evt) { // eslint-disable-line max-statements
     if (!this.get('contentEditable')) return;
 
     const key = new Key(evt.originalEvent);
 
-    switch (key.key) {
-    case 'left':
+    if (key.is('left')) {
       this.navigateLeft(evt);
-      break;
-    case 'up':
+    } else if (key.is('up')) {
       this.navigateUp(evt);
-      break;
-    case 'right':
+    } else if (key.is('right')) {
       this.navigateRight(evt);
-      break;
-    case 'down':
+    } else if (key.is('down')) {
       this.navigateDown(evt);
-      break;
-    case 'backspace':
+    } else if (key.is('backspace')) {
       this.backspace(evt);
-      break;
-    case 'return':
-      if (evt.shiftKey) return;
+    } else if (key.is('return') && key.hasNot('shift')) {
       evt.stopPropagation();
       evt.preventDefault();
       this.newBlockAtSplit();
-      break;
-    case 'p':
+    } else if (key.is('p')) {
       if (!key.hasAll('meta', 'ctrl')) return;
       if (!this.get('isTemplate')) return;
       evt.stopPropagation();
       evt.preventDefault();
       this.toggleProperty('isEditingPlaceholder');
-      break;
-    }
-
-    if (key.is('meta', 'a')) {
+    } else if (key.is('meta', 'a')) {
       this.selectAll(evt);
+    } else if (key.is('shift', 'up')) {
+      evt.preventDefault();
+      this.get('onMultiBlockSelectUp')(this.get('block'));
+    } else if (key.is('shift', 'down')) {
+      evt.preventDefault();
+      this.get('onMultiBlockSelectDown')(this.get('block'));
     }
   },
 

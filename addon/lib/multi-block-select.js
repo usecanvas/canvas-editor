@@ -276,6 +276,17 @@ export default Ember.Object.extend({
   },
 
   /**
+   * Select the given block.
+   *
+   * @method
+   * @param {CanvasEditor.RealtimeCanvas.Block} block The block to select
+   */
+  selectBlock(block) {
+    this.set('isSelecting', true);
+    block.set('isSelected', true);
+  },
+
+  /**
    * Select the range from anchor element to focus element, inclusive.
    *
    * @method

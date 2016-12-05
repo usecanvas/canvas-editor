@@ -190,7 +190,7 @@ export default Ember.Object.extend({
    *   search through
    */
   getBlockFromElement(element, blocks) {
-    return blocks.findBy('id', element.id);
+    return blocks.findBy('id', element.getAttribute('data-block-id'));
   },
 
   /**

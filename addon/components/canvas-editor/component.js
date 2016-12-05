@@ -474,9 +474,9 @@ export default Ember.Component.extend(TypeChanges, {
     }
     evt.preventDefault();
     pastedLines.reverse();
-    const prevBlock = blocks.objectAt(blocks.indexOf(selectedBlocks[0]) - 1);
+    const after = selectedBlocks.get('lastObject');
+    pastedLines.forEach(block => this.insertBlockAfter(block, after));
     selectedBlocks.forEach(block => this.removeBlock(block));
-    pastedLines.forEach(block => this.insertBlockAfter(block, prevBlock));
 
     const focusBlock = pastedLines.get('firstObject.blocks.lastObject') ||
       pastedLines.get('firstObject');

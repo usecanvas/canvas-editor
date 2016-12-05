@@ -457,6 +457,14 @@ export default Ember.Component.extend(TypeChanges, {
     const prevBlock = blocks.objectAt(blocks.indexOf(selectedBlocks[0]) - 1);
     selectedBlocks.forEach(block => this.removeBlock(block));
     pastedLines.reverse().forEach(block => this.insertBlockAfter(block, prevBlock));
+
+    const focusBlock = pastedLines.get('firstObject.blocks.lastObject') ||
+      pastedLines.get('firstObject');
+    if (focusBlock.get('isCard')) {
+      run.scheduleOnce('afterRender', this, 'selectCardBlock', focusBlock);
+    } else {
+      run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    }
   },
 
   /**
@@ -1100,10 +1108,19 @@ export default Ember.Component.extend(TypeChanges, {
     return block;
   },
 
-  pasteBlocksWithSplit(after, blocks) {
-    // Instantiate new groups for list lines?
-      //const group = List.create({ blocks: Ember.A([block]) });
+  pasteBlocksAfter(after, blocks, shouldReplace = false) {
     blocks.reverse().forEach(block => this.insertBlockAfter(block, after));
+    if (shouldReplace) {
+       this.removeBlock(after);
+    }
+
+    const focusBlock = blocks.get('firstObject.blocks.lastObject') ||
+      blocks.get('firstObject');
+    if (focusBlock.get('isCard')) {
+      run.scheduleOnce('afterRender', this, 'selectCardBlock', focusBlock);
+    } else {
+      run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    }
   },
 
   /*

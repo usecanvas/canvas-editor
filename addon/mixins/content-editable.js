@@ -141,9 +141,11 @@ export default Ember.Mixin.create(Selection, SelectionState, {
     if (pastedLines === null) {
       const text = evt.originalEvent.clipboardData.getData('text/plain');
       document.execCommand('insertText', false, text);
+    } else if (this.get('block.content') === '') {
+      this.get('pasteBlocksAfter')(this.get('block'), pastedLines, true);
     } else {
       this.newBlockAtSplit();
-      this.get('pasteBlocksWithSplit')(this.get('block'), pastedLines);
+      this.get('pasteBlocksAfter')(this.get('block'), pastedLines);
     }
   },
 

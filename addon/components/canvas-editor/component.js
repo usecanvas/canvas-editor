@@ -18,7 +18,7 @@ import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 
-const { computed, getWithDefault, inject, observer, on, run } = Ember;
+const { computed, inject, observer, on, run } = Ember;
 
 const CARD_BLOCK_SELECTED_ATTR = 'data-card-block-selected';
 const MULTI_BLOCK_EVENTS = 'copy cut keydown keypress paste'.w();
@@ -1108,7 +1108,7 @@ export default Ember.Component.extend(TypeChanges, {
     },
 
     /**
-     * Cllaed when the user replaced a block.
+     * Called when the user replaced a block.
      *
      * TODO: With some fenagling, this can be replaced entirely by the
      * TypeChanges module.
@@ -1264,24 +1264,17 @@ export default Ember.Component.extend(TypeChanges, {
       this.updateBlockContent(titleBlock, template.blocks[0].content);
       this.get('onBlockContentUpdatedLocally')(titleBlock);
 
-      const paragraphBlock = this.get('canvas.blocks').objectAt(1);
+      template.blocks.slice(1).forEach((blockJSON, idx) => {
+        const newBlock = RealtimeCanvas.createBlockFromJSON(blockJSON);
+        const existingBlock = this.get('canvas.blocks').objectAt(idx + 1);
 
-      if (paragraphBlock) {
-        this.updateBlockContent(
-          paragraphBlock, getWithDefault(template, 'blocks.1.content', ''));
-        this.get('onBlockContentUpdatedLocally')(paragraphBlock);
-      }
-
-      const contentBlocks =
-        template.blocks
-          .slice(paragraphBlock ? 2 : 1)
-          .map(RealtimeCanvas.createBlockFromJSON.bind(RealtimeCanvas));
-
-      for (let i = 0, len = contentBlocks.length; i < len; i += 1) {
-        const newBlock = contentBlocks[i];
-        this.get('canvas.blocks').pushObject(newBlock);
-        this.get('onNewBlockInsertedLocally')(i + 1, newBlock);
-      }
+        if (existingBlock) {
+          this.send('blockReplacedLocally', existingBlock, newBlock);
+        } else {
+          this.get('canvas.blocks').pushObject(newBlock);
+          this.get('onNewBlockInsertedLocally')(idx + 1, newBlock);
+        }
+      });
     },
 
     /**

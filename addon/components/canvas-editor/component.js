@@ -704,7 +704,7 @@ export default Ember.Component.extend(TypeChanges, {
 
   buildCopyBlocks(blocks) {
     return blocks.reduce((prev, next) => {
-      if (next.get('parent') && prev.get('lastObject.blocks')) {
+      if (next.get('parent') && prev.get('lastObject.isGroup')) {
         prev.get('lastObject.blocks').pushObject(next);
       } else if (next.get('parent')) {
         const lst = List.create({ blocks: [] });

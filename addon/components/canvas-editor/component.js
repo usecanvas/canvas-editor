@@ -18,7 +18,7 @@ import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 
-const { computed, get, inject, observer, on, run } = Ember;
+const { computed, inject, observer, on, run } = Ember;
 
 const CARD_BLOCK_SELECTED_ATTR = 'data-card-block-selected';
 const MULTI_BLOCK_EVENTS = 'copy cut keydown keypress paste'.w();

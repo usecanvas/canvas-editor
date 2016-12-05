@@ -154,7 +154,7 @@ export default Ember.Component.extend(TypeChanges, {
   }),
 
   /**
-   * @member {?Element} The currently selected card block element
+   * @member {?Element} The currently selected card block
    */
   selectedCardBlock: computed(function() {
     const elem = this.get('selectedCardBlockElement');

@@ -13,7 +13,8 @@ export default ContentBlock.extend({
   type: 'checklist-item',
   meta: computed(_ => Ember.Object.create({ level: 1, checked: false }))
 }).reopenClass({
-  createFromMarkdown(markdown, properties) {
+  pattern: /^([ ]{0,6})[-*+] \[[x ]\] (.*)$/,
+  createFromMarkdown(markdown, properties = {}) {
     if (!markdown.startsWith('- ')) markdown = `- ${markdown}`;
     const checked = (/^- \[[Xx]/).test(markdown);
     const level = getWithDefault(properties, 'meta.level', 1);

@@ -88,6 +88,61 @@ function blocksToMarkdown(blocks) {
   return blocks.reduce(blockToMarkdown, '').replace(/\s+$/, '');
 }
 
+const Parse = {
+  state: {
+    code: (acc, nextLine) => {
+      if (isCodeFence(nextLine)) {
+        return [acc, 'create'];
+      }
+
+      const prevBlock = acc[acc.length - 1];
+      const newContent = `${prevBlock.get('content')}\n${nextLine}`;
+      prevBlock.set('content', newContent);
+      return [acc, 'code'];
+    },
+
+    continuation: (acc, nextLine) => {
+      const prevBlock = acc[acc.length - 1];
+      const isNewLine = nextLine === '';
+      if (prevBlock.get('parent.isGroup') && isListItem(nextLine)) {
+        const item = List.parseMarkdown(nextLine);
+        item.set('parent', prevBlock.get('parent'));
+        prevBlock.get('blocks').pushObject(item);
+        return [acc, 'continuation'];
+      } else if (isNewLine) {
+        return [acc, 'create'];
+      }
+      const newContent = `${prevBlock.get('content')}\n${nextLine}`;
+      prevBlock.set('content', newContent);
+      return [acc, 'continuation'];
+    },
+
+    create: (acc, nextLine) => {
+      const isNewLine = nextLine === '';
+      if (isNewLine) { return [acc, 'create'];  }
+      const nextBlock = Block.parseMarkdown(nextLine);
+      acc.pushObject(nextBlock);
+      // conditionally determine whether the next line is a continuation or create
+      return [acc, 'continuation'];
+    }
+  }
+};
+
+/**
+ * Takes markdown text and returns the corresponding blocks.
+ *
+ * @function
+ * @param {String} markdown The markdown text to convert
+ * convert
+ * @returns {Array<CanvasEditor.CanvasRealtime.Block>} The converted blocks
+ */
+function markdownToBlocks(markdown) {
+  return markdown.split('\n').reduce(([acc, parseState], nextLine) => {
+    return Parse.state[parseState](acc, nextLine);
+  }, [[], 'create']);
+}
+
+function isCodeFence(line) { return (/^```/).test(line); }
 /**
  * Generates the markdown representation of a block and appends it
  * to the accumulated string.

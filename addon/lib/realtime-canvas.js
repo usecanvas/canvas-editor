@@ -63,6 +63,23 @@ export default Ember.Object.extend({
         return Unknown.create(Object.assign(json, { type: 'unknown' }));
       }
     }
+  },
+
+  createBlockFromMarkdown(source) {
+    let klass, match;
+    const parseOrder = [Heading, HorizontalRule, Code, Image, CLItem,
+      ULItem, URLCard, Paragraph];
+    for (klass of parseOrder) {
+      if (match = source.match(klass.pattern)) {
+        break;
+      }
+    }
+
+    if (!match) {
+      throw new Error(`No matching line class for source "${source}".`);
+    }
+
+    return klass.createFromMarkdown(source);
   }
 });
 

@@ -14,7 +14,8 @@ export default ContentBlock.extend({
   type: 'heading',
   meta: computed(_ => Ember.Object.create({ level: 1 }))
 }).reopenClass({
-  createFromMarkdown(markdown, properties) {
+  pattern: LEVEL_REG,
+  createFromMarkdown(markdown, properties = {}) {
     const match = markdown.match(LEVEL_REG);
     const level = match[1].length;
     const content = match[2];

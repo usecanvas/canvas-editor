@@ -367,10 +367,10 @@ export default Ember.Component.extend(TypeChanges, {
     }
 
     if (key.is('meta', 'z')) {
-      this.send('undo')(evt);
+      this.send('undo', evt);
       return;
     } else if (key.is('meta', 'shift', 'z')) {
-      this.send('redo')(evt);
+      this.send('redo', evt);
       return;
     }
 

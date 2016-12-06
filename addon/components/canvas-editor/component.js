@@ -1,3 +1,4 @@
+import CopyPaste from 'canvas-editor/lib/copy-paste';
 import Ember from 'ember';
 import Key from 'canvas-editor/lib/key';
 import MultiBlockSelect from 'canvas-editor/lib/multi-block-select';
@@ -15,13 +16,14 @@ import styles from './styles';
 import testTemplates from 'canvas-editor/lib/templates';
 import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
 
+import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
+import List from 'canvas-editor/lib/realtime-canvas/list';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 
-const { computed, inject, observer, on, run } = Ember;
-
+const { $, computed, inject, observer, on, run } = Ember;
 const CARD_BLOCK_SELECTED_ATTR = 'data-card-block-selected';
-const MULTI_BLOCK_EVENTS = 'copy cut keydown keypress paste'.w();
+const MULTI_BLOCK_EVENTS = 'keydown keypress keyup'.w();
 const SELECT_BLOCK = '.canvas-block';
 const SELECT_CARD_BLOCK = '.canvas-block-card';
 const SELECT_EDITABLE = '.canvas-block-editable';
@@ -151,6 +153,14 @@ export default Ember.Component.extend(TypeChanges, {
   }),
 
   /**
+   * @member {?Element} The currently selected card block
+   */
+  selectedCardBlock: computed(function() {
+    const elem = this.get('selectedCardBlockElement');
+    return elem && this.getBlockForElement(elem);
+  }).volatile(),
+
+  /**
    * @member {?Element} The currently selected card block element
    */
   selectedCardBlockElement: computed(function() {
@@ -230,6 +240,21 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
+   * Handle a `copy` event when in the document.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `copy` event
+   */
+  copyDocument(evt) {
+    const selectedBlocks = this.getSelectedBlocks()
+      .concat(this.get('selectedCardBlock')).compact();
+    const copyBlocks = this.buildCopyBlocks(selectedBlocks);
+    if (!copyBlocks.length) return;
+    const copyPaste = new CopyPaste(evt);
+    copyPaste.copyBlocksToClipboard(copyBlocks);
+  },
+
+  /**
    * Handle a `copy` event when in multi-block.
    *
    * @method
@@ -245,8 +270,24 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `cut` event
    */
-  cutMultiBlock(_evt) {
-    Ember.K();
+  cutDocument(evt) {
+    this.copyDocument(evt);
+    const [first, ...rest] = this.getSelectedBlocks()
+      .concat(this.get('selectedCardBlock')).compact();
+    let focusBlock;
+
+    if (first.get('type') === 'title') {
+      focusBlock = first;
+      first.set('isSelected', false);
+      this.updateBlockContent(first, '');
+      this.get('onBlockContentUpdatedLocally')(first);
+    } else {
+      focusBlock = Paragraph.create({});
+      this.insertBlockAfter(focusBlock, first);
+      this.removeBlock(first);
+    }
+    rest.forEach(block => this.removeBlock(block));
+    run.scheduleOnce('afterRender', this, 'focusBlockStart', focusBlock);
   },
 
   /**
@@ -363,6 +404,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `keydown` event
    */
+  /* eslint-disable max-statements */
   keydownMultiBlock(evt) {
     const key = new Key(evt.originalEvent);
 
@@ -393,6 +435,9 @@ export default Ember.Component.extend(TypeChanges, {
     } else if (key.is('meta', 'a')) {
       evt.preventDefault();
       this.get('multiBlockSelect').selectAll();
+    } else if (key.is('meta')) {
+      // Insert temporary element to catch clipboard events for Safari & FF
+      this.insertTempElem();
     }
   },
 
@@ -403,8 +448,33 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `keypress` event
    */
   keypressMultiBlock(evt) {
-    const content = evt.char || String.fromCharCode(evt.charCode);
-    this.replaceMultiBlockSelect(content);
+    if (!evt.metaKey) {
+      const content = evt.char || String.fromCharCode(evt.charCode);
+      this.replaceMultiBlockSelect(content);
+    }
+  },
+
+  /**
+   * Handle the `keyup` event for the document.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `keyup` event
+   */
+  keyupDocument(_evt) {
+    if (this._$tempElem) {
+      this._$tempElem.remove();
+      this._$tempElem = null;
+    }
+  },
+
+  /**
+   * Handle the `keyup` event when in multi-block.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `keyup` event
+   */
+  keyupMultiBlock(_evt) {
+    Ember.K();
   },
 
   /**
@@ -415,6 +485,50 @@ export default Ember.Component.extend(TypeChanges, {
    */
   mouseDown(evt) {
     if (evt.metaKey && evt.shiftKey) evt.preventDefault();
+  },
+
+  /**
+   * Handle the `paste` event that is bubbled up to document.
+   *
+   * This should only fire when >= 1 blocks is selected (not when selected
+   * inside a block).
+   *
+   * @method
+   * @param {jQuery.Event} evt The `paste` event
+   */
+  pasteDocument(evt) {
+    const blocks = this.getNavigableBlocks();
+    const { pastedLines } = new CopyPaste(evt);
+    const selectedBlocks = blocks.filterBy('isSelected', true)
+      .concat(this.get('selectedCardBlock')).compact();
+
+    if (!selectedBlocks.length || !pastedLines) return;
+
+    evt.preventDefault();
+
+    const firstSelectedType = selectedBlocks[0].get('type');
+    const firstPastedType = pastedLines[0].get('type');
+
+    if (firstSelectedType === 'title' && firstPastedType !== 'title') {
+      selectedBlocks[0].set('isSelected', false);
+      selectedBlocks.replace(0, 1, []);
+    } else if (firstSelectedType !== 'title' && firstPastedType === 'title') {
+      const newLine = Heading.create(pastedLines[0].getProperties('content'));
+      pastedLines.replace(0, 1, [newLine]);
+    }
+
+    pastedLines.reverse();
+    const after = selectedBlocks.get('lastObject');
+    pastedLines.forEach(block => this.insertBlockAfter(block, after));
+    selectedBlocks.forEach(block => this.removeBlock(block));
+
+    const focusBlock = pastedLines.get('firstObject.blocks.lastObject') ||
+      pastedLines.get('firstObject');
+    if (focusBlock.get('isCard')) {
+      run.scheduleOnce('afterRender', this, 'selectCardBlock', focusBlock);
+    } else {
+      run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    }
   },
 
   /**
@@ -453,6 +567,23 @@ export default Ember.Component.extend(TypeChanges, {
   }),
 
   /**
+   * Bind handlers for document-level `copy` events.
+   *
+   * @method
+   */
+  bindCopyPasteEvents: on('didInsertElement', function() {
+    Ember.$(document).on(
+      nsEvent('copy', this),
+      Ember.run.bind(this, this.copyDocument));
+    Ember.$(document).on(
+      nsEvent('cut', this),
+      Ember.run.bind(this, this.cutDocument));
+    Ember.$(document).on(
+      nsEvent('paste', this),
+      Ember.run.bind(this, this.pasteDocument));
+  }),
+
+  /**
    * Bind handlers for document-level `focus` events.
    *
    * @method
@@ -473,6 +604,17 @@ export default Ember.Component.extend(TypeChanges, {
     Ember.$(document).on(
       nsEvent('keydown', this),
       this.keydownDocument.bind(this));
+  }),
+
+  /**
+   * Bind handlers for document-level `keyup` events.
+   *
+   * @method
+   */
+  bindKeyUpEvents: on('didInsertElement', function() {
+    Ember.$(document).on(
+      nsEvent('keyup', this),
+      this.keyupDocument.bind(this));
   }),
 
   /**
@@ -539,6 +681,18 @@ export default Ember.Component.extend(TypeChanges, {
    */
   teardownMultiSelectManager: on('willDestroyElement', function() {
     this.get('multiBlockSelect').teardown();
+  }),
+
+  /**
+   * Teardown the temporary element if it exists.
+   *
+   * @method
+   */
+  teardownTempElem: on('willDestroyElement', function() {
+    if (this._$tempElem) {
+      this._$tempElem.remove();
+      this._$tempElem = null;
+    }
   }),
 
   /**
@@ -620,6 +774,26 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
+   * Construct an array of blocks to serialize to the clipboard
+   *
+   * @method
+   */
+  buildCopyBlocks(blocks) {
+    return blocks.reduce((prev, next) => {
+      if (next.get('parent') && prev.get('lastObject.isGroup')) {
+        prev.get('lastObject.blocks').pushObject(next);
+      } else if (next.get('parent')) {
+        const lst = List.create({ blocks: [] });
+        lst.get('blocks').pushObject(next);
+        prev.pushObject(lst);
+      } else {
+        prev.pushObject(next);
+      }
+      return prev;
+    }, []);
+  },
+
+  /**
    * Cancel a multi-block selection by de-selecting and focusing on the first
    * block in the selection.
    *
@@ -684,7 +858,7 @@ export default Ember.Component.extend(TypeChanges, {
     this.set('dropBar.insertAfter', null);
 
     if (insertAfterBlock) {
-      this.insertUploadAfterBlock(insertAfterBlock, uploadBlock);
+      this.insertBlockAfter(uploadBlock, insertAfterBlock);
     }
   },
 
@@ -793,24 +967,53 @@ export default Ember.Component.extend(TypeChanges, {
   },
 
   /**
-   * Insert an upload block after another given block.
+   * Insert a block after another block.
    *
    * @method
-   * @param {CanvasEditor.CanvasRealtime.Block} block The block that will be
-   *  before the inserted block
-   * @param {CanvasEditor.CanvasRealtime.Block} uploadBlock The block that will
-   *   be inserted
+   * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The inserted block
+   * @param {CanvasEditor.RealtimeCanvas.Block} beforeBlock The block before the
+   *   inserted block
    */
-  insertUploadAfterBlock(block, uploadBlock) {
-    if (block.get('parent') &&
-        block.get('parent.blocks.lastObject') !== block) {
-      this.splitGroupAtBlock(block, uploadBlock, false);
+  insertBlockAfter(newBlock, beforeBlock) {
+    if (beforeBlock.get('parent') &&
+        beforeBlock.get('parent.type') === newBlock.get('type')) {
+      newBlock.get('blocks').slice(0).reverse().forEach(block => {
+        this.insertBlockAfter(block, beforeBlock);
+      });
       return;
     }
 
-    const index = this.get('blocks').indexOf(block.get('parent') || block);
-    this.get('blocks').replace(index + 1, 0, [uploadBlock]);
-    this.get('onNewBlockInsertedLocally')(index + 1, uploadBlock);
+    if (beforeBlock.get('parent') &&
+        beforeBlock.get('parent.type') !== newBlock.get('parent.type')) {
+      this.splitGroupAtBlock(beforeBlock, newBlock, false);
+      return;
+    }
+
+    let parentBlocks;
+
+    if (beforeBlock.get('parent')) {
+      parentBlocks = beforeBlock.get('parent.blocks');
+      newBlock.set('parent', beforeBlock.get('parent'));
+    } else {
+      parentBlocks = this.get('blocks');
+    }
+
+    const idx = parentBlocks.indexOf(beforeBlock);
+    parentBlocks.replace(idx + 1, 0, [newBlock]);
+    this.get('onNewBlockInsertedLocally')(idx + 1, newBlock);
+  },
+
+  /**
+   * Insert temporary element to capture clipboard events in Safari & FF.
+   *
+   * @method
+   */
+  insertTempElem() {
+    const $temp = $('<input style="position:absolute;left:-999px;">');
+    $(document.body).append($temp);
+    $temp.focus();
+    $temp.val('temp').select();
+    this._$tempElem = $temp;
   },
 
   /**
@@ -1023,6 +1226,38 @@ export default Ember.Component.extend(TypeChanges, {
     block.set('lastContent', block.get('content'));
     block.set('content', content);
     return block;
+  },
+
+  /**
+   * Called when a block's content was updated in the editor.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} after The blocks that blocks
+   * should come after
+   * @param {Array<CanvasEditor.CanvasRealtime.Block>} blocks The blocks that
+   * will be appended
+   */
+  pasteBlocksAfter(after, blocks, shouldReplace = false) {
+    if (after.get('type') === 'title' && blocks[0].get('type') !== 'title') {
+      shouldReplace = false;
+    } else if (after.get('type') !== 'title' &&
+               blocks[0].get('type') === 'title') {
+      const newLine = Heading.create(blocks[0].getProperties('content'));
+      blocks.replace(0, 1, [newLine]);
+    }
+
+    blocks.reverse().forEach(block => this.insertBlockAfter(block, after));
+    if (shouldReplace) {
+       this.removeBlock(after);
+    }
+
+    const focusBlock = blocks.get('firstObject.blocks.lastObject') ||
+      blocks.get('firstObject');
+    if (focusBlock.get('isCard')) {
+      run.scheduleOnce('afterRender', this, 'selectCardBlock', focusBlock);
+    } else {
+      run.scheduleOnce('afterRender', this, 'focusBlockEnd', focusBlock);
+    }
   },
 
   /*

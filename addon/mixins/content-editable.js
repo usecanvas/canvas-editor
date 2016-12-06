@@ -1,3 +1,4 @@
+import CopyPaste from 'canvas-editor/lib/copy-paste';
 import Ember from 'ember';
 import Key from 'canvas-editor/lib/key';
 import Selection from 'canvas-editor/mixins/selection';
@@ -133,9 +134,19 @@ export default Ember.Mixin.create(Selection, SelectionState, {
    * @param {Event} evt The event fired
    */
   paste(evt) {
+    if (this.get('block.isSelected')) return;
+    const { pastedLines } = new CopyPaste(evt);
     evt.preventDefault();
-    const text = evt.originalEvent.clipboardData.getData('text/plain');
-    document.execCommand('insertText', false, text);
+    evt.stopPropagation();
+    if (pastedLines === null) {
+      const text = evt.originalEvent.clipboardData.getData('text/plain');
+      document.execCommand('insertText', false, text);
+    } else if (this.get('block.content') === '') {
+      this.get('pasteBlocksAfter')(this.get('block'), pastedLines, true);
+    } else {
+      this.newBlockAtSplit();
+      this.get('pasteBlocksAfter')(this.get('block'), pastedLines);
+    }
   },
 
   /**

@@ -436,11 +436,7 @@ export default Ember.Component.extend(TypeChanges, {
       this.get('multiBlockSelect').selectAll();
     } else if (key.is('meta')) {
       // Insert temporary element to catch clipboard events for Safari & FF
-      const $temp = $('<input style="position:absolute;left:-999px;">');
-      $(document.body).append($temp);
-      $temp.focus();
-      $temp.val('temp').select();
-      this._$tempElem = $temp;
+      this.insertTempElem();
     }
   },
 
@@ -960,6 +956,19 @@ export default Ember.Component.extend(TypeChanges, {
     const idx = parentBlocks.indexOf(beforeBlock);
     parentBlocks.replace(idx + 1, 0, [newBlock]);
     this.get('onNewBlockInsertedLocally')(idx + 1, newBlock);
+  },
+
+  /**
+   * Insert temporary element to capture clipboard events in Safari & FF.
+   *
+   * @method
+   */
+  insertTempElem() {
+    const $temp = $('<input style="position:absolute;left:-999px;">');
+    $(document.body).append($temp);
+    $temp.focus();
+    $temp.val('temp').select();
+    this._$tempElem = $temp;
   },
 
   /**

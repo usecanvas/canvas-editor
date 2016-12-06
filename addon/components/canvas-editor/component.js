@@ -683,6 +683,18 @@ export default Ember.Component.extend(TypeChanges, {
   }),
 
   /**
+   * Teardown the temporary element if it exists.
+   *
+   * @method
+   */
+  teardownTempElem: on('willDestroyElement', function() {
+    if (this._$tempElem) {
+      this._$tempElem.remove();
+      this._$tempElem = null;
+    }
+  }),
+
+  /**
    * Unbind document-level handlers.
    *
    * @method

@@ -367,12 +367,10 @@ export default Ember.Component.extend(TypeChanges, {
     }
 
     if (key.is('meta', 'z')) {
-      evt.preventDefault();
-      this.send('undo');
+      this.send('undo')(evt);
       return;
     } else if (key.is('meta', 'shift', 'z')) {
-      evt.preventDefault();
-      this.send('redo');
+      this.send('redo')(evt);
       return;
     }
 
@@ -1529,9 +1527,10 @@ export default Ember.Component.extend(TypeChanges, {
      * Called when the user wishes to "redo" the last operation.
      *
      * @method redo
+     * @param {jQuery.Event} evt The `redo` event
      */
-    redo() {
-      this.get('onRedo')();
+    redo(evt) {
+      this.get('onRedo')(evt);
     },
 
     /**
@@ -1563,9 +1562,10 @@ export default Ember.Component.extend(TypeChanges, {
      * Called when the user wishes to "undo" the last operation.
      *
      * @method
+     * @param {jQuery.Event} evt The `undo` event
      */
-    undo() {
-      this.get('onUndo')();
+    undo(evt) {
+      this.get('onUndo')(evt);
     },
 
     /**
@@ -1668,6 +1668,7 @@ export default Ember.Component.extend(TypeChanges, {
    * op.
    *
    * @method
+   * @param {jQuery.Event} evt The `redo` event
    */
   onRedo: Ember.K,
 
@@ -1676,6 +1677,7 @@ export default Ember.Component.extend(TypeChanges, {
    * op.
    *
    * @method
+   * @param {jQuery.Event} evt The `undo` event
    */
   onUndo: Ember.K,
 

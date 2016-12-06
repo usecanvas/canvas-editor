@@ -15,7 +15,8 @@ export default class CopyPaste {
    * Writes a list of block into the clipboard in various formats.
    *
    * @method
-   * @param {Array<CanvasEditor.CanvasRealtime.Block>} blocks The blocks to write
+   * @param {Array<CanvasEditor.CanvasRealtime.Block>} blocks The blocks to
+   * write
    * to the clipboard
    */
   copyBlocksToClipboard(blocks) {
@@ -79,7 +80,8 @@ function extractPasteData({ originalEvent: { clipboardData } }) {
  * Takes a list of blocks and returns the markdown representation of it.
  *
  * @function
- * @param {Array<CanvasEditor.CanvasRealtime.Block>} blocks The blocks to convert
+ * @param {Array<CanvasEditor.CanvasRealtime.Block>} blocks The blocks to
+ * convert
  * @returns {String} The markdown representation of the blocks
  */
 function blocksToMarkdown(blocks) {
@@ -93,7 +95,8 @@ function blocksToMarkdown(blocks) {
  * @function
  * @param {String} acc The accumulated string
  * @param {CanvasEditor.CanvasRealtime.Block} block The block to convert
- * @returns {String} The markdown representation of the block and the blocks before
+ * @returns {String} The markdown representation of the block and the blocks
+ * prior
  */
 function blockToMarkdown(acc, block) {
   /* eslint-disable no-case-declarations */

@@ -404,6 +404,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `keydown` event
    */
+  /* eslint-disable max-statements */
   keydownMultiBlock(evt) {
     const key = new Key(evt.originalEvent);
 

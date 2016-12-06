@@ -935,7 +935,15 @@ export default Ember.Component.extend(TypeChanges, {
    */
   insertBlockAfter(newBlock, beforeBlock) {
     if (beforeBlock.get('parent') &&
-        beforeBlock.get('type') !== newBlock.get('type')) {
+        beforeBlock.get('parent.type') === newBlock.get('type')) {
+      newBlock.get('blocks').slice(0).reverse().forEach(block => {
+        this.insertBlockAfter(block, beforeBlock);
+      });
+      return;
+    }
+
+    if (beforeBlock.get('parent') &&
+        beforeBlock.get('parent.type') !== newBlock.get('parent.type')) {
       this.splitGroupAtBlock(beforeBlock, newBlock, false);
       return;
     }
@@ -944,6 +952,7 @@ export default Ember.Component.extend(TypeChanges, {
 
     if (beforeBlock.get('parent')) {
       parentBlocks = beforeBlock.get('parent.blocks');
+      newBlock.set('parent', beforeBlock.get('parent'));
     } else {
       parentBlocks = this.get('blocks');
     }

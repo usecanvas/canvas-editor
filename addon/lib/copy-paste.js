@@ -11,6 +11,13 @@ export default class CopyPaste {
     this.evt = evt;
   }
 
+  /**
+   * Writes a list of block into the clipboard in various formats.
+   *
+   * @method
+   * @param {Array<CanvasEditor.CanvasRealtime.Block>} blocks The blocks to write
+   * to the clipboard
+   */
   copyBlocksToClipboard(blocks) {
     const { originalEvent: { clipboardData } } = this.evt;
     clipboardData.setData('application/json',
@@ -38,14 +45,28 @@ export default class CopyPaste {
   }
 }
 
-function cleanID(line) {
-  if (line.blocks) {
-    line.blocks = line.blocks.map(cleanID);
+/**
+ * Removes the id key from a block and its children
+ *
+ * @function
+ * @param {Object} block The block to clean
+ * @returns {Object} The cleaned block
+ */
+function cleanID(block) {
+  if (block.blocks) {
+    block.blocks = block.blocks.map(cleanID);
   }
-  Reflect.deleteProperty(line, 'id');
-  return line;
+  Reflect.deleteProperty(block, 'id');
+  return block;
 }
 
+/**
+ * Takes the paste event and extracts the correct formatted data to paste.
+ *
+ * @function
+ * @param {DataTransfer} clipboardData The clipboard for the paste event
+ * @returns {String} The correct formatted data contained in the clipboard.
+ */
 function extractPasteData({ originalEvent: { clipboardData } }) {
   const types = Array.from(clipboardData.types);
   if (types.includes('application/json')) {
@@ -54,10 +75,26 @@ function extractPasteData({ originalEvent: { clipboardData } }) {
   return clipboardData.getData('text/plain');
 }
 
+/**
+ * Takes a list of blocks and returns the markdown representation of it.
+ *
+ * @function
+ * @param {Array<CanvasEditor.CanvasRealtime.Block>} blocks The blocks to convert
+ * @returns {String} The markdown representation of the blocks
+ */
 function blocksToMarkdown(blocks) {
   return blocks.reduce(blockToMarkdown, '').replace(/\s+$/, '');
 }
 
+/**
+ * Generates the markdown representation of a block and appends it
+ * to the accumulated string.
+ *
+ * @function
+ * @param {String} acc The accumulated string
+ * @param {CanvasEditor.CanvasRealtime.Block} block The block to convert
+ * @returns {String} The markdown representation of the block and the blocks before
+ */
 function blockToMarkdown(acc, block) {
   /* eslint-disable no-case-declarations */
   switch (block.get('type')) {
@@ -82,10 +119,24 @@ function blockToMarkdown(acc, block) {
   }
 }
 
+/**
+ * Generate appropriate hashes based on the  block's level
+ *
+ * @function
+ * @param {Object} block The block to analyze
+ * @returns {String} The hashes to prefix the block's content
+ */
 function buildHashes(block) {
   return '#'.repeat(block.get('meta.level'));
 }
 
+/**
+ * Generate appropriate spaces based on the block's level
+ *
+ * @function
+ * @param {Object} block The block to analyze
+ * @returns {String} The spaces to prefix the block's content
+ */
 function buildSpaces(block) {
   return '  '.repeat(block.get('meta.level') - 1);
 }

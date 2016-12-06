@@ -453,11 +453,27 @@ export default Ember.Component.extend(TypeChanges, {
     }
   },
 
-  keyupMultiBlock(_evt) {
+  /**
+   * Handle the `keyup` event for the document.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `keyup` event
+   */
+  keyupDocument(_evt) {
     if (this._$tempElem) {
       this._$tempElem.remove();
       this._$tempElem = null;
     }
+  },
+
+  /**
+   * Handle the `keyup` event when in multi-block.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `keyup` event
+   */
+  keyupMultiBlock(_evt) {
+    Ember.K();
   },
 
   /**
@@ -587,6 +603,17 @@ export default Ember.Component.extend(TypeChanges, {
     Ember.$(document).on(
       nsEvent('keydown', this),
       this.keydownDocument.bind(this));
+  }),
+
+  /**
+   * Bind handlers for document-level `keyup` events.
+   *
+   * @method
+   */
+  bindKeyUpEvents: on('didInsertElement', function() {
+    Ember.$(document).on(
+      nsEvent('keyup', this),
+      this.keyupDocument.bind(this));
   }),
 
   /**
@@ -733,6 +760,11 @@ export default Ember.Component.extend(TypeChanges, {
     }
   },
 
+  /**
+   * Construct an array of blocks to serialize to the clipboard
+   *
+   * @method
+   */
   buildCopyBlocks(blocks) {
     return blocks.reduce((prev, next) => {
       if (next.get('parent') && prev.get('lastObject.isGroup')) {
@@ -1183,6 +1215,15 @@ export default Ember.Component.extend(TypeChanges, {
     return block;
   },
 
+  /**
+   * Called when a block's content was updated in the editor.
+   *
+   * @method
+   * @param {CanvasEditor.CanvasRealtime.Block} after The blocks that blocks
+   * should come after
+   * @param {Array<CanvasEditor.CanvasRealtime.Block>} blocks The blocks that
+   * will be appended
+   */
   pasteBlocksAfter(after, blocks, shouldReplace = false) {
     if (after.get('type') === 'title' && blocks[0].get('type') !== 'title') {
       shouldReplace = false;

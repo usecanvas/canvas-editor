@@ -41,7 +41,9 @@ export default class CopyPaste {
           .map(cleanID)
           .map(json => RealtimeCanvas.createBlockFromJSON(json));
       }
-      return markdownToBlocks(pasteData);
+      const blocks = markdownToBlocks(pasteData);
+      return blocks.length !== 1 || blocks[0].get('type') !== 'paragraph'
+        ? blocks : null;
     } catch (err) {
       return null;
     }
@@ -92,7 +94,7 @@ function blocksToMarkdown(blocks) {
 
 const ParseReducer = {
   code(acc, nextLine) {
-    if (isCodeFence(nextLine)) return [acc, 'create'];
+    if (isCodeFence(nextLine)) return [acc, 'initial'];
     const prevBlock = acc[acc.length - 1];
     const newContent = prevBlock.get('content') === ''
       ? nextLine : `${prevBlock.get('content')}\n${nextLine}`;
@@ -103,7 +105,7 @@ const ParseReducer = {
   continuation(acc, nextLine) {
     const prevBlock = acc[acc.length - 1];
     const isNewLine = nextLine === '';
-    if (isNewLine) return [acc, 'create'];
+    if (isNewLine) return [acc, 'initial'];
     if (prevBlock.get('isGroup') && List.pattern.test(nextLine)) {
       const item = List.createItemFromMarkdown(nextLine);
       item.set('parent', prevBlock);
@@ -115,15 +117,15 @@ const ParseReducer = {
     return [acc, 'continuation'];
   },
 
-  create(acc, nextLine) {
+  initial(acc, nextLine) {
     const isNewLine = nextLine === '';
-    if (isNewLine) { return [acc, 'create'];  }
+    if (isNewLine) { return [acc, 'initial'];  }
     const nextBlock = RealtimeCanvas.createBlockFromMarkdown(nextLine);
     acc.pushObject(nextBlock);
     if (nextBlock.get('type') === 'code') return [acc, 'code'];
     const canContinue = !nextBlock.get('isCard') &&
       nextBlock.get('type') !== 'heading';
-    return canContinue ?  [acc, 'continuation'] : [acc, 'create'];
+    return canContinue ?  [acc, 'continuation'] : [acc, 'initial'];
   }
 };
 
@@ -138,7 +140,7 @@ const ParseReducer = {
 function markdownToBlocks(markdown) {
   return markdown.split(/\r?\n/).reduce(([acc, parseState], nextLine) => {
     return ParseReducer[parseState](acc, nextLine);
-  }, [[], 'create'])[0];
+  }, [[], 'initial'])[0];
 }
 
 function isCodeFence(line) { return (/^```/).test(line); }

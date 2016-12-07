@@ -14,13 +14,13 @@ export default ContentBlock.extend({
   meta: computed(_ => Ember.Object.create({ level: 1, checked: false }))
 }).reopenClass({
   pattern: /^([ ]{0,6})[-*+] \[[x ]\] (.*)$/,
-  createFromMarkdown(markdown, properties = {}) {
-    if (!markdown.startsWith('- ')) markdown = `- ${markdown}`;
-    const checked = (/^- \[[Xx]/).test(markdown);
-    const level = getWithDefault(properties, 'meta.level', 1);
-    const content = markdown.split(/^- \[.] /)[1] || '';
+  createFromMarkdown(markdown, properties) {
+    const checked = (/^([ ]{0,6})[-*+] \[[Xx]/).test(markdown);
+    const [_, spaces, content] = markdown.match(this.pattern);
+    const level = properties ? getWithDefault(properties, 'meta.level', 1)
+      : Math.floor(spaces.length / 2);
 
-    return this.create(Object.assign(properties, {
+    return this.create(Object.assign(properties || {}, {
       content,
       meta: { checked, level }
     }));

@@ -8,4 +8,9 @@ import ContentBlock from './content-block';
  */
 export default ContentBlock.extend({
   type: 'paragraph'
+}).reopenClass({
+  pattern: /^(.*)$/,
+  createFromMarkdown(content) {
+    return this.create({ content });
+  }
 });

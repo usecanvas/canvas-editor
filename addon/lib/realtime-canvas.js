@@ -67,8 +67,8 @@ export default Ember.Object.extend({
 
   createBlockFromMarkdown(source) {
     let klass, match;
-    const parseOrder = [Heading, HorizontalRule, Code, Image, CLItem,
-      ULItem, URLCard, Paragraph];
+    const parseOrder = [Heading, HorizontalRule, Code, Image, List,
+      URLCard, Paragraph];
     for (klass of parseOrder) {
       if (match = source.match(klass.pattern)) {
         break;

@@ -1,7 +1,7 @@
 import ContentBlock from './content-block';
 import Ember from 'ember';
 
-const { computed } = Ember;
+const { computed, getWithDefault } = Ember;
 
 /**
  * A block representing a paragraph.
@@ -14,8 +14,14 @@ export default ContentBlock.extend({
   meta: computed(_ => Ember.Object.create({ level: 1 }))
 }).reopenClass({
   pattern: /^([ ]{0,6})[-*+] (.*)$/,
-  createFromMarkdown(markdown, properties = {}) {
-    const content = markdown.split(/^- /)[1] || '';
-    return this.create(Object.assign(properties, { content }));
+  createFromMarkdown(markdown, properties) {
+    const [_, spaces, content] = markdown.match(this.pattern);
+    const level = properties ? getWithDefault(properties, 'meta.level', 1)
+      : Math.floor(spaces.length / 2) + 1;
+
+    return this.create(Object.assign(properties || {}, {
+      content,
+      meta: { level }
+    }));
   }
 });

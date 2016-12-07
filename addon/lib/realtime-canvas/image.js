@@ -11,4 +11,10 @@ export default Block.extend({
   isCard: true,
   lastContent: null,
   type: 'image'
+}).reopenClass({
+  pattern: /^!\[\]\(https?:\/\/\S*\.(?:gif|jpg|jpeg|png)(?:\?\S*)?\)$/i,
+  createFromMarkdown(source) {
+    const url = source.slice(4, -1);
+    return this.create({ meta: { url } });
+  }
 });

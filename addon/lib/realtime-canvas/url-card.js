@@ -14,6 +14,6 @@ export default Block.extend({
 }).reopenClass({
   pattern: /^https?:\/\/.*$/,
   createFromMarkdown(url) {
-    this.create({ meta: { url } });
+    return this.create({ meta: { url } });
   }
 });

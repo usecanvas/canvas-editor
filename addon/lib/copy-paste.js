@@ -1,3 +1,4 @@
+import List from './realtime-canvas/list';
 import RealtimeCanvas from './realtime-canvas';
 
 /**
@@ -35,11 +36,12 @@ export default class CopyPaste {
   get pastedLines() {
     try {
       const pasteData = extractPasteData(this.evt);
-      const { lines, isInline } = JSON.parse(pasteData);
-      if (isInline) return lines[0];
-      return lines
-        .map(cleanID)
-        .map(json => RealtimeCanvas.createBlockFromJSON(json));
+      if (pasteData.lines) {
+        return pasteData.lines
+          .map(cleanID)
+          .map(json => RealtimeCanvas.createBlockFromJSON(json));
+      }
+      return markdownToBlocks(pasteData);
     } catch (err) {
       return null;
     }
@@ -71,7 +73,7 @@ function cleanID(block) {
 function extractPasteData({ originalEvent: { clipboardData } }) {
   const types = Array.from(clipboardData.types);
   if (types.includes('application/json')) {
-    return clipboardData.getData('application/json');
+    return JSON.parse(clipboardData.getData('application/json'));
   }
   return clipboardData.getData('text/plain');
 }
@@ -96,7 +98,8 @@ const Parse = {
       }
 
       const prevBlock = acc[acc.length - 1];
-      const newContent = `${prevBlock.get('content')}\n${nextLine}`;
+      const newContent = prevBlock.get('content') === ''
+        ? nextLine : `${prevBlock.get('content')}\n${nextLine}`;
       prevBlock.set('content', newContent);
       return [acc, 'code'];
     },
@@ -104,9 +107,9 @@ const Parse = {
     continuation: (acc, nextLine) => {
       const prevBlock = acc[acc.length - 1];
       const isNewLine = nextLine === '';
-      if (prevBlock.get('parent.isGroup') && isListItem(nextLine)) {
-        const item = List.parseMarkdown(nextLine);
-        item.set('parent', prevBlock.get('parent'));
+      if (prevBlock.get('isGroup') && List.pattern.test(nextLine)) {
+        const item = List.createItemFromMarkdown(nextLine);
+        item.set('parent', prevBlock);
         prevBlock.get('blocks').pushObject(item);
         return [acc, 'continuation'];
       } else if (isNewLine) {
@@ -120,10 +123,10 @@ const Parse = {
     create: (acc, nextLine) => {
       const isNewLine = nextLine === '';
       if (isNewLine) { return [acc, 'create'];  }
-      const nextBlock = Block.parseMarkdown(nextLine);
+      const nextBlock = RealtimeCanvas.createBlockFromMarkdown(nextLine);
       acc.pushObject(nextBlock);
-      // conditionally determine whether the next line is a continuation or create
-      return [acc, 'continuation'];
+      if (nextBlock.get('type') === 'code') return [acc, 'code'];
+      return nextBlock.get('isCard') ? [acc, 'create'] : [acc, 'continuation'];
     }
   }
 };
@@ -137,9 +140,9 @@ const Parse = {
  * @returns {Array<CanvasEditor.CanvasRealtime.Block>} The converted blocks
  */
 function markdownToBlocks(markdown) {
-  return markdown.split('\n').reduce(([acc, parseState], nextLine) => {
+  return markdown.split(/\r?\n/).reduce(([acc, parseState], nextLine) => {
     return Parse.state[parseState](acc, nextLine);
-  }, [[], 'create']);
+  }, [[], 'create'])[0];
 }
 
 function isCodeFence(line) { return (/^```/).test(line); }

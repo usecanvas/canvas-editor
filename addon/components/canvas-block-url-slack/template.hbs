@@ -1,1 +1,9 @@
-{{unfurled.providerName}}
+<div local-class="slider">
+  {{input type='range' min='1' max=messages.length value=count}}
+</div>
+
+<div local-class="content">
+  {{#each filteredMessages as |message|}}
+    <div>{{message}}</div>
+  {{/each}}
+</div>

@@ -90,46 +90,40 @@ function blocksToMarkdown(blocks) {
   return blocks.reduce(blockToMarkdown, '').replace(/\s+$/, '');
 }
 
-const Parse = {
-  state: {
-    code: (acc, nextLine) => {
-      if (isCodeFence(nextLine)) {
-        return [acc, 'create'];
-      }
+const ParseReducer = {
+  code(acc, nextLine) {
+    if (isCodeFence(nextLine)) return [acc, 'create'];
+    const prevBlock = acc[acc.length - 1];
+    const newContent = prevBlock.get('content') === ''
+      ? nextLine : `${prevBlock.get('content')}\n${nextLine}`;
+    prevBlock.set('content', newContent);
+    return [acc, 'code'];
+  },
 
-      const prevBlock = acc[acc.length - 1];
-      const newContent = prevBlock.get('content') === ''
-        ? nextLine : `${prevBlock.get('content')}\n${nextLine}`;
-      prevBlock.set('content', newContent);
-      return [acc, 'code'];
-    },
-
-    continuation: (acc, nextLine) => {
-      const prevBlock = acc[acc.length - 1];
-      const isNewLine = nextLine === '';
-      if (prevBlock.get('isGroup') && List.pattern.test(nextLine)) {
-        const item = List.createItemFromMarkdown(nextLine);
-        item.set('parent', prevBlock);
-        prevBlock.get('blocks').pushObject(item);
-        return [acc, 'continuation'];
-      } else if (isNewLine) {
-        return [acc, 'create'];
-      }
+  continuation(acc, nextLine) {
+    const prevBlock = acc[acc.length - 1];
+    const isNewLine = nextLine === '';
+    if (isNewLine) return [acc, 'create'];
+    if (prevBlock.get('isGroup') && List.pattern.test(nextLine)) {
+      const item = List.createItemFromMarkdown(nextLine);
+      item.set('parent', prevBlock);
+      prevBlock.get('blocks').pushObject(item);
+    } else {
       const newContent = `${prevBlock.get('content')}\n${nextLine}`;
       prevBlock.set('content', newContent);
-      return [acc, 'continuation'];
-    },
-
-    create: (acc, nextLine) => {
-      const isNewLine = nextLine === '';
-      if (isNewLine) { return [acc, 'create'];  }
-      const nextBlock = RealtimeCanvas.createBlockFromMarkdown(nextLine);
-      acc.pushObject(nextBlock);
-      if (nextBlock.get('type') === 'code') return [acc, 'code'];
-      const canContinue = !nextBlock.get('isCard') &&
-        nextBlock.get('type') !== 'heading';
-      return canContinue ?  [acc, 'continuation'] : [acc, 'create'];
     }
+    return [acc, 'continuation'];
+  },
+
+  create(acc, nextLine) {
+    const isNewLine = nextLine === '';
+    if (isNewLine) { return [acc, 'create'];  }
+    const nextBlock = RealtimeCanvas.createBlockFromMarkdown(nextLine);
+    acc.pushObject(nextBlock);
+    if (nextBlock.get('type') === 'code') return [acc, 'code'];
+    const canContinue = !nextBlock.get('isCard') &&
+      nextBlock.get('type') !== 'heading';
+    return canContinue ?  [acc, 'continuation'] : [acc, 'create'];
   }
 };
 
@@ -143,7 +137,7 @@ const Parse = {
  */
 function markdownToBlocks(markdown) {
   return markdown.split(/\r?\n/).reduce(([acc, parseState], nextLine) => {
-    return Parse.state[parseState](acc, nextLine);
+    return ParseReducer[parseState](acc, nextLine);
   }, [[], 'create'])[0];
 }
 

@@ -13,10 +13,11 @@ export default ContentBlock.extend({
   type: 'checklist-item',
   meta: computed(_ => Ember.Object.create({ level: 1, checked: false }))
 }).reopenClass({
-  pattern: /^( *)[-*+] \[[x ]\] (.*)$/,
+  pattern: /^([ \t]*)[-*+] \[[x ]\] (.*)$/i,
   createFromMarkdown(markdown, properties) {
-    const checked = (/^([ ]{0,6})[-*+] \[[Xx]/).test(markdown);
-    const [_, spaces, content] = markdown.match(this.pattern);
+    const checked = (/^([ \t]*)[-*+] \[[Xx]/).test(markdown);
+    const [_, spacesAndTabs, content] = markdown.match(this.pattern);
+    const spaces = spacesAndTabs.replace(/\t/g, '  ');
     const level = properties ? getWithDefault(properties, 'meta.level', 1)
       : Math.min(4, Math.floor(spaces.length / 2) + 1);
 

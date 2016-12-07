@@ -110,6 +110,10 @@ const ParseReducer = {
       const item = List.createItemFromMarkdown(nextLine);
       item.set('parent', prevBlock);
       prevBlock.get('blocks').pushObject(item);
+    } else if (prevBlock.get('isGroup')) {
+      const listItem = prevBlock.get('blocks.lastObject');
+      const newContent = `${listItem.get('content')}\n${nextLine}`;
+      listItem.set('content', newContent);
     } else {
       const newContent = `${prevBlock.get('content')}\n${nextLine}`;
       prevBlock.set('content', newContent);

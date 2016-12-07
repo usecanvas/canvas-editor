@@ -14,7 +14,7 @@ export default Group.extend({
     this.get('blocks').setEach('parent', this);
   }
 }).reopenClass({
-  pattern: /^( *)[-*+] (.*)$/,
+  pattern: /^([ \t]*)[-*+] (.*)$/,
   createItemFromMarkdown(content) {
     return CLItem.pattern.test(content) ? CLItem.createFromMarkdown(content)
       : ULItem.createFromMarkdown(content);

@@ -13,9 +13,10 @@ export default ContentBlock.extend({
   type: 'unordered-list-item',
   meta: computed(_ => Ember.Object.create({ level: 1 }))
 }).reopenClass({
-  pattern: /^( *)[-*+] (.*)$/,
+  pattern: /^([ \t]*)[-*+] (.*)$/,
   createFromMarkdown(markdown, properties) {
-    const [_, spaces, content] = markdown.match(this.pattern);
+    const [_, spacesAndTabs, content] = markdown.match(this.pattern);
+    const spaces = spacesAndTabs.replace(/\t/g, '  ');
     const level = properties ? getWithDefault(properties, 'meta.level', 1)
       : Math.min(4, Math.floor(spaces.length / 2) + 1);
 

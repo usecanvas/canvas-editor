@@ -1,0 +1,5 @@
+@value --extra-light-gray from 'canvas-editor/styles/theme';
+
+.slider {
+  background: --extra-light-gray;
+}

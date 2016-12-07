@@ -1,11 +1,13 @@
 import Ember from 'ember';
 import layout from './template';
+import styles from './styles';
 
 const { computed } = Ember;
 
 export default Ember.Component.extend({
   count: 1,
   layout,
+  styles,
 
   messages: computed('unfurled.text', function() {
     const text = this.get('unfurled.text');

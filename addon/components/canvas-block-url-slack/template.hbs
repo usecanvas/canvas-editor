@@ -1,6 +1,16 @@
-<div local-class="slider">
-  {{input type='range' min='1' max=messages.length value=count}}
-</div>
+<button onclick={{toggle-action 'showSettings' this}}>
+  {{#if showSettings}}
+    Done
+  {{else}}
+    Settings
+  {{/if}}
+</button>
+
+{{#if showSettings}}
+  <div local-class="slider">
+    {{input type='range' min='1' max=messages.length value=count}}
+  </div>
+{{/if}}
 
 <div local-class="content">
   {{#each filteredMessages as |message|}}

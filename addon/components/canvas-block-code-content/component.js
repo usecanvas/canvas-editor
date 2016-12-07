@@ -67,5 +67,13 @@ export default CanvasBlockEditable.extend({
       this._super(...arguments);
       return;
     }
+  },
+
+  paste(evt) {
+    if (this.get('block.isSelected')) return;
+    evt.preventDefault();
+    evt.stopPropagation();
+    const text = evt.originalEvent.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
   }
 });

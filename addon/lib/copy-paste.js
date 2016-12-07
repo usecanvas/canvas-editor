@@ -126,7 +126,9 @@ const Parse = {
       const nextBlock = RealtimeCanvas.createBlockFromMarkdown(nextLine);
       acc.pushObject(nextBlock);
       if (nextBlock.get('type') === 'code') return [acc, 'code'];
-      return nextBlock.get('isCard') ? [acc, 'create'] : [acc, 'continuation'];
+      const canContinue = !nextBlock.get('isCard') &&
+        nextBlock.get('type') !== 'heading';
+      return canContinue ?  [acc, 'continuation'] : [acc, 'create'];
     }
   }
 };

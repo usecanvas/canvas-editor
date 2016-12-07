@@ -1,0 +1,25 @@
+@value --gray from 'canvas-editor/styles/theme';
+@value --light-gray from 'canvas-editor/styles/theme';
+
+.slack-message {
+  display: flex;
+}
+
+.avatar {
+  background: --light-gray;
+  border-radius: 4px;
+  flex: none;
+  height: 2rem;
+  margin-right: 0.5rem;
+  width: 2rem;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.timestamp {
+  color: --gray;
+  font-size: 0.75rem;
+  text-decoration: underline;
+}

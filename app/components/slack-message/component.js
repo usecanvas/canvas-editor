@@ -1,0 +1,1 @@
+export { default } from 'canvas-editor/components/slack-message/component';

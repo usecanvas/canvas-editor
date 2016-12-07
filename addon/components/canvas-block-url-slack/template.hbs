@@ -14,6 +14,6 @@
 
 <div local-class="content">
   {{#each filteredMessages as |message|}}
-    <div>{{message}}</div>
+    {{slack-message message=message}}
   {{/each}}
 </div>

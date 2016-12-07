@@ -13,11 +13,11 @@ export default ContentBlock.extend({
   type: 'unordered-list-item',
   meta: computed(_ => Ember.Object.create({ level: 1 }))
 }).reopenClass({
-  pattern: /^([ ]{0,6})[-*+] (.*)$/,
+  pattern: /^( *)[-*+] (.*)$/,
   createFromMarkdown(markdown, properties) {
     const [_, spaces, content] = markdown.match(this.pattern);
     const level = properties ? getWithDefault(properties, 'meta.level', 1)
-      : Math.floor(spaces.length / 2) + 1;
+      : Math.min(4, Math.floor(spaces.length / 2) + 1);
 
     return this.create(Object.assign(properties || {}, {
       content,

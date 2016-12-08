@@ -366,6 +366,14 @@ export default Ember.Component.extend(TypeChanges, {
       return;
     }
 
+    if (key.is('meta', 'z')) {
+      this.send('undo', evt);
+      return;
+    } else if (key.is('meta', 'shift', 'z')) {
+      this.send('redo', evt);
+      return;
+    }
+
     // Below handles only navigation/editing of card blocks.
     if (!selectedCardBlockElement) return;
 
@@ -1516,6 +1524,16 @@ export default Ember.Component.extend(TypeChanges, {
     },
 
     /**
+     * Called when the user wishes to "redo" the last operation.
+     *
+     * @method redo
+     * @param {jQuery.Event} evt The `redo` event
+     */
+    redo(evt) {
+      this.get('onRedo')(evt);
+    },
+
+    /**
      * Called when a template should be applied to the canvas.
      *
      * @method
@@ -1538,6 +1556,16 @@ export default Ember.Component.extend(TypeChanges, {
           this.get('onNewBlockInsertedLocally')(idx + 1, newBlock);
         }
       });
+    },
+
+    /**
+     * Called when the user wishes to "undo" the last operation.
+     *
+     * @method
+     * @param {jQuery.Event} evt The `undo` event
+     */
+    undo(evt) {
+      this.get('onUndo')(evt);
     },
 
     /**
@@ -1634,6 +1662,24 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The replacing block
    */
   onBlockReplacedLocally: Ember.K,
+
+  /**
+   * A dummy handler for an action called when the user wants to "redo" the last
+   * op.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `redo` event
+   */
+  onRedo: Ember.K,
+
+  /**
+   * A dummy handler for an action called when the user wants to "undo" the last
+   * op.
+   *
+   * @method
+   * @param {jQuery.Event} evt The `undo` event
+   */
+  onUndo: Ember.K,
 
   /**
    * A dummy handler for a function that is passed in in order to unfurl a

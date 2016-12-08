@@ -136,6 +136,9 @@ export default Ember.Mixin.create(Selection, SelectionState, {
   paste(evt) {
     if (this.get('block.isSelected')) return;
     const { pastedLines } = new CopyPaste(evt);
+    const { textBeforeSelection, textAfterSelection } =
+      TextManipulation.getManipulation(this.get('element'));
+
     evt.preventDefault();
     evt.stopPropagation();
     if (pastedLines === null) {
@@ -143,6 +146,9 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       document.execCommand('insertText', false, text);
     } else if (this.get('block.content') === '') {
       this.get('pasteBlocksAfter')(this.get('block'), pastedLines, true);
+    } else if (textAfterSelection === '') {
+      this.setBlockContentFromInput(textBeforeSelection, false);
+      this.get('pasteBlocksAfter')(this.get('block'), pastedLines);
     } else {
       this.newBlockAtSplit();
       this.get('pasteBlocksAfter')(this.get('block'), pastedLines);

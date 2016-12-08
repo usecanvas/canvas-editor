@@ -1,3 +1,4 @@
+import List from './realtime-canvas/list';
 import RealtimeCanvas from './realtime-canvas';
 
 /**
@@ -35,11 +36,14 @@ export default class CopyPaste {
   get pastedLines() {
     try {
       const pasteData = extractPasteData(this.evt);
-      const { lines, isInline } = JSON.parse(pasteData);
-      if (isInline) return lines[0];
-      return lines
-        .map(cleanID)
-        .map(json => RealtimeCanvas.createBlockFromJSON(json));
+      if (pasteData.lines) {
+        return pasteData.lines
+          .map(cleanID)
+          .map(json => RealtimeCanvas.createBlockFromJSON(json));
+      }
+      const blocks = markdownToBlocks(pasteData);
+      return blocks.length !== 1 || blocks[0].get('type') !== 'paragraph'
+        ? blocks : null;
     } catch (err) {
       return null;
     }
@@ -71,7 +75,7 @@ function cleanID(block) {
 function extractPasteData({ originalEvent: { clipboardData } }) {
   const types = Array.from(clipboardData.types);
   if (types.includes('application/json')) {
-    return clipboardData.getData('application/json');
+    return JSON.parse(clipboardData.getData('application/json'));
   }
   return clipboardData.getData('text/plain');
 }
@@ -88,6 +92,62 @@ function blocksToMarkdown(blocks) {
   return blocks.reduce(blockToMarkdown, '').replace(/\s+$/, '');
 }
 
+const ParseReducer = {
+  code(acc, nextLine) {
+    if (isCodeFence(nextLine)) return [acc, 'initial'];
+    const prevBlock = acc[acc.length - 1];
+    const newContent = prevBlock.get('content') === ''
+      ? nextLine : `${prevBlock.get('content')}\n${nextLine}`;
+    prevBlock.set('content', newContent);
+    return [acc, 'code'];
+  },
+
+  continuation(acc, nextLine) {
+    const prevBlock = acc[acc.length - 1];
+    const isNewLine = nextLine === '';
+    if (isNewLine) return [acc, 'initial'];
+    if (prevBlock.get('isGroup') && List.pattern.test(nextLine)) {
+      const item = List.createItemFromMarkdown(nextLine);
+      item.set('parent', prevBlock);
+      prevBlock.get('blocks').pushObject(item);
+    } else if (prevBlock.get('isGroup')) {
+      const listItem = prevBlock.get('blocks.lastObject');
+      const newContent = `${listItem.get('content')}\n${nextLine}`;
+      listItem.set('content', newContent);
+    } else {
+      const newContent = `${prevBlock.get('content')}\n${nextLine}`;
+      prevBlock.set('content', newContent);
+    }
+    return [acc, 'continuation'];
+  },
+
+  initial(acc, nextLine) {
+    const isNewLine = nextLine === '';
+    if (isNewLine) { return [acc, 'initial'];  }
+    const nextBlock = RealtimeCanvas.createBlockFromMarkdown(nextLine);
+    acc.pushObject(nextBlock);
+    if (nextBlock.get('type') === 'code') return [acc, 'code'];
+    const canContinue = !nextBlock.get('isCard') &&
+      nextBlock.get('type') !== 'heading';
+    return canContinue ?  [acc, 'continuation'] : [acc, 'initial'];
+  }
+};
+
+/**
+ * Takes markdown text and returns the corresponding blocks.
+ *
+ * @function
+ * @param {String} markdown The markdown text to convert
+ * convert
+ * @returns {Array<CanvasEditor.CanvasRealtime.Block>} The converted blocks
+ */
+function markdownToBlocks(markdown) {
+  return markdown.split(/\r?\n/).reduce(([acc, parseState], nextLine) => {
+    return ParseReducer[parseState](acc, nextLine);
+  }, [[], 'initial'])[0];
+}
+
+function isCodeFence(line) { return (/^```/).test(line); }
 /**
  * Generates the markdown representation of a block and appends it
  * to the accumulated string.

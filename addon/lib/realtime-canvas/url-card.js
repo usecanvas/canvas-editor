@@ -11,4 +11,9 @@ export default Block.extend({
   isCard: true,
   lastContent: null,
   type: 'url'
+}).reopenClass({
+  pattern: /^https?:\/\/.*$/,
+  createFromMarkdown(url) {
+    return this.create({ meta: { url } });
+  }
 });

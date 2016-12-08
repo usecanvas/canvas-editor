@@ -11,4 +11,9 @@ export default Block.extend({
   isCard: true,
   lastContent: null,
   type: 'horizontal-rule'
+}).reopenClass({
+  pattern: /^---$/,
+  createFromMarkdown() {
+    return this.create({});
+  }
 });

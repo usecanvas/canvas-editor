@@ -29,7 +29,7 @@ export default CanvasBlockEditable.extend(IndentableLevelsContent, {
 
     if (type) {
       this.get('changeBlockType')(
-        `unordered-list-item/${type}`, this.get('block'), content);
+        `unordered-list-item/${type}`, this.get('block'), `- ${content}`);
     } else {
       this._super(content, preventRerender);
     }

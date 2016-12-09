@@ -83,8 +83,8 @@ export default Ember.Component.extend({
   messages: computed('unfurled.text', 'unfurled.thumbnailUrl', function() {
     const messages = Ember.A([
       Ember.Object.create({
-        author: '@olivia',
-        createdAt: '07:31PM',
+        author: '@max',
+        createdAt: '6:58PM',
         text: this.get('unfurled.text'),
         thumbnailUrl: this.get('unfurled.thumbnailUrl')
       }),

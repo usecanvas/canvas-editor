@@ -1,19 +1,19 @@
-@value --dark-gray from 'canvas-editor/styles/theme';
-@value --editor-monospace-font-family from 'canvas-editor/styles/theme';
-@value --extra-light-gray from 'canvas-editor/styles/theme';
-@value --light-gray from 'canvas-editor/styles/theme';
+@value default-dark-gray from 'canvas-editor/styles/theme';
+@value default-editor-monospace-font-family from 'canvas-editor/styles/theme';
+@value default-extra-light-gray from 'canvas-editor/styles/theme';
+@value default-light-gray from 'canvas-editor/styles/theme';
 
 .canvas-block-code {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
 }
 
 .content {
-  background: --extra-light-gray;
+  background: var(--extra-light-gray, default-extra-light-gray);
   border-radius: 4px;
-  border: 1px solid --light-gray;
-  color: --dark-gray;
+  border: 1px solid var(--light-gray, default-light-gray);
+  color: var(--dark-gray, default-dark-gray);
   display: block;
-  font-family: --editor-monospace-font-family;
+  font-family: var(--editor-monospace-font-family, default-editor-monospace-font-family);
   font-size: 0.9375em;
   overflow-x: auto;
   padding: 0.5em 1em;

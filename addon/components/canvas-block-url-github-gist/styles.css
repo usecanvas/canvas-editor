@@ -1,6 +1,6 @@
-@value --blue from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
 
 [data-card-block-selected=true] :global(.gist-file) {
-  border-color: --blue !important;
-  box-shadow: 0 0 0 1px --blue !important;
+  border-color: var(--blue, default-blue) !important;
+  box-shadow: 0 0 0 1px var(--blue, default-blue) !important;
 }

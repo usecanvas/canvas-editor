@@ -1,16 +1,16 @@
-@value --editor-background-color from "canvas-editor/styles/theme";
-@value --editor-font-family from "canvas-editor/styles/theme";
-@value --editor-line-height from "canvas-editor/styles/theme";
-@value --editor-padding from "canvas-editor/styles/theme";
-@value --editor-text-color from "canvas-editor/styles/theme";
-@value --editor-link-color from "canvas-editor/styles/theme";
+@value default-editor-background-color from "canvas-editor/styles/theme";
+@value default-editor-font-family from "canvas-editor/styles/theme";
+@value default-editor-line-height from "canvas-editor/styles/theme";
+@value default-editor-padding from "canvas-editor/styles/theme";
+@value default-editor-text-color from "canvas-editor/styles/theme";
+@value default-editor-link-color from "canvas-editor/styles/theme";
 
 .canvas-editor {
-  background-color: --editor-background-color;
-  color: --editor-text-color;
-  font-family: --editor-font-family;
-  line-height: --editor-line-height;
-  padding: --editor-padding;
+  background-color: var(--editor-background-color, default-editor-background-color);
+  color: var(--editor-text-color, default-editor-text-color);
+  font-family: var(--editor-font-family, default-editor-font-family);
+  line-height: var(--editor-line-height, default-editor-line-height);
+  padding: var(--editor-padding, default-editor-padding);
 }
 
 .canvas-editor [contenteditable] {
@@ -18,6 +18,6 @@
 }
 
 .canvas-editor a {
-  color: --editor-link-color;
+  color: var(--editor-link-color, default-editor-link-color);
   text-decoration: none;
 }

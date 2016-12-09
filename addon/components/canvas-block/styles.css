@@ -1,5 +1,5 @@
-@value --blue from 'canvas-editor/styles/theme';
-@value --light-gray from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
+@value default-light-gray from 'canvas-editor/styles/theme';
 
 .block-spacing {
   margin: 0 0 1.5rem;
@@ -30,7 +30,7 @@
 }
 
 .block-link::before {
-  background: --light-gray;
+  background: var(--light-gray, default-light-gray);
   border-radius: 1000px;
   content: '';
   display: block;
@@ -52,7 +52,7 @@
 .block-link:focus::before,
 .is-focused .block-link::before,
 [data-card-block-selected=true] .block-link::before {
-  background: --blue;
+  background: var(--blue, default-blue);
 }
 
 .placeholder-editor {

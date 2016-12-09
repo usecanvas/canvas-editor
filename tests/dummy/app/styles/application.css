@@ -1,11 +1,11 @@
-@value --dark-gray from 'canvas-editor/styles/theme';
-@value --debug-color: rgba(0, 255, 255, 0.25);
-@value --extra-light-gray from 'canvas-editor/styles/theme';
+@value default-dark-gray from 'canvas-editor/styles/theme';
+@value default-debug-color: rgba(0, 255, 255, 0.25);
+@value default-extra-light-gray from 'canvas-editor/styles/theme';
 
 .debug-bar {
   align-items: center;
-  background: --extra-light-gray;
-  color: --dark-gray;
+  background: var(--extra-light-gray, default-extra-light-gray);
+  color: var(--dark-gray, default-dark-gray);
   display: flex;
   font-size: 0.875rem;
   left: 0;
@@ -18,9 +18,9 @@
 
 .debug-grid {
   background-image:
-    linear-gradient(transparent 7px, --debug-color 8px),
-    linear-gradient(90deg, transparent 7px, --debug-color 8px);
+    linear-gradient(transparent 7px, var(--debug-color, default-debug-color) 8px),
+    linear-gradient(90deg, transparent 7px, var(--debug-color, default-debug-color) 8px);
   background-position: calc(50% - 4px) top;
   background-size: 8px 8px;
-  box-shadow: 0 0 0 1px --debug-color inset;
+  box-shadow: 0 0 0 1px var(--debug-color, default-debug-color) inset;
 }

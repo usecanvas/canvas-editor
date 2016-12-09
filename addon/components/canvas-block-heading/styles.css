@@ -1,4 +1,4 @@
-@value --dark-gray from 'canvas-editor/styles/theme';
+@value default-dark-gray from 'canvas-editor/styles/theme';
 
 .canvas-block-heading {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
@@ -30,7 +30,7 @@
 .heading-level-4,
 .heading-level-5,
 .heading-level-6 {
-  color: --dark-gray;
+  color: var(--dark-gray, default-dark-gray);
   font-weight: 600;
 }
 

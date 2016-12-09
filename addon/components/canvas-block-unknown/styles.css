@@ -1,11 +1,11 @@
-@value --dark-gray from 'canvas-editor/styles/theme';
-@value --extra-light-gray from 'canvas-editor/styles/theme';
+@value default-dark-gray from 'canvas-editor/styles/theme';
+@value default-extra-light-gray from 'canvas-editor/styles/theme';
 
 .canvas-block-unknown {
   composes: canvas-block-card from 'canvas-editor/components/canvas-block-card/styles';
-  background: --extra-light-gray;
+  background: var(--extra-light-gray, default-extra-light-gray);
   box-shadow: none;
-  color: --dark-gray;
+  color: var(--dark-gray, default-dark-gray);
   text-align: center;
 }
 

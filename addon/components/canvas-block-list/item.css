@@ -1,4 +1,4 @@
-@value --list-indent: 1.5em;
+@value default-list-indent: 1.5em;
 
 .canvas-block-list-item {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
@@ -13,19 +13,19 @@
 }
 
 .level-1 {
-  margin-left: calc(0 * --list-indent);
+  margin-left: calc(0 * var(--list-indent, default-list-indent));
 }
 
 .level-2 {
-  margin-left: calc(1 * --list-indent);
+  margin-left: calc(1 * var(--list-indent, default-list-indent));
 }
 
 .level-3 {
-  margin-left: calc(2 * --list-indent);
+  margin-left: calc(2 * var(--list-indent, default-list-indent));
 }
 
 .level-4 {
-  margin-left: calc(3 * --list-indent);
+  margin-left: calc(3 * var(--list-indent, default-list-indent));
 }
 
 .placeholder-editor {

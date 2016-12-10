@@ -1,4 +1,4 @@
-@value --gray from 'canvas-editor/styles/theme';
+@value default-gray from 'canvas-editor/styles/theme';
 
 .ui-spinner {
   height: 1.5rem;
@@ -9,7 +9,7 @@
 .double-bounce1,
 .double-bounce2 {
   animation: bounce 2.0s infinite ease-in-out;
-  background-color: --gray;
+  background-color: var(--gray, default-gray);
   border-radius: 50%;
   height: 100%;
   left: 0;

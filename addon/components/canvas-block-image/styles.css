@@ -1,4 +1,4 @@
-@value --blue from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
 
 .canvas-block-image {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
@@ -11,7 +11,7 @@
 }
 
 .canvas-block-image[data-card-block-selected=true] img {
-  box-shadow: 0 0 0 2px --blue;
+  box-shadow: 0 0 0 2px var(--blue, default-blue);
 }
 
 .block-link {

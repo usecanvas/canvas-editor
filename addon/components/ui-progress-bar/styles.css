@@ -1,5 +1,5 @@
-@value --light-gray from 'canvas-editor/styles/theme';
-@value --gray from 'canvas-editor/styles/theme';
+@value default-light-gray from 'canvas-editor/styles/theme';
+@value default-gray from 'canvas-editor/styles/theme';
 
 .ui-progress-bar,
 .bar {
@@ -7,14 +7,14 @@
 }
 
 .ui-progress-bar {
-  background: --light-gray;
+  background: var(--light-gray, default-light-gray);
   height: 3px;
   overflow: hidden;
   width: 100%;
 }
 
 .bar {
-  background: --gray;
+  background: var(--gray, default-gray);
   height: 100%;
   transition: width 0.2s ease-in-out;
 }

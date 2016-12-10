@@ -3,6 +3,7 @@
 'use strict';
 
 const autoprefixer = require('autoprefixer');
+const customProperties = require('postcss-custom-properties');
 const postcssNested = require('postcss-nested');
 
 module.exports = {
@@ -12,7 +13,8 @@ module.exports = {
     cssModules: {
       plugins: {
         before: [
-          postcssNested
+          postcssNested,
+          customProperties
         ],
         after: [
           autoprefixer('last 2 versions')

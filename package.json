@@ -43,6 +43,7 @@
     "ember-svg-jar": "0.9.3",
     "ember-truth-helpers": "1.2.0",
     "loader.js": "^4.0.1",
+    "postcss-custom-properties": "^5.0.1",
     "postcss-nested": "^1.0.0",
     "semver": "^5.3.0"
   },

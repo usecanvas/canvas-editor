@@ -1,7 +1,7 @@
-@value --dark-gray from 'canvas-editor/styles/theme';
-@value --extra-light-gray from 'canvas-editor/styles/theme';
-@value --light-gray from 'canvas-editor/styles/theme';
-@value --red from 'canvas-editor/styles/theme';
+@value default-dark-gray from 'canvas-editor/styles/theme';
+@value default-extra-light-gray from 'canvas-editor/styles/theme';
+@value default-light-gray from 'canvas-editor/styles/theme';
+@value default-red from 'canvas-editor/styles/theme';
 
 .canvas-block-url {
   composes: canvas-block-card from 'canvas-editor/components/canvas-block-card/styles';
@@ -27,18 +27,18 @@
 
 .provider-icon {
   display: block;
-  fill: --dark-gray;
+  fill: var(--dark-gray, default-dark-gray);
   height: 24px;
   margin-right: 8px;
   width: 24px;
 }
 
 .provider-icon--error {
-  fill: --red;
+  fill: var(--red, default-red);
 }
 
 .text {
-  color: --dark-gray;
+  color: var(--dark-gray, default-dark-gray);
   margin-top: 0.25em;
 }
 
@@ -65,7 +65,7 @@
 }
 
 .field-value {
-  color: --dark-gray;
+  color: var(--dark-gray, default-dark-gray);
 }
 
 .labels {
@@ -86,16 +86,16 @@
 }
 
 .auth-component {
-  background: --extra-light-gray;
+  background: var(--extra-light-gray, default-extra-light-gray);
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
-  box-shadow: 0 1px 1px --light-gray inset;
+  box-shadow: 0 1px 1px var(--light-gray, default-light-gray) inset;
   text-align: center;
 }
 
 .auth-component a:link,
 .auth-component a:visited {
-  color: --dark-gray;
+  color: var(--dark-gray, default-dark-gray);
 }
 
 .canvas-block-url--needs-auth {

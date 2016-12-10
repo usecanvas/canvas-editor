@@ -1,9 +1,9 @@
-@value --blue from 'canvas-editor/styles/theme';
-@value --gray from 'canvas-editor/styles/theme';
-@value --green from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
+@value default-gray from 'canvas-editor/styles/theme';
+@value default-green from 'canvas-editor/styles/theme';
 
 .ui-checkbox {
-  border: 2px solid --gray;
+  border: 2px solid var(--gray, default-gray);
   border-radius: 50%;
   box-sizing: border-box;
   cursor: pointer;
@@ -13,20 +13,20 @@
 }
 
 .is-focused {
-  border-color: --blue;
+  border-color: var(--blue, default-blue);
 }
 
 .is-checked {
   animation: tick;
   animation-duration: 0;
-  background: url('/canvas-editor/images/checkmark.svg') --green;
+  background: url('/canvas-editor/images/checkmark.svg') var(--green, default-green);
   background-size: 100%;
-  border-color: --green;
+  border-color: var(--green, default-green);
 }
 
 .is-focused.is-checked {
-  background-color: --blue;
-  border-color: --blue;
+  background-color: var(--blue, default-blue);
+  border-color: var(--blue, default-blue);
 }
 
 .is-animateable {

@@ -2,35 +2,35 @@
  * Color Palette
  */
 
-@value --black from 'canvas-colors/styles/colors';
-@value --dark-gray from 'canvas-colors/styles/colors';
-@value --gray from 'canvas-colors/styles/colors';
-@value --light-gray from 'canvas-colors/styles/colors';
-@value --extra-light-gray from 'canvas-colors/styles/colors';
+@value --black as default-black from 'canvas-colors/styles/colors';
+@value --dark-gray as default-dark-gray from 'canvas-colors/styles/colors';
+@value --gray as default-gray from 'canvas-colors/styles/colors';
+@value --light-gray as default-light-gray from 'canvas-colors/styles/colors';
+@value --extra-light-gray as default-extra-light-gray from 'canvas-colors/styles/colors';
 
-@value --blue from 'canvas-colors/styles/colors';
-@value --light-blue from 'canvas-colors/styles/colors';
-@value --green from 'canvas-colors/styles/colors';
-@value --red from 'canvas-colors/styles/colors';
-@value --orange from 'canvas-colors/styles/colors';
+@value --blue as default-blue from 'canvas-colors/styles/colors';
+@value --light-blue as default-light-blue from 'canvas-colors/styles/colors';
+@value --green as default-green from 'canvas-colors/styles/colors';
+@value --red as default-red from 'canvas-colors/styles/colors';
+@value --orange as default-orange from 'canvas-colors/styles/colors';
 
 /*
  * Editor
  */
 
-@value --editor-background-color: transparent;
-@value --editor-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-@value --editor-monospace-font-family: Menlo, Monaco, monospace;
-@value --editor-text-color: --black;
-@value --editor-link-color: --blue;
-@value --editor-line-height: 1.5;
-@value --editor-padding: 1rem;
+@value default-editor-background-color: transparent;
+@value default-editor-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+@value default-editor-monospace-font-family: Menlo, Monaco, monospace;
+@value default-editor-text-color: default-black;
+@value default-editor-link-color: default-blue;
+@value default-editor-line-height: 1.5;
+@value default-editor-padding: 1rem;
 
 /*
  * Blocks
  */
 
-@value --block-placeholder-color: --gray;
+@value default-block-placeholder-color: default-gray;
 
 /* Lists */
-@value --list-bullet-color: --gray;
+@value default-list-bullet-color: default-gray;

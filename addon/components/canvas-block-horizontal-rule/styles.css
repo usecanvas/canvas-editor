@@ -1,15 +1,15 @@
-@value --light-gray from 'canvas-editor/styles/theme';
-@value --blue from 'canvas-editor/styles/theme';
+@value default-light-gray from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
 
 .canvas-block-horizontal-rule {
-  background: --light-gray;
+  background: var(--light-gray, default-light-gray);
   height: 1px;
   margin: -1px 0 1.5rem;
 }
 
 .canvas-block-horizontal-rule[data-card-block-selected=true] {
-  background: --blue;
-  box-shadow: 0 0 0 1px --blue;
+  background: var(--blue, default-blue);
+  box-shadow: 0 0 0 1px var(--blue, default-blue);
 }
 
 .is-selected {

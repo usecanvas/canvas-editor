@@ -1,5 +1,5 @@
-@value --blue from 'canvas-editor/styles/theme';
-@value --light-gray from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
+@value default-light-gray from 'canvas-editor/styles/theme';
 
 .canvas-block-title {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
@@ -8,7 +8,7 @@
 }
 
 .canvas-block-title::after {
-  background: --light-gray;
+  background: var(--light-gray, default-light-gray);
   bottom: 0;
   content: '';
   display: block;
@@ -53,7 +53,7 @@
 }
 
 .template-is-selected {
-  background: --blue;
+  background: var(--blue, default-blue);
   border-radius: 3px;
   color: white;
   cursor: pointer;

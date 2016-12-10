@@ -1,4 +1,4 @@
-@value --list-bullet-color from "canvas-editor/styles/theme";
+@value default-list-bullet-color from "canvas-editor/styles/theme";
 
 .canvas-block-unordered-list-item {
   composes: canvas-block-list-item from 'canvas-editor/components/canvas-block-list/item';
@@ -9,7 +9,7 @@
 }
 
 .container::before {
-  background: --list-bullet-color;
+  background: var(--list-bullet-color, default-list-bullet-color);
   border-radius: 50%;
   box-sizing: border-box;
   content: '';

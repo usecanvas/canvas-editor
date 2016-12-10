@@ -1,7 +1,7 @@
-@value --block-placeholder-color from 'canvas-editor/styles/theme';
-@value --dark-gray from 'canvas-editor/styles/theme';
-@value --editor-monospace-font-family from 'canvas-editor/styles/theme';
-@value --extra-light-gray from 'canvas-editor/styles/theme';
+@value default-block-placeholder-color from 'canvas-editor/styles/theme';
+@value default-dark-gray from 'canvas-editor/styles/theme';
+@value default-editor-monospace-font-family from 'canvas-editor/styles/theme';
+@value default-extra-light-gray from 'canvas-editor/styles/theme';
 
 .canvas-block-editable {
   outline: none;
@@ -28,9 +28,9 @@
     }
 
     .md-inline-code {
-      background: --extra-light-gray;
-      color: --dark-gray;
-      font-family: --editor-monospace-font-family;
+      background: var(--extra-light-gray, default-extra-light-gray);
+      color: var(--dark-gray, default-dark-gray);
+      font-family: var(--editor-monospace-font-family, default-editor-monospace-font-family);
       font-size: 0.9375em;
     }
 
@@ -49,7 +49,7 @@
 }
 
 .is-empty::after {
-  color: --block-placeholder-color;
+  color: var(--block-placeholder-color, default-block-placeholder-color);
   content: attr(data-placeholder);
   display: block;
   left: 0;

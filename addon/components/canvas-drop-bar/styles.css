@@ -1,11 +1,11 @@
-@value --blue from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
 
 .canvas-drop-bar {
   position: relative;
 }
 
 .bar {
-  background: --blue;
+  background: var(--blue, default-blue);
   border-radius: 1000px;
   height: 2px;
   opacity: 0;

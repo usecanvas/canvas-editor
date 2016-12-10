@@ -1,4 +1,4 @@
-@value --blue from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
 
 .canvas-block-url-framer {
   position: relative;
@@ -23,7 +23,7 @@
 }
 
 [data-card-block-selected=true] .canvas-block-url-framer::after {
-  box-shadow: 0 0 0 1px --blue,
-              0 0 0 1px --blue inset;
+  box-shadow: 0 0 0 1px var(--blue, default-blue),
+              0 0 0 1px var(--blue, default-blue) inset;
   display: block;
 }

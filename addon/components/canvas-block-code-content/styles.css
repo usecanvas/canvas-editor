@@ -1,10 +1,10 @@
-@value --blue from 'canvas-editor/styles/theme';
-@value --gray from 'canvas-editor/styles/theme';
-@value --green from 'canvas-editor/styles/theme';
-@value --light-blue from 'canvas-editor/styles/theme';
-@value --orange from 'canvas-editor/styles/theme';
-@value --purple: #a626a4;
-@value --red from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
+@value default-gray from 'canvas-editor/styles/theme';
+@value default-green from 'canvas-editor/styles/theme';
+@value default-light-blue from 'canvas-editor/styles/theme';
+@value default-orange from 'canvas-editor/styles/theme';
+@value default-purple: #a626a4;
+@value default-red from 'canvas-editor/styles/theme';
 
 .canvas-block-code-content {
   composes: canvas-block-editable from 'canvas-editor/components/canvas-block-editable/styles';
@@ -17,14 +17,14 @@
   :global {
     .hljs-comment,
     .hljs-quote {
-      color: --gray;
+      color: var(--gray, default-gray);
       font-style: italic;
     }
 
     .hljs-doctag,
     .hljs-keyword,
     .hljs-formula {
-      color: --purple;
+      color: var(--purple, default-purple);
     }
 
     .hljs-section,
@@ -32,11 +32,11 @@
     .hljs-selector-tag,
     .hljs-deletion,
     .hljs-subst {
-      color: --red;
+      color: var(--red, default-red);
     }
 
     .hljs-literal {
-      color: --blue;
+      color: var(--blue, default-blue);
     }
 
     .hljs-string,
@@ -44,12 +44,12 @@
     .hljs-addition,
     .hljs-attribute,
     .hljs-meta-string {
-      color: --green;
+      color: var(--green, default-green);
     }
 
     .hljs-built_in,
     .hljs-class .hljs-title {
-      color: --orange;
+      color: var(--orange, default-orange);
     }
 
     .hljs-attr,
@@ -60,7 +60,7 @@
     .hljs-selector-attr,
     .hljs-selector-pseudo,
     .hljs-number {
-      color: --orange;
+      color: var(--orange, default-orange);
     }
 
     .hljs-symbol,
@@ -69,7 +69,7 @@
     .hljs-meta,
     .hljs-selector-id,
     .hljs-title {
-      color: --light-blue;
+      color: var(--light-blue, default-light-blue);
     }
 
     .hljs-emphasis {

@@ -1,18 +1,18 @@
-@value --dark-gray from 'canvas-editor/styles/theme';
-@value --gray from 'canvas-editor/styles/theme';
-@value --light-gray from 'canvas-editor/styles/theme';
+@value default-dark-gray from 'canvas-editor/styles/theme';
+@value default-gray from 'canvas-editor/styles/theme';
+@value default-light-gray from 'canvas-editor/styles/theme';
 
 .placeholder-editor {
   background: white;
   border-radius: 4px;
-  box-shadow: 0 0 0 1px --light-gray;
-  color: --dark-gray;
+  box-shadow: 0 0 0 1px var(--light-gray, default-light-gray);
+  color: var(--dark-gray, default-dark-gray);
   padding: 0.125rem 0.25rem;
   width: 100%;
 }
 
 .done {
-  background: --gray;
+  background: var(--gray, default-gray);
   border: none;
   border-radius: 3px;
   color: white;

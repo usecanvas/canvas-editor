@@ -338,6 +338,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `drop` event
    */
   drop(evt) {
+    this.$('*').css('pointer-events', 'auto');
     const { dataTransfer: { files } } = evt;
     if (files[0]) this.dropFile(evt, files[0]);
   },

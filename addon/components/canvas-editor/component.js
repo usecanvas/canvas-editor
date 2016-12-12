@@ -835,6 +835,8 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {number} y The Y coordinate of the drag event
    */
   dragOverFile(x, y) {
+    if (!this.get('editingEnabled')) return;
+
     const range = caretRangeFromPoint(x, y);
     if (!range) return;
     const $block = this.$(range.startContainer).closest(SELECT_BLOCK);
@@ -861,6 +863,8 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {File} file The dropped file
    */
   dropFile(evt, file) {
+    if (!this.get('editingEnabled')) return;
+
     evt.preventDefault();
     const blocks = this.getNavigableBlocks();
     const insertAfterID = this.get('dropBar.insertAfter');

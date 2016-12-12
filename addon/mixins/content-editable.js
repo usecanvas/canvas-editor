@@ -118,9 +118,11 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       this.selectAll(evt);
     } else if (key.is('shift', 'up')) {
       evt.preventDefault();
+      evt.stopPropagation();
       this.get('onMultiBlockSelectUp')(this.get('block'));
     } else if (key.is('shift', 'down')) {
       evt.preventDefault();
+      evt.stopPropagation();
       this.get('onMultiBlockSelectDown')(this.get('block'));
     }
   },

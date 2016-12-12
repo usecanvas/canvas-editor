@@ -1450,7 +1450,6 @@ export default Ember.Component.extend(TypeChanges, {
     multiBlockSelectDown(block) {
       window.getSelection().removeAllRanges();
       this.get('multiBlockSelect').selectBlock(block);
-      this.get('multiBlockSelect').selectDown();
     },
 
     /**
@@ -1464,7 +1463,6 @@ export default Ember.Component.extend(TypeChanges, {
     multiBlockSelectUp(block) {
       window.getSelection().removeAllRanges();
       this.get('multiBlockSelect').selectBlock(block);
-      this.get('multiBlockSelect').selectUp();
     },
 
     /**

@@ -272,6 +272,9 @@ export default Ember.Component.extend(TypeChanges, {
    */
   cutDocument(evt) {
     this.copyDocument(evt);
+
+    if (!this.get('editingEnabled')) return;
+
     const [first, ...rest] = this.getSelectedBlocks()
       .concat(this.get('selectedCardBlock')).compact();
     let focusBlock;
@@ -1123,6 +1126,8 @@ export default Ember.Component.extend(TypeChanges, {
   replaceMultiBlockSelect(content) {
     let focusBlock;
 
+    if (!this.get('editingEnabled')) return;
+
     this.getSelectedBlocks().forEach((block, i) => {
       if (i === 0) {
         if (block.get('type') === 'title') {
@@ -1532,7 +1537,7 @@ export default Ember.Component.extend(TypeChanges, {
      * @param {jQuery.Event} evt The `redo` event
      */
     redo(evt) {
-      this.get('onRedo')(evt);
+      if (this.get('editingEnabled')) this.get('onRedo')(evt);
     },
 
     /**
@@ -1567,7 +1572,7 @@ export default Ember.Component.extend(TypeChanges, {
      * @param {jQuery.Event} evt The `undo` event
      */
     undo(evt) {
-      this.get('onUndo')(evt);
+      if (this.get('editingEnabled')) this.get('onUndo')(evt);
     },
 
     /**

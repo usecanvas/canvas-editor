@@ -187,7 +187,7 @@ rules:
   no-useless-computed-key: error
   no-useless-concat: error
   no-useless-constructor: error
-  no-useless-escape: error
+  no-useless-escape: off
   no-useless-rename: error
   no-var: error
   no-void: error

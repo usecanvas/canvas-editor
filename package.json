@@ -15,7 +15,7 @@
   },
   "repository": "",
   "engines": {
-    "node": "6.9.1"
+    "node": "7.2.1"
   },
   "devDependencies": {
     "autoprefixer": "6.5.1",

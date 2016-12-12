@@ -288,6 +288,7 @@ export default Ember.Component.extend(TypeChanges, {
       this.removeBlock(first);
     }
     rest.forEach(block => this.removeBlock(block));
+    this.get('multiBlockSelect').deSelectAll();
     run.scheduleOnce('afterRender', this, 'focusBlockStart', focusBlock);
   },
 

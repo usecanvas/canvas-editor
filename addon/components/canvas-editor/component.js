@@ -276,6 +276,7 @@ export default Ember.Component.extend(TypeChanges, {
       .concat(this.get('selectedCardBlock')).compact();
     let focusBlock;
 
+    if (!first) return;
     if (first.get('type') === 'title') {
       focusBlock = first;
       first.set('isSelected', false);

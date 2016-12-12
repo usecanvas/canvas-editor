@@ -220,6 +220,7 @@ export default Ember.Object.extend({
    * @param {jQuery.Event} evt The mousedown event fired
    */
   mouseDown(evt) {
+    if (evt.which !== 1 || evt.ctrlKey) return;
     this.deSelectAll();
     this.set('isMouseDown', true);
     this.set('anchorPoint', { x: evt.clientX, y: evt.clientY });

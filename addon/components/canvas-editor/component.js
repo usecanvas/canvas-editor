@@ -391,7 +391,7 @@ export default Ember.Component.extend(TypeChanges, {
       case 'down':
       case 'right':
         evt.preventDefault();
-        if (this.blockAfter(cardBlock)) break;
+        if (!this.blockAfter(cardBlock)) break;
         selectedCardBlockElement.setAttribute(CARD_BLOCK_SELECTED_ATTR, false);
         this.send('navigateDown', cardBlock);
         break;

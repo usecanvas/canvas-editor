@@ -59,7 +59,8 @@
     "canvas-colors": "^1.0.1",
     "ember-svg-jar": "0.9.3",
     "ember-truth-helpers": "1.2.0",
-    "ember-concurrency": "^0.7.15"
+    "ember-concurrency": "^0.7.15",
+    "postcss-custom-properties": "^5.0.1"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"

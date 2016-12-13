@@ -57,7 +57,9 @@ const SelectionService = Ember.Object.extend({
     if (!isLastChild) return false;
 
     if (endNode.nodeType === Node.ELEMENT_NODE) {
-      return range.endOffset === endNode.childNodes.length;
+      return range.endOffset === endNode.childNodes.length ||
+        endNode.childNodes.length === 1 &&
+         endNode.childNodes[0].nodeName === 'BR';
     }
 
     return range.endOffset === endNode.textContent.length;

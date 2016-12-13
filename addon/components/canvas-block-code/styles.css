@@ -3,8 +3,14 @@
 @value default-extra-light-gray from 'canvas-editor/styles/theme';
 @value default-light-gray from 'canvas-editor/styles/theme';
 
+/**
+ * 1. This forces Chrome to use hardware acceleration to continuously paint the
+ *    codeblock and avoid text disappearing on scroll.
+ */
+
 .canvas-block-code {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
+  transform: translateZ(0); /* 1 */
 }
 
 .content {

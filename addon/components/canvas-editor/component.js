@@ -649,7 +649,7 @@ export default Ember.Component.extend(TypeChanges, {
     // Return a function that executes a function only if `isMultiBlock`
     function multiBlockWrap(func) {
       return function _multiBlockWrapped(evt) {
-        if (self.get('isMultiBlock')) return func(evt);
+        if (self.getSelectedBlocks().objectAt(0)) return func(evt);
         return null;
       };
     }

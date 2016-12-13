@@ -261,8 +261,12 @@ export default Ember.Object.extend({
    * @param {jQuery.Event} evt The mouseup event fired
    */
   mouseUp(_evt) {
+    this.set('isSelecting', false);
     this.set('isMouseDown', false);
     this.set('anchorPoint', null);
+    if (this.getSelectedBlocks().objectAt(0)) {
+      window.getSelection().removeAllRanges();
+    }
   },
 
   /**

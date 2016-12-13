@@ -32,6 +32,11 @@
       color: var(--dark-gray, default-dark-gray);
       font-family: var(--editor-monospace-font-family, default-editor-monospace-font-family);
       font-size: 0.9375em;
+
+      a {
+        color: inherit;
+        text-decoration: underline;
+      }
     }
 
     .md-strong {

@@ -109,8 +109,7 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       evt.stopPropagation();
       evt.preventDefault();
       this.newBlockAtSplit();
-    } else if (key.is('p')) {
-      if (!key.hasAll('meta', 'ctrl')) return;
+    } else if (key.is('meta', 'ctrl', 'p')) {
       if (!this.get('isTemplate')) return;
       evt.stopPropagation();
       evt.preventDefault();

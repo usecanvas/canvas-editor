@@ -10,9 +10,9 @@ export default Ember.Component.extend({
   showSettings: false,
   styles,
 
-  filteredMessages: computed('count', 'unfurled.attachment.messages.[]',
+  filteredMessages: computed('count', 'unfurled.attachments.[]',
     function() {
-      const messages = this.get('messages');
+      const messages = this.get('unfurled.attachments');
       return messages.slice(0, this.get('count'));
     }),
 

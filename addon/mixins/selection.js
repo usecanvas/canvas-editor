@@ -20,5 +20,13 @@ export default Ember.Mixin.create({
 
   selection: computed(function() {
     return SelectionService.get('selection');
-  }).volatile()
+  }).volatile(),
+
+  isSelectionAtEnd(selector) {
+    return SelectionService.isAtEnd(selector);
+  },
+
+  isSelectionAtStart(selector) {
+    return SelectionService.isAtStart(selector);
+  }
 });

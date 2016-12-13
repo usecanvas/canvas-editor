@@ -330,13 +330,8 @@ export default Ember.Mixin.create(Selection, SelectionState, {
    * @param {jQuery.Event} evt The `keydown` event
    */
   selectAll(evt) {
-    const element = this.get('element');
-    const range = this.get('currentRange');
-
-    if (range.startContainer === element.firstChild &&
-        range.startOffset === 0 &&
-        range.endContainer === element.lastChild &&
-        range.endOffset === element.lastChild.data.length) {
+    if (this.isSelectionAtStart('.canvas-block-editable') &&
+        this.isSelectionAtEnd('.canvas-block-editable')) {
       evt.preventDefault();
       this.get('onDoubleSelectAll')();
     }

@@ -40,6 +40,118 @@ const SelectionService = Ember.Object.extend({
   }),
 
   /**
+   * Determine whether the selection is at the end of a given selector.
+   *
+   * @method
+   * @param {string} selector The selector
+   * @returns {boolean} Whether the selection is at the end of `selector`
+   */
+  isAtEnd(selector) {
+    const range = this.get('currentRange');
+
+    if (!range) return false;
+
+    const endNode = range.endContainer;
+    const isLastChild = this.isLastChild(endNode, selector);
+
+    if (!isLastChild) return false;
+
+    if (endNode.nodeType === Node.ELEMENT_NODE) {
+      return range.endOffset === endNode.childNodes.length;
+    }
+
+    return range.endOffset === endNode.textContent.length;
+  },
+
+  /**
+   * Determine whether the selection is at the start of a given selector.
+   *
+   * @method
+   * @param {string} selector The selector
+   * @returns {boolean} Whether the selection is at the start of `selector`
+   */
+  isAtStart(selector) {
+    const range = this.get('currentRange');
+
+    if (!range) return false;
+
+    const startNode = range.startContainer;
+    return this.isFirstChild(startNode, selector) && range.startOffset === 0;
+  },
+
+  /**
+   * Determine whether the node has any content nodes before it.
+   *
+   * This method ascends up to the given `selector` recursively and stops if
+   * it reaches a node that is not the first child of its parent. Text nodes
+   * that have no content are considered empty.
+   *
+   * ```html
+   * <div id='test'>
+   *   '' <!-- is first -->
+   *   <div> <!-- is first -->
+   *     <div> <!-- is first -->
+   *       '' <!-- is first -->
+   *       'foo' <!-- is first -->
+   *       <i>'bar'</i> <!-- is not first -->
+   *     </div>
+   *     <div></div> <!-- is not first -->
+   *   </div>
+   * </div>
+   * ```
+   *
+   * @method
+   * @param {Node} node The node to test
+   * @param {string} selector A selector to ascend to
+   * @returns {boolean} Whether the node is a "first child" node
+   */
+  isFirstChild(node, selector) {
+    let firstChild = node.parentElement.childNodes[0];
+
+    while (firstChild.nodeType === Node.TEXT_NODE &&
+           firstChild.textContent === '') {
+      firstChild = firstChild.nextSibling;
+    }
+
+    if (Ember.$(node).is(selector)) {
+      return true;
+    } else if (node === firstChild || firstChild.textContent === '') {
+      return this.isFirstChild(node.parentElement, selector);
+    }
+
+    return false;
+  },
+
+  /**
+   * Determines whether the node has any content nodes after it.
+   *
+   * This is effectively the reverse if `isFirstChild`.
+   *
+   * @method
+   * @param {Node} node The node to test
+   * @param {string} selector A selector to ascend to
+   * @returns {boolean} Whether the node is a "last child" node
+   */
+  isLastChild(node, selector) {
+    const children = node.parentElement.childNodes;
+
+    let lastChild = children[children.length - 1];
+
+    while (lastChild.type === Node.TEXT_NODE &&
+           lastChild.textContent === '') {
+      lastChild = lastChild.previousSibling;
+    }
+
+    if (Ember.$(node).is(selector)) {
+      return true;
+    } else if (node === lastChild || lastChild.textContent === '') {
+      return this.isLastChild(node.parentElement, selector);
+    }
+
+    return false;
+  },
+
+  /**
    * Given a target block and a client rect for the current range, navigate
    * down to the next focusable block.
    *

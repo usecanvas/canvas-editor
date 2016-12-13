@@ -2,7 +2,7 @@ import Ember from 'ember';
 import flattenBy from 'canvas-editor/lib/flatten-by';
 import nsEvent from 'canvas-editor/lib/ns-event';
 
-const { computed } = Ember;
+const { computed, run } = Ember;
 const [DOWN, UP] = [10, -10];
 const MAX_SEARCH = 500;
 
@@ -73,9 +73,12 @@ export default Ember.Object.extend({
    * @method
    */
   setup() {
-    Ember.$(document).on(nsEvent('mousedown', this), this.mouseDown.bind(this));
-    Ember.$(document).on(nsEvent('mousemove', this), this.mouseMove.bind(this));
-    Ember.$(document).on(nsEvent('mouseup', this), this.mouseUp.bind(this));
+    Ember.$(document).on(nsEvent('mousedown', this),
+      run.bind(this, 'mouseDown'));
+    Ember.$(document).on(nsEvent('mousemove', this),
+      run.bind(this, 'mouseMove'));
+    Ember.$(document).on(nsEvent('mouseup', this),
+      run.bind(this, 'mouseUp'));
   },
 
   /**

@@ -16,7 +16,8 @@ const isFirefox = window.navigator.userAgent.includes('Firefox');
  * @extends Ember.Mixin
  */
 export default Ember.Mixin.create(Selection, SelectionState, {
-  attributeBindings: ['contentEditable:contenteditable'],
+  attributeBindings:
+    ['block.id:data-block-id', 'contentEditable:contenteditable'],
   isUpdatingBlockContent: false,
   usesMarkdown: true,
 

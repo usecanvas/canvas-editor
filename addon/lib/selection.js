@@ -169,7 +169,7 @@ const SelectionService = Ember.Object.extend({
    */
   getBlockElement($container, block) {
     return $container
-      .find(`[data-block-id="${block.get('id')}"]`)
+      .find(`#${block.get('id')}`)
       .get(0);
   },
 

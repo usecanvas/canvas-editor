@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   localClassNames: ['ui-progress-bar'],
   styles,
 
-  htmlSafeProgress: computed('progress', function() {
-    return Ember.String.htmlSafe(this.get('progress'));
+  progressStyles: computed('progress', function() {
+    return Ember.String.htmlSafe(`width: ${this.get('progress')}%;`);
   })
 });

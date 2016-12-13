@@ -1603,7 +1603,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @returns {Promise<Array<CanvasEditor.RealtimeCanvas>>}
    */
-  fetchTemplates() { RSVP.resolve(testTemplates); },
+  fetchTemplates() { return RSVP.resolve(testTemplates); },
 
   /**
    * A dummy handler for fetching the upload signature.
@@ -1611,7 +1611,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @returns {Promise<object>}
    */
-  fetchUploadSignature() { RSVP.resolve(null); },
+  fetchUploadSignature() { return RSVP.resolve(null); },
 
   /**
    * A dummy handler for an action that receives a block after it was udpated

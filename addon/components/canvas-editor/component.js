@@ -1442,6 +1442,28 @@ export default Ember.Component.extend(TypeChanges, {
     },
 
     /**
+     * Called when a user selects to the end twice.
+     *
+     * @method
+     */
+    doubleSelectToEnd(block) {
+      window.getSelection().removeAllRanges();
+      this.get('multiBlockSelect').selectBlock(block);
+      this.get('multiBlockSelect').selectToEnd();
+    },
+
+    /**
+     * Called when a user selects to the start twice.
+     *
+     * @method
+     */
+    doubleSelectToStart(block) {
+      window.getSelection().removeAllRanges();
+      this.get('multiBlockSelect').selectBlock(block);
+      this.get('multiBlockSelect').selectToStart();
+    },
+
+    /**
      * Called when the user wishes to multi-block select down from the given
      * block.
      *

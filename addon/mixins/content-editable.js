@@ -116,6 +116,20 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       this.toggleProperty('isEditingPlaceholder');
     } else if (key.is('meta', 'a')) {
       this.selectAll(evt);
+    } else if (key.is('meta', 'shift', 'up')) {
+      const { textBeforeSelection } =
+        TextManipulation.getManipulation(this.get('element'));
+      if (textBeforeSelection !== '') return;
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.get('onDoubleSelectToStart')(this.get('block'));
+    } else if (key.is('meta', 'shift', 'down')) {
+      const { textAfterSelection } =
+        TextManipulation.getManipulation(this.get('element'));
+      if (textAfterSelection !== '') return;
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.get('onDoubleSelectToEnd')(this.get('block'));
     } else if (key.is('shift', 'up')) {
       evt.preventDefault();
       evt.stopPropagation();

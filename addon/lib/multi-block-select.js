@@ -58,15 +58,6 @@ export default Ember.Object.extend({
   }).volatile(),
 
   /**
-   * Whether there any blocks selected in the canvas.
-   *
-   * @member {boolean}
-   */
-  selectedBlocksExist: computed(function() {
-    return Boolean(this.getSelectedBlocks().length);
-  }).volatile(),
-
-  /**
    * Calls `setup` when the manager is initialized.
    *
    * @method
@@ -270,12 +261,8 @@ export default Ember.Object.extend({
    * @param {jQuery.Event} evt The mouseup event fired
    */
   mouseUp(_evt) {
-    this.set('isSelecting', false);
     this.set('isMouseDown', false);
     this.set('anchorPoint', null);
-    if (this.get('selectedBlocksExist')) {
-      window.getSelection().removeAllRanges();
-    }
   },
 
   /**

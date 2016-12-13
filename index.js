@@ -14,7 +14,7 @@ module.exports = {
       plugins: {
         before: [
           postcssNested,
-          customProperties
+          customProperties({ preserve: true })
         ],
         after: [
           autoprefixer('last 2 versions')

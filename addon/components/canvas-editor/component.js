@@ -463,6 +463,7 @@ export default Ember.Component.extend(TypeChanges, {
    */
   keypressMultiBlock(evt) {
     if (!evt.metaKey) {
+      evt.preventDefault();
       const content = evt.char || String.fromCharCode(evt.charCode);
       this.replaceMultiBlockSelect(content);
     }
@@ -577,7 +578,7 @@ export default Ember.Component.extend(TypeChanges, {
   bindClickEvents: on('didInsertElement', function() {
     Ember.$(document).on(
       nsEvent('click', this),
-      this.clickDocument.bind(this));
+      run.bind(this, 'clickDocument'));
   }),
 
   /**
@@ -588,13 +589,13 @@ export default Ember.Component.extend(TypeChanges, {
   bindCopyPasteEvents: on('didInsertElement', function() {
     Ember.$(document).on(
       nsEvent('copy', this),
-      Ember.run.bind(this, this.copyDocument));
+      run.bind(this, 'copyDocument'));
     Ember.$(document).on(
       nsEvent('cut', this),
-      Ember.run.bind(this, this.cutDocument));
+      run.bind(this, 'cutDocument'));
     Ember.$(document).on(
       nsEvent('paste', this),
-      Ember.run.bind(this, this.pasteDocument));
+      run.bind(this, 'pasteDocument'));
   }),
 
   /**
@@ -606,7 +607,7 @@ export default Ember.Component.extend(TypeChanges, {
     Ember.$(document).on(
       nsEvent('focus', this),
       '.canvas-block-editable',
-      this.focusCanvasBlockEditable.bind(this));
+      run.bind(this, 'focusCanvasBlockEditable'));
   }),
 
   /**
@@ -617,7 +618,7 @@ export default Ember.Component.extend(TypeChanges, {
   bindKeyDownEvents: on('didInsertElement', function() {
     Ember.$(document).on(
       nsEvent('keydown', this),
-      this.keydownDocument.bind(this));
+      run.bind(this, 'keydownDocument'));
   }),
 
   /**
@@ -628,7 +629,7 @@ export default Ember.Component.extend(TypeChanges, {
   bindKeyUpEvents: on('didInsertElement', function() {
     Ember.$(document).on(
       nsEvent('keyup', this),
-      this.keyupDocument.bind(this));
+      run.bind(this, 'keyupDocument'));
   }),
 
   /**
@@ -650,8 +651,13 @@ export default Ember.Component.extend(TypeChanges, {
     // selected
     function multiBlockWrap(func) {
       return function _multiBlockWrapped(evt) {
-        if (self.get('multiBlockSelect.selectedBlocksExist')) return func(evt);
-        return null;
+        run(_ => {
+          if (self.get('multiBlockSelect.selectedBlocksExist')) {
+            return func(evt);
+          }
+
+          return null;
+        });
       };
     }
 

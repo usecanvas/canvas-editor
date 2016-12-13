@@ -66,7 +66,8 @@ GRAMMAR.em_star = {
 
 GRAMMAR.url = {
   classes: ['url'],
-  pattern: /(?:\s|^)(https?:\/\/.*?)(?:\s|$)/g
+  pattern: /(\s|^)(https?:\/\/\S*)/g,
+  lookbehind: true
 };
 
 GRAMMAR.strong_underscore = {

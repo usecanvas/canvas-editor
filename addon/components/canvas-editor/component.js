@@ -646,10 +646,11 @@ export default Ember.Component.extend(TypeChanges, {
         multiBlockWrap(self[`${evtName}MultiBlock`].bind(self)));
     }
 
-    // Return a function that executes a function only if `isMultiBlock`
+    // Return a function that executes a function only if there are blocks
+    // selected
     function multiBlockWrap(func) {
       return function _multiBlockWrapped(evt) {
-        if (self.getSelectedBlocks().objectAt(0)) return func(evt);
+        if (self.get('multiBlockSelect.selectedBlocksExist')) return func(evt);
         return null;
       };
     }

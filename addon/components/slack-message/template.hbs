@@ -3,7 +3,7 @@
 <div local-class="main">
   <div local-class="meta">
     <span local-class="username">{{message.author}}</span>
-    <span local-class="timestamp">{{message.timestamp}}</span>
+    <span local-class="timestamp">{{moment-format unixTimestamp 'h:mmA'}}</span>
   </div>
 
   <div local-class="text">{{message.text}}</div>

@@ -1,12 +1,12 @@
-@value --gray from 'canvas-editor/styles/theme';
-@value --light-gray from 'canvas-editor/styles/theme';
+@value default-gray from 'canvas-editor/styles/theme';
+@value default-light-gray from 'canvas-editor/styles/theme';
 
 .slack-message {
   display: flex;
 }
 
 .avatar {
-  background: --light-gray;
+  background: default-light-gray;
   border-radius: 4px;
   flex: none;
   height: 2rem;
@@ -19,6 +19,6 @@
 }
 
 .timestamp {
-  color: --gray;
+  color: default-gray;
   font-size: 0.75rem;
 }

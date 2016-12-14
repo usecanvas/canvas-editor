@@ -148,6 +148,38 @@ export default Ember.Object.extend({
   },
 
   /**
+   * Given an offseted y coordinate, find the block that occupies space at that
+   * coordinate.
+   *
+   * @method
+   * @param {number} offset The y coordinate value to find the block at
+   * @param {boolean} isNotReversed Determines the search direction
+   * @return {?Element} The block (or null) found at the point
+   */
+  getBlockElemAtOffsetY(offset, isNotReversed) {
+    const editorTop = this.$()[0].getBoundingClientRect().top;
+    const $blocks = this.$('.canvas-block').not('.canvas-block-list');
+
+    if (isNotReversed) {
+      const rightPred = $block => {
+        const blockRect = $block.getBoundingClientRect();
+        return offset <= blockRect.top + blockRect.height - editorTop;
+      };
+      let i = $blocks.length - 1;
+      while (i !== -1 && rightPred($blocks[i])) i -= 1;
+      return $blocks[i + 1] || null;
+    }
+
+    const leftPred = $block => {
+      const blockRect = $block.getBoundingClientRect();
+      return offset >= blockRect.top - editorTop;
+    };
+    let i = 0;
+    while (i !== $blocks.length && leftPred($blocks[i])) i += 1;
+    return $blocks[i - 1] || null;
+  },
+
+  /**
    * Given a y coordinate, find the block that occupies space at that
    * coordinate.
    *
@@ -160,7 +192,7 @@ export default Ember.Object.extend({
    *   coordinate to search for a block if one is not at the exact coordinate
    * @return {?Element} The block (or null) found at the point
    */
-  getBlockAtY(yCoord, searchIncrement = 0) {
+  getBlockElemAtY(yCoord, searchIncrement = 0) {
     const xCoord = this.get('centerCoordinate');
     const element = document.elementFromPoint(xCoord, yCoord);
 
@@ -174,12 +206,13 @@ export default Ember.Object.extend({
       let offset = 0;
       while (!blockElement && offset > -MAX_SEARCH && offset < MAX_SEARCH) {
         offset += searchIncrement;
-        blockElement = this.getBlockAtY(yCoord + offset);
+        blockElement = this.getBlockElemAtY(yCoord + offset);
       }
     }
 
     return blockElement;
   },
+
 
   /**
    * Given an element, get the block associated with it.
@@ -226,7 +259,11 @@ export default Ember.Object.extend({
     if (evt.which !== 1 || evt.ctrlKey) return;
     this.deSelectAll();
     this.set('isMouseDown', true);
-    this.set('anchorPoint', { x: evt.clientX, y: evt.clientY });
+    this.set('anchorPoint', {
+      x: evt.clientX,
+      y: evt.clientY,
+      offsetY: evt.clientY - this.$()[0].getBoundingClientRect().top
+    });
   },
 
   /**
@@ -238,11 +275,12 @@ export default Ember.Object.extend({
    */
   mouseMove(evt) {
     if (!this.get('isMouseDown')) return;
-
     const yCoord = evt.clientY;
-    const direction = yCoord > this.get('anchorPoint.y') ? DOWN : UP;
-    const anchorBlock = this.getBlockAtY(this.get('anchorPoint.y'), direction);
-    const focusBlock = this.getBlockAtY(yCoord, -direction);
+    const offsetY = yCoord - this.$()[0].getBoundingClientRect().top;
+    const direction = offsetY > this.get('anchorPoint.offsetY') ? DOWN : UP;
+    const anchorBlock = this.getBlockElemAtOffsetY(
+      this.get('anchorPoint.offsetY'), direction === DOWN);
+    const focusBlock = this.getBlockElemAtY(yCoord, -direction);
 
     this.set('isReversed', direction === UP);
 
@@ -305,11 +343,9 @@ export default Ember.Object.extend({
     const focus = this.getBlockFromElement(focusEl, blocks);
 
     this.deSelectBlocks();
-
     let startIndex = blocks.indexOf(anchor);
     let endIndex = blocks.indexOf(focus);
     if (isReversed) [startIndex, endIndex] = [endIndex, startIndex];
-
     for (let i = startIndex; i <= endIndex; i += 1) {
       blocks.objectAt(i).set('isSelected', true);
     }

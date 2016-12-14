@@ -5,7 +5,10 @@ import styles from './styles';
 const { computed } = Ember;
 
 export default Ember.Component.extend({
-  count: 1,
+  count: computed('block.meta.count', function() {
+    return this.get('block').getWithDefault('meta.count', 1);
+  }),
+
   layout,
   showSettings: false,
   styles,
@@ -17,6 +20,16 @@ export default Ember.Component.extend({
     }),
 
   actions: {
+    onCountChanged(oldValue, newValue) {
+      this.set('block.meta.count', newValue);
+
+      this.get('onBlockMetaReplacedLocally')(
+        this.get('block'),
+        ['count'],
+        oldValue,
+        newValue);
+    },
+
     toggleShowSettings() {
       this.toggleProperty('showSettings');
     }

@@ -4,5 +4,20 @@ import styles from './styles';
 
 export default Ember.Component.extend({
   layout,
-  styles
+  styles,
+
+  onChange: Ember.K,
+
+  didInsertElement() {
+    this.set('oldValue', this.get('value'));
+  },
+
+  actions: {
+    onChange() {
+      const oldValue = this.get('oldValue');
+      const newValue = this.get('value');
+      this.set('oldValue', newValue);
+      this.get('onChange')(oldValue, newValue);
+    }
+  }
 });

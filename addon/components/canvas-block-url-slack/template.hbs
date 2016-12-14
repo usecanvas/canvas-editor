@@ -8,7 +8,11 @@
 
 {{#if showSettings}}
   <div local-class="slider">
-    {{ui-slider min='1' max=unfurled.attachments.length value=(mut count)}}
+    {{ui-slider
+      min='1'
+      max=unfurled.attachments.length
+      onChange=(action 'onCountChanged')
+      value=count}}
   </div>
 {{/if}}
 

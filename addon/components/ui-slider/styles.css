@@ -5,11 +5,11 @@
 .slider {
   -webkit-appearance: none;
   background-color: transparent;
-  background-image: linear-gradient(90deg, default-extra-light-gray 2px, default-light-gray 2px);
+  background-image: linear-gradient(90deg, var(--extra-light-gray, default-extra-light-gray) 2px, var(--light-gray, default-light-gray) 2px);
   background-size: 4px 100%;
   box-shadow: inset 0 0 0 2px white;
   border-radius: 4px;
-  border: 2px solid default-gray;
+  border: 2px solid var(--gray, default-gray);
   display: block;
   height: 16px;
   outline: none;
@@ -20,7 +20,7 @@
   -webkit-appearance: none;
   background: white;
   border-radius: 4px;
-  box-shadow: 0 0 2px default-gray;
+  box-shadow: 0 0 2px var(--gray, default-gray);
   height: calc(18px + 4px);
   margin-top: -1px;
   width: 6px;

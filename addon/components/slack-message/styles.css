@@ -6,7 +6,7 @@
 }
 
 .avatar {
-  background: default-light-gray;
+  background: var(--light-gray, default-light-gray);
   border-radius: 4px;
   flex: none;
   height: 2rem;
@@ -19,6 +19,6 @@
 }
 
 .timestamp {
-  color: default-gray;
+  color: var(--gray, default-gray);
   font-size: 0.75rem;
 }

@@ -1591,6 +1591,8 @@ export default Ember.Component.extend(TypeChanges, {
           this.get('onNewBlockInsertedLocally')(idx + 1, newBlock);
         }
       });
+
+      this.get('onTemplateApplied')(template.id);
     },
 
     /**
@@ -1706,6 +1708,14 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {jQuery.Event} evt The `redo` event
    */
   onRedo: Ember.K,
+
+  /**
+   * A dummy handler for an action called when a template is applied.
+   *
+   * @method
+   * @param {string} templateID The ID of the applied template
+   */
+  onTemplateApplied: Ember.K,
 
   /**
    * A dummy handler for an action called when the user wants to "undo" the last

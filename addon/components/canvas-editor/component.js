@@ -363,10 +363,7 @@ export default Ember.Component.extend(TypeChanges, {
   keydownDocument(evt) {
     if (!this.get('editingEnabled')) return;
 
-    const $target = this.$(evt.target);
     const selectedCardBlockElement = this.get('selectedCardBlockElement');
-    const selectedBlockElement = selectedCardBlockElement ||
-      $target.closest(SELECT_BLOCK)[0];
     const key = new Key(evt.originalEvent);
 
     if (key.key === 'esc' &&
@@ -381,15 +378,15 @@ export default Ember.Component.extend(TypeChanges, {
     } else if (key.is('meta', 'shift', 'z')) {
       this.send('redo', evt);
       return;
-    } else if (key.is('meta', 'ctrl', 'up') && selectedBlockElement) {
+    } else if (key.is('meta', 'ctrl', 'up') && selectedCardBlockElement) {
       evt.preventDefault();
       const block = this.getNavigableBlocks()
-        .findBy('id', selectedBlockElement.id);
+        .findBy('id', selectedCardBlockElement.id);
       this.send('swapBlockUp', block);
-    } else if (key.is('meta', 'ctrl', 'down') && selectedBlockElement) {
+    } else if (key.is('meta', 'ctrl', 'down') && selectedCardBlockElement) {
       evt.preventDefault();
       const block = this.getNavigableBlocks()
-        .findBy('id', selectedBlockElement.id);
+        .findBy('id', selectedCardBlockElement.id);
       this.send('swapBlockDown', block);
     }
 
@@ -1630,8 +1627,8 @@ export default Ember.Component.extend(TypeChanges, {
 
       if (!block.get('isCard')) {
         selectionState =
-          new SelectionState($(this.getElementForBlock(block))
-                             .find(SELECT_EDITABLE)[0]);
+          new SelectionState(
+            this.$(this.getElementForBlock(block)).find(SELECT_EDITABLE)[0]);
         selectionState.capture();
       }
 
@@ -1642,7 +1639,8 @@ export default Ember.Component.extend(TypeChanges, {
 
       if (!block.get('isCard')) {
         run.scheduleOnce('afterRender', () => {
-          const elem = $(this.getElementForBlock(block)).find(SELECT_EDITABLE)[0];
+          const elem =
+            this.$(this.getElementForBlock(block)).find(SELECT_EDITABLE)[0];
           selectionState.element = elem;
           selectionState.restore();
         });

@@ -138,6 +138,14 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       evt.preventDefault();
       evt.stopPropagation();
       this.get('onMultiBlockSelectDown')(this.get('block'));
+    } else if (key.is('meta', 'ctrl', 'up')) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.get('onSwapBlockUp')(this.get('block'));
+    } else if (key.is('meta', 'ctrl', 'down')) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.get('onSwapBlockDown')(this.get('block'));
     }
   },
 

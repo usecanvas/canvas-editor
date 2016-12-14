@@ -6,5 +6,5 @@
     <span local-class="timestamp">{{moment-format unixTimestamp 'h:mmA'}}</span>
   </div>
 
-  <div local-class="text">{{message.text}}</div>
+  <div local-class="text">{{markdown-to-html message.text}}</div>
 </div>

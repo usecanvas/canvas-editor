@@ -15,6 +15,9 @@ export default CanvasBlockEditable.extend({
   localClassNames: ['canvas-block-title-content'],
   styles,
 
+  onSwapBlockDown: Ember.K,
+  onSwapBlockUp: Ember.K,
+
   placeholder: computed('block.meta.placeholder', function() {
     return this.getWithDefault('block.meta.placeholder', 'Give me a title...');
   }),

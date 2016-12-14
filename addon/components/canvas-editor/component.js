@@ -378,37 +378,49 @@ export default Ember.Component.extend(TypeChanges, {
     } else if (key.is('meta', 'shift', 'z')) {
       this.send('redo', evt);
       return;
+    } else if (key.is('meta', 'ctrl', 'up') && selectedCardBlockElement) {
+      evt.preventDefault();
+      const block = this.getNavigableBlocks()
+        .findBy('id', selectedCardBlockElement.id);
+      this.send('swapBlockUp', block);
+    } else if (key.is('meta', 'ctrl', 'down') && selectedCardBlockElement) {
+      evt.preventDefault();
+      const block = this.getNavigableBlocks()
+        .findBy('id', selectedCardBlockElement.id);
+      this.send('swapBlockDown', block);
     }
 
     // Below handles only navigation/editing of card blocks.
     if (!selectedCardBlockElement) return;
+    this.keydownCard(evt, selectedCardBlockElement);
+  },
 
+  /**
+   * Handle the `keydown` event when it happens on a card.
+   *
+   * @method
+   */
+  keydownCard(evt, selectedCardBlockElement) {
     const cardBlock = this.getBlockForElement(selectedCardBlockElement);
+    const key = new Key(evt.originalEvent);
 
-    switch (key.key) {
-      case 'up':
-      case 'left':
-        evt.preventDefault();
-        selectedCardBlockElement.setAttribute(CARD_BLOCK_SELECTED_ATTR, false);
-        this.send('navigateUp', cardBlock);
-        break;
-      case 'down':
-      case 'right':
-        evt.preventDefault();
-        if (!this.blockAfter(cardBlock)) break;
-        selectedCardBlockElement.setAttribute(CARD_BLOCK_SELECTED_ATTR, false);
-        this.send('navigateDown', cardBlock);
-        break;
-      case 'backspace':
-        evt.preventDefault();
-        selectedCardBlockElement.setAttribute(CARD_BLOCK_SELECTED_ATTR, false);
-        this.send('navigateUp', cardBlock);
-        this.send('blockDeletedLocally', cardBlock, null, { onlySelf: true });
-        break;
-      case 'return':
-        evt.preventDefault();
-        this.send('newBlockInsertedLocally', cardBlock, Paragraph.create());
-        break;
+    if (key.is('up') || key.is('left')) {
+      evt.preventDefault();
+      selectedCardBlockElement.setAttribute(CARD_BLOCK_SELECTED_ATTR, false);
+      this.send('navigateUp', cardBlock);
+    } else if (key.is('down') || key.is('right')) {
+      if (!this.blockAfter(cardBlock)) return;
+      evt.preventDefault();
+      selectedCardBlockElement.setAttribute(CARD_BLOCK_SELECTED_ATTR, false);
+      this.send('navigateDown', cardBlock);
+    } else if (key.is('backspace')) {
+      evt.preventDefault();
+      selectedCardBlockElement.setAttribute(CARD_BLOCK_SELECTED_ATTR, false);
+      this.send('navigateUp', cardBlock);
+      this.send('blockDeletedLocally', cardBlock, null, { onlySelf: true });
+    } else if (key.is('return')) {
+      evt.preventDefault();
+      this.send('newBlockInsertedLocally', cardBlock, Paragraph.create());
     }
   },
 
@@ -1566,6 +1578,73 @@ export default Ember.Component.extend(TypeChanges, {
      */
     redo(evt) {
       if (this.get('editingEnabled')) this.get('onRedo')(evt);
+    },
+
+    /**
+     * Swap the block and its previous sibling.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block to swap
+     */
+    swapBlockUp(block) {
+      let blocks;
+      if (block.get('parent') && block.get('parent.blocks.0') === block) {
+        return;
+      } else if (block.get('parent.isGroup')) {
+        blocks = this.getNavigableBlocks();
+      } else {
+        blocks = this.get('canvas.blocks');
+      }
+
+      const index = blocks.indexOf(block);
+      const neighbour = blocks[index - 1];
+      if (neighbour && index !== 1) {
+        this.removeBlock(neighbour);
+        this.insertBlockAfter(neighbour, block);
+      }
+    },
+
+    /**
+     * Swap the block and its next sibling.
+     *
+     * @method
+     * @param {CanvasEditor.CanvasRealtime.Block} block The block to swap
+     */
+    swapBlockDown(block) {
+      let blocks;
+      if (block.get('parent.isGroup') &&
+          block.get('parent.blocks.lastObject') === block) {
+        return;
+      } else if (block.get('parent.isGroup')) {
+        blocks = this.getNavigableBlocks();
+      } else {
+        blocks = this.get('canvas.blocks');
+      }
+
+      const index = blocks.indexOf(block);
+      const neighbour = blocks[index + 1];
+      let selectionState;
+
+      if (!block.get('isCard')) {
+        selectionState =
+          new SelectionState(
+            this.$(this.getElementForBlock(block)).find(SELECT_EDITABLE)[0]);
+        selectionState.capture();
+      }
+
+      if (neighbour) {
+        this.removeBlock(block);
+        this.insertBlockAfter(block, neighbour);
+      }
+
+      if (!block.get('isCard')) {
+        run.scheduleOnce('afterRender', () => {
+          const elem =
+            this.$(this.getElementForBlock(block)).find(SELECT_EDITABLE)[0];
+          selectionState.element = elem;
+          selectionState.restore();
+        });
+      }
     },
 
     /**

@@ -1111,13 +1111,15 @@ export default Ember.Component.extend(TypeChanges, {
    *
    * @method
    * @param {CanvasEditor.RealtimeCanvas.Block} block The block to remove
+   * @param {boolean} removeParent Whether to remove the block's parent—this is
+   *   sometimes undesirable as we may be remove it manually later
    */
-  removeBlock(block) {
+  removeBlock(block, removeParent = true) {
     if (block.get('parent')) {
       const idx = block.get('parent.blocks').indexOf(block);
       block.get('parent.blocks').removeObject(block);
       this.get('onBlockDeletedLocally')(idx, block);
-      this.removeGroupIfEmpty(block.get('parent'));
+      if (removeParent) this.removeGroupIfEmpty(block.get('parent'));
     } else {
       const idx = this.get('blocks').indexOf(block);
       this.get('blocks').removeObject(block);
@@ -1217,7 +1219,7 @@ export default Ember.Component.extend(TypeChanges, {
     // Remove post-split blocks from original group
     group.get('blocks').replace(idx + 1, Infinity, []);
 
-    if (shouldReplace) this.removeBlock(block);
+    if (shouldReplace) this.removeBlock(block, false);
 
     // Insert & trigger the splitting block
     this.get('blocks').replace(groupIdx + 1, 0, [insertBlock]);

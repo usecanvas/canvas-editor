@@ -14,7 +14,7 @@ export default function filterBlocks(blocks, filterTerm) {
 function transformFilterTerm(filterTerm) {
   const typePred = (b, type) => b.get('type') === type;
   const isPred = (b, key) => b.get(`meta.${key}`) === true;
-  const notPred = (b, key) => b.get(`meta.${key}`) === false;
+  const notPred = (b, key) => !b.get(`meta.${key}`);
   const wrapPred = (fn, arg) => b => fn(b, arg);
   const res = filterTerm.split(/ +/).reduce((prev, next) => {
     if (next.startsWith('is:')) {

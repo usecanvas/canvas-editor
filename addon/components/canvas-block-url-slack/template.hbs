@@ -1,0 +1,25 @@
+<button onclick={{action 'toggleShowSettings'}} local-class="settings-toggle">
+  {{#if showSettings}}
+    Done
+  {{else}}
+    Settings
+  {{/if}}
+</button>
+
+{{#if showSettings}}
+  <div local-class="slider">
+    {{ui-slider
+      min='1'
+      max=unfurled.attachments.length
+      onChange=(action 'onCountChanged')
+      value=count}}
+  </div>
+{{/if}}
+
+<div local-class="content">
+  {{#each filteredMessages as |message|}}
+    <div local-class="message">
+      {{slack-message message=message}}
+    </div>
+  {{/each}}
+</div>

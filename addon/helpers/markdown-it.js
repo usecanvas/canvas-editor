@@ -1,18 +1,18 @@
 import Ember from 'ember';
 import MarkdownIt from 'markdown-it';
 
-const markdownIt = new MarkdownIt();
+const renderer = new MarkdownIt();
 
-export function markdownItHelper([text], hash = {}) {
+export function markdownIt([text], hash = {}) {
   let markdownHTML;
 
   if (hash.inline) {
-    markdownHTML = markdownIt.renderInline(text);
+    markdownHTML = renderer.renderInline(text);
   } else {
-    markdownHTML = markdownIt.render(text);
+    markdownHTML = renderer.render(text);
   }
 
   return Ember.String.htmlSafe(markdownHTML);
 }
 
-export default Ember.Helper.helper(markdownItHelper);
+export default Ember.Helper.helper(markdownIt);

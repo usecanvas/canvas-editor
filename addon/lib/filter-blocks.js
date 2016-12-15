@@ -6,16 +6,44 @@ export default function filterBlocks(blocks, filterTerm) {
   const isFiltered = makeIsFiltered(blocks, filterTerm);
 
   return blocks.reduce(([filteredBlocks, state], block) => {
-    if (isFiltered(block)) return [filteredBlocks.concat(block), state];
-    return [filteredBlocks, state];
+    return isFiltered(block) ? [filteredBlocks.concat(block), state]
+      : [filteredBlocks, state];
   }, [[], { headerLevel: null }])[0];
 }
 
+function transformFilterTerm(filterTerm) {
+  const typePred = (b, type) => b.get('type') === type;
+  const isPred = (b, key) => b.get(`meta.${key}`) === true;
+  const notPred = (b, key) => b.get(`meta.${key}`) === false;
+  const wrapPred = (fn, arg) => b => fn(b, arg);
+  const res = filterTerm.split(/ +/).reduce((prev, next) => {
+    if (next.startsWith('is:')) {
+      prev.listMetaMatchers =
+        prev.listMetaMatchers.concat(wrapPred(isPred, next.slice(3)));
+    } else if (next.startsWith('not:')) {
+      prev.listMetaMatchers =
+        prev.listMetaMatchers.concat(wrapPred(notPred, next.slice(4)));
+    } else if (next.startsWith('type:')) {
+      prev.filters = prev.filters.concat(wrapPred(typePred, next.slice(5)));
+    } else {
+      prev.content = prev.content.concat(` ${next}`);
+    }
+    return prev;
+  }, { content: '', filters: [], listMetaMatchers: [] });
+  res.content = res.content.trim();
+  return res;
+}
+
 function makeIsFiltered(blocks, filterTerm) {
+  const filterQuery = transformFilterTerm(filterTerm);
   return function _isFiltered(block) {
+    const correctType = filterQuery.filters.length === 0 ||
+      filterQuery.filters.any(fn => fn(block));
+    const correctMeta = filterQuery.listMetaMatchers.length === 0 ||
+      filterQuery.listMetaMatchers.any(fn => fn(block));
     switch (block.get('type')) {
       case 'heading':
-        return filterHeading(block, filterTerm, blocks);
+        return correctType && filterHeading(block, filterQuery.content, blocks);
       case 'horizontal-rule':
         return true;
       case 'list':
@@ -23,9 +51,13 @@ function makeIsFiltered(blocks, filterTerm) {
       case 'title':
         return true;
       case 'url':
-        return filterURL(block, filterTerm);
+        return correctType && filterURL(block, filterQuery.content);
+      case 'checklist-item':
+        return correctType && correctMeta &&
+        searchMatch(block.get('content'), filterQuery.content);
       default:
-        return searchMatch(block.get('content'), filterTerm);
+        return correctType &&
+        searchMatch(block.get('content'), filterQuery.content);
     }
   };
 }

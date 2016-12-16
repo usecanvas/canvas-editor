@@ -42,7 +42,8 @@ export default class CopyPaste {
           .map(json => RealtimeCanvas.createBlockFromJSON(json));
       }
       const blocks = markdownToBlocks(pasteData);
-      return blocks.length !== 1 || blocks[0].get('type') !== 'paragraph'
+      return blocks.length !== 1 ||
+        !['paragraph', 'url'].includes(blocks[0].get('type'))
         ? blocks : null;
     } catch (err) {
       return null;

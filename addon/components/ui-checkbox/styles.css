@@ -19,7 +19,8 @@
 .is-checked {
   animation: tick;
   animation-duration: 0;
-  background: url('/canvas-editor/images/checkmark.svg') var(--green, default-green);
+  background-color: var(--green, default-green);
+  background-image: url('/canvas-editor/images/checkmark.svg');
   background-size: 100%;
   border-color: var(--green, default-green);
 }

@@ -28,11 +28,13 @@ export default Ember.Component.extend({
      * Action called when the value changes—send the `onChange` event.
      *
      * @method
+     * @param {string} value The new value
      */
-    onChange() {
-      const oldValue = this.get('oldValue');
-      const newValue = this.get('value');
+    updateValue(value) {
+      const oldValue = this.get('value');
+      const newValue = value;
       this.set('oldValue', newValue);
+      this.set('value', value);
       this.get('onChange')(oldValue, newValue);
     }
   },

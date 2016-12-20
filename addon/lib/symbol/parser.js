@@ -35,7 +35,7 @@ function parseBlock(text) {
   const [first, ...rest] = lineParser(text);
   if (typeof first === 'string' &&
       rest.length === 0) return RealtimeCanvas.createBlockFromMarkdown(text);
-  if (rest.length === 0) return true;
+  if (rest.length === 0) return parsePlaceholder(first);
 }
 
 function isContinuableList(first, rest) {
@@ -44,12 +44,11 @@ function isContinuableList(first, rest) {
 
 function parsePlaceholder({ key, val }) {
   if (Image.pattern.test(val)) {
-    return PlaceholderImage.create({ key, placeholder: val });
+    return { type: 'placeholder-image', key, placeholder: val };
   } else if (URL.pattern.test(val)) {
-    return PlaceholderURL.create({ key, placeholder: val });
-  } else {
-    return PlaceholderParagraph.create({ key, placeholder: val });
+    return { type: 'placeholder-url', key, placeholder: val };
   }
+  return { type: 'placeholder-paragraph', key, placeholder: val };
 }
 
 

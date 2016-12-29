@@ -1,0 +1,39 @@
+@value default-block-placeholder-color from 'canvas-editor/styles/theme';
+@value default-dark-gray from 'canvas-editor/styles/theme';
+@value default-extra-light-gray from 'canvas-editor/styles/theme';
+
+.canvas-inline-editable {
+  background: var(--extra-light-gray, default-extra-light-gray);
+  cursor:text;
+}
+
+.content {
+  display:inline;
+  word-wrap: break-word;
+  outline:solid 1px transparent !important;
+}
+
+
+.content:empty:focus {
+  display:inline-block;
+}
+
+.content:empty:after {
+  display:inline;
+  content: attr(data-placeholder);
+  color: var(--block-placeholder-color, default-block-placeholder-color);
+}
+
+.content:empty:focus:after {
+  content: '';
+}
+
+.placeholder {
+  display:inline;
+  word-wrap: break-word;
+  color: var(--block-placeholder-color, default-block-placeholder-color);
+}
+
+.content:empty:focus + span + .placeholder:after {
+  content: attr(data-placeholder);
+}

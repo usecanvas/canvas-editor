@@ -18,22 +18,23 @@
   display:inline-block;
 }
 
-.content:empty:after {
-  display:inline;
-  content: attr(data-placeholder);
-  color: var(--block-placeholder-color, default-block-placeholder-color);
-}
-
-.content:empty:focus:after {
-  content: '';
-}
-
 .placeholder {
   display:inline;
   word-wrap: break-word;
   color: var(--block-placeholder-color, default-block-placeholder-color);
+  font-size: 0;
 }
 
-.content:empty:focus + span + .placeholder:after {
-  content: attr(data-placeholder);
+.content:empty + span + .placeholder {
+  font-size: inherit;
+}
+
+@-moz-document url-prefix() {
+  .content:empty:focus {
+    display: inline;
+  }
+
+  .content + span {
+    display: inline-block;
+  }
 }

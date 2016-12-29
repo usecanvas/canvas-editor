@@ -1,33 +1,49 @@
 {{#each blocks as |block|}}
-  {{component (concat 'canvas-symbol-' block.type)
-    block=block
-    filterTerm=filterTerm
-    canvasAPIURL=canvas.apiURL
-    canvasID=canvas.id
-    isMultiBlock=isMultiBlock
-    isTemplate=canvas.isTemplate
-    canvasLinkComponent=canvasLinkComponent
-    githubAuthComponent=githubAuthComponent
-    editingEnabled=editingEnabled
-    fetchUploadSignature=fetchUploadSignature
-    cardDidLoad=(action 'cardDidLoad')
-    changeBlockType=(action 'changeBlockType')
-    onBlockDeletedLocally=(action 'blockDeletedLocally')
-    onBlockReplacedLocally=(action 'blockReplacedLocally')
-    onDoubleSelectAll=(action 'doubleSelectAll')
-    onDoubleSelectToEnd=(action 'doubleSelectToEnd')
-    onDoubleSelectToStart=(action 'doubleSelectToStart')
-    onRedo=(action 'redo')
-    onUndo=(action 'undo')
-    onMultiBlockSelectUp=(action 'multiBlockSelectUp')
-    onMultiBlockSelectDown=(action 'multiBlockSelectDown')
-    onNavigateDown=(action 'navigateDown')
-    onNavigateLeft=(action 'navigateLeft')
-    onNavigateRight=(action 'navigateRight')
-    onNavigateUp=(action 'navigateUp')
-    onBlockMetaReplacedLocally=(action 'blockMetaReplacedLocally')
-    onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
-    onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
-    onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
-    unfurl=(action 'unfurl')}}
+  {{#if block.isPlaceholder}}
+  <div>
+    {{canvas-inline-editable chunk=block}}
+  </div>
+  {{else if block.isMultiPlaceholder}}
+  <div>
+    {{#each block.blocks as |chunk|}}
+      {{#if chunk.placeholder}}
+        {{canvas-inline-editable chunk=chunk}}
+      {{else}}
+        <span>{{concat '' chunk}}</span>
+      {{/if}}
+    {{/each}}
+  </div>
+  {{else}}
+    {{component (concat 'canvas-block-' block.type)
+      block=block
+      filterTerm=filterTerm
+      canvasAPIURL=canvas.apiURL
+      canvasID=canvas.id
+      isMultiBlock=isMultiBlock
+      isTemplate=canvas.isTemplate
+      canvasLinkComponent=canvasLinkComponent
+      githubAuthComponent=githubAuthComponent
+      editingEnabled=editingEnabled
+      fetchUploadSignature=fetchUploadSignature
+      cardDidLoad=(action 'cardDidLoad')
+      changeBlockType=(action 'changeBlockType')
+      onBlockDeletedLocally=(action 'blockDeletedLocally')
+      onBlockReplacedLocally=(action 'blockReplacedLocally')
+      onDoubleSelectAll=(action 'doubleSelectAll')
+      onDoubleSelectToEnd=(action 'doubleSelectToEnd')
+      onDoubleSelectToStart=(action 'doubleSelectToStart')
+      onRedo=(action 'redo')
+      onUndo=(action 'undo')
+      onMultiBlockSelectUp=(action 'multiBlockSelectUp')
+      onMultiBlockSelectDown=(action 'multiBlockSelectDown')
+      onNavigateDown=(action 'navigateDown')
+      onNavigateLeft=(action 'navigateLeft')
+      onNavigateRight=(action 'navigateRight')
+      onNavigateUp=(action 'navigateUp')
+      onBlockMetaReplacedLocally=(action 'blockMetaReplacedLocally')
+      onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
+      onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
+      onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
+      unfurl=(action 'unfurl')}}
+  {{/if}}
 {{/each}}

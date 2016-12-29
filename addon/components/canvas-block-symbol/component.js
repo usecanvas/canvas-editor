@@ -6,9 +6,10 @@ import { parseSymbolDefinition } from 'canvas-editor/lib/symbol/parser';
 const { computed } = Ember;
 
 export default Ember.Component.extend({
+  classNames: ['canvas-block-symbol'],
+  localClassNames: ['canvas-block-symbol'],
   layout,
   styles,
-
   blocks: computed('symbolDefinition', function() {
     return parseSymbolDefinition(this.get('symbolDefinition'));
   }),
@@ -275,7 +276,7 @@ export default Ember.Component.extend({
      *   complete
      */
     unfurl(block) {
-      Ember.K();
+      return Ember.RSVP.Promise.resolve({});
     }
   },
 });

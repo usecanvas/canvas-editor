@@ -6,7 +6,7 @@ const LineReducer = {
   placeholder(acc, text) {
     const [key, ...vals] = text.slice(1, -1).split(':');
     return ['initial',
-      acc.concat({ key: key.trim(), val: vals.join(':').trim() })];
+      acc.concat({ key: key.trim(), placeholder: vals.join(':').trim() })];
   },
 
   initial(acc, text) {
@@ -62,7 +62,7 @@ function parseBlock(text) {
   const lineParser = buildParser(/(<[^:]*[^: \t]+[^:]*:[^>]+>)/, LineReducer);
   const [first, ...rest] = lineParser(text);
   if (!first || typeof first === 'string' &&
-      rest.length === 0) return block.toJSON();
+      rest.length === 0) return JSON.parse(JSON.stringify(block));
   if (isPlaceholderBlock([first, ...rest])) return parsePlaceholderBlock(first);
   if (block.get('type') === 'list') {
     return parseListPlaceholderBlock(block, text);
@@ -76,29 +76,30 @@ function parseListPlaceholderBlock(block, text) {
   const [first, ...rest] = lineParser(text);
   const isContinuable = isContinuableList(first, rest);
   const cBlocks = lineParser(content);
-  const isPlaceholderBlock = isPlaceholderBlock(cBlocks);
-  if (isPlaceholderBlock) {
-    return { isPlaceholderBlock, type, meta, isContinuable,
-      content: '', key: cBlocks[0].key, placeholder: cBlocks[0].val };
+  if (isPlaceholderBlock(cBlocks)) {
+    return { isPlaceholder: true, type, meta, isContinuable,
+      content: '', key: cBlocks[0].key, placeholder: cBlocks[0].placeholder };
   }
-  return { type, meta, isContinuable, blocks: cBlocks };
+  return { isMultiPlaceholder: true, type, meta, isContinuable,
+    blocks: cBlocks };
 }
 
 function parseMultiPlaceholderBlock(block) {
   const lineParser = buildParser(/(<[^:]*[^: \t]+[^:]*:[^>]+>)/, LineReducer);
   const { type, meta, content } = block.toJSON();
-  return { type, meta, blocks: lineParser(content) };
+  return { isMultiPlaceholder: true, type, meta, blocks: lineParser(content) };
 }
 
-function parsePlaceholderBlock({ key, val }) {
-  if (Image.pattern.test(val)) {
-    return { type: 'placeholder-image', key, placeholder: val };
-  } else if (URL.pattern.test(val)) {
-    return { type: 'placeholder-url', key, placeholder: val };
+function parsePlaceholderBlock({ key, placeholder }) {
+  if (Image.pattern.test(placeholder)) {
+    return { isPlaceholder: true, type: 'image', key, placeholder };
+  } else if (URL.pattern.test(placeholder)) {
+    return { isPlaceholder: true, type: 'url', key, placeholder };
   }
-  return { type: 'placeholder-paragraph', key, placeholder: val };
+  return { isPlaceholder: true, type: 'paragraph', key, placeholder };
 }
 
 export function parseSymbolDefinition(defn) {
-  return buildParser(/\r?\n/, ParseReducer)(defn);
+  return buildParser(/\r?\n/, ParseReducer)(defn)
+    .map(json => RealtimeCanvas.createBlockFromJSON(json));
 }

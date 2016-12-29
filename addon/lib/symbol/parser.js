@@ -77,7 +77,8 @@ function parseListPlaceholderBlock(block, text) {
   const isContinuable = isContinuableList(first, rest);
   const cBlocks = lineParser(content);
   if (isPlaceholderBlock(cBlocks)) {
-    return { isPlaceholder: true, type, meta, isContinuable,
+    meta.placeholder = cBlocks[0].placeholder;
+    return { isPlaceholder: true, type, meta,  isContinuable,
       content: '', key: cBlocks[0].key, placeholder: cBlocks[0].placeholder };
   }
   return { isMultiPlaceholder: true, type, meta, isContinuable,
@@ -96,7 +97,8 @@ function parsePlaceholderBlock({ key, placeholder }) {
   } else if (URL.pattern.test(placeholder)) {
     return { isPlaceholder: true, type: 'url', key, placeholder };
   }
-  return { isPlaceholder: true, type: 'paragraph', key, placeholder };
+  return { isPlaceholder: true, type: 'paragraph', key, placeholder,
+    meta: { placeholder } };
 }
 
 export function parseSymbolDefinition(defn) {

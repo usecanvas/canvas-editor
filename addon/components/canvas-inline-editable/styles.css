@@ -8,9 +8,9 @@
 }
 
 .content {
-  display:inline;
+  display: inline;
   word-wrap: break-word;
-  outline:solid 1px transparent !important;
+  outline: solid 1px transparent !important;
 }
 
 

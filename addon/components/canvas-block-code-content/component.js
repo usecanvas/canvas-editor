@@ -30,10 +30,6 @@ export default CanvasBlockEditable.extend({
   highlight: on('didInsertElement',
              observer('block.content', 'block.meta.language', function() {
     if (isFirefox) return;
-    if (this.get('block.meta.language') === 'symbol') {
-      console.log(parseSymbolDefinition(this.get('block.content')));
-    }
-
     run.scheduleOnce('afterRender', _ => {
       this.get('selectionState').capture();
 

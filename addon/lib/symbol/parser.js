@@ -28,10 +28,21 @@ const ParseReducer = {
     return ['code', acc];
   },
 
+  list(acc, text) {
+    const block = parseBlock(text);
+    if (block.type === 'list') {
+      const lastBlock = acc[acc.length - 1];
+      const item = block.blocks[0];
+      lastBlock.blocks.push(item);
+      return ['list', acc];
+    }
+    return this.initial(acc, text);
+  },
+
   initial(acc, text) {
     const block = parseBlock(text);
-    if (block.type === 'code') {
-      return ['code', acc.concat(block)];
+    if (['code', 'list'].includes(block.type)) {
+      return [block.type, acc.concat(block)];
     } else if (isEmptyBlock(block)) {
       return ['initial', acc];
     }
@@ -65,7 +76,7 @@ function parseBlock(text) {
       rest.length === 0) return JSON.parse(JSON.stringify(block));
   if (isPlaceholderBlock([first, ...rest])) return parsePlaceholderBlock(first);
   if (block.get('type') === 'list') {
-    return parseListPlaceholderBlock(block, text);
+    return { type: 'list', blocks: [parseListPlaceholderBlock(block, text)] };
   }
   return parseMultiPlaceholderBlock(block);
 }

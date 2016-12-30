@@ -1,0 +1,9 @@
+{{~#if block.isMultiPlaceholder~}}
+    {{~#each block.blocks as |chunk|~}}
+      {{~#if chunk.placeholder~}}
+        {{canvas-inline-editable chunk=chunk}}
+      {{~else~}}
+        <span>{{concat '' chunk}}</span>
+      {{~/if~}}
+    {{~/each~}}
+{{~/if~}}

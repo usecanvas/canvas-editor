@@ -116,3 +116,13 @@ export function parseSymbolDefinition(defn) {
   return buildParser(/\r?\n/, ParseReducer)(defn)
     .map(json => RealtimeCanvas.createBlockFromJSON(json));
 }
+
+export function parseSymbolCommand(command) {
+  const [_, name, ...args] = command.split(/[ \t]+/);
+  const argObj = args.reduce((p, n) => {
+    const [key, val] = n.split('=');
+    if (key !== '') p[key] = val;
+    return p;
+  }, {});
+  return { name, args: argObj };
+}

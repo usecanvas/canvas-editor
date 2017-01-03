@@ -14,6 +14,22 @@ export default Ember.Component.extend({
     return parseSymbolDefinition(this.get('symbolDefinition'));
   }),
 
+  click(evt) {
+    evt.stopPropagation();
+  },
+
+  mouseDown(evt) {
+    evt.stopPropagation();
+  },
+
+  mouseMove(evt) {
+    evt.stopPropagation();
+  },
+
+  mouseUp(evt) {
+    evt.stopPropagation();
+  },
+
   actions: {
     /**
      * Called when a block's content was updated in the editor.

@@ -5,7 +5,7 @@ import SelectionState from 'canvas-editor/lib/selection-state';
 import styles from './styles';
 import { parseSymbolDefinition } from 'canvas-editor/lib/symbol/parser';
 
-const { computed, observer, on, run } = Ember;
+const { computed, inject, observer, on, run } = Ember;
 const isFirefox = window.navigator.userAgent.includes('Firefox');
 
 /**
@@ -22,6 +22,7 @@ export default CanvasBlockEditable.extend({
   styles,
   tagName: 'code',
   usesMarkdown: false,
+  symbol: inject.service(),
 
   selectionState: computed(function() {
     return new SelectionState(this.get('element'));
@@ -30,6 +31,10 @@ export default CanvasBlockEditable.extend({
   highlight: on('didInsertElement',
              observer('block.content', 'block.meta.language', function() {
     if (isFirefox) return;
+    if (this.get('block.meta.language') === 'symbol') {
+      this.get('symbol')
+        .updateSymbolDefinition('symbol', this.get('block.content'));
+    }
     run.scheduleOnce('afterRender', _ => {
       this.get('selectionState').capture();
 

@@ -1,3 +1,5 @@
+@value default-black from 'canvas-editor/styles/theme';
+@value default-blue from 'canvas-editor/styles/theme';
 @value default-extra-light-gray from 'canvas-editor/styles/theme';
 @value default-light-gray from 'canvas-editor/styles/theme';
 
@@ -7,4 +9,13 @@
   border: 1px solid var(--light-gray, default-light-gray);
   border-radius: 4px;
   padding: 0.75rem;
+}
+
+.canvas-block-symbol[data-card-block-selected=true] {
+  border-color: var(--blue, default-blue);
+  box-shadow: 0 0 0 1px var(--blue, default-blue);
+}
+
+.canvas-block-symbol .block-link {
+  visibility: hidden;
 }

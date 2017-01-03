@@ -5,7 +5,9 @@ import RunKitBlock from 'canvas-editor/lib/realtime-canvas/runkit';
 import TextManipulation from 'canvas-editor/lib/text-manipulation';
 import Image from 'canvas-editor/lib/realtime-canvas/image';
 import Tip from 'canvas-editor/lib/realtime-canvas/tip';
+import SymbolBlock from 'canvas-editor/lib/realtime-canvas/symbol';
 import URLCard from 'canvas-editor/lib/realtime-canvas/url-card';
+import { parseSymbolCommand } from 'canvas-editor/lib/symbol/parser';
 import styles from './styles';
 
 /**
@@ -64,6 +66,11 @@ export default CanvasBlockEditable.extend({
         const tip = Tip.create();
         this.blockReplacedLocally(tip, { focus: true });
         return;
+      } else if (isSymbol(textBeforeSelection)) {
+        const meta = parseSymbolCommand(textBeforeSelection);
+        const symbol = SymbolBlock.create({ meta });
+        this.blockReplacedLocally(symbol);
+        return;
       }
     }
 
@@ -104,6 +111,10 @@ function isImageURL(text) {
 
 function isRunKit(text) {
   return (/^\/runkit/).test(text);
+}
+
+function isSymbol(text) {
+  return (/^\/symbol/).test(text);
 }
 
 function isTip(text) {

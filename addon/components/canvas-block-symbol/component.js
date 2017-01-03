@@ -1,17 +1,24 @@
 import Ember from 'ember';
+import CanvasBlock from '../canvas-block/component';
 import layout from './template';
 import styles from './styles';
 import { parseSymbolDefinition } from 'canvas-editor/lib/symbol/parser';
 
-const { computed } = Ember;
+const { computed, inject } = Ember;
 
-export default Ember.Component.extend({
+export default CanvasBlock.extend({
   classNames: ['canvas-block-symbol'],
   localClassNames: ['canvas-block-symbol'],
   layout,
   styles,
-  blocks: computed('symbolDefinition', function() {
-    return parseSymbolDefinition(this.get('symbolDefinition'));
+  setupSymbolPath: function() {
+    const name = this.get('name') || this.get('block.meta.name');
+    this.set('symbolPath', Ember.computed.alias(`symbol.symbols.${name}`));
+  }.on('init'),
+
+  symbol: inject.service(),
+  blocks: computed('block.meta.name', 'symbolPath', function() {
+    return parseSymbolDefinition(this.get('symbolPath') || '');
   }),
 
   click(evt) {

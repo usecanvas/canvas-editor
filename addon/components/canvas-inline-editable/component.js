@@ -17,7 +17,8 @@ export default Ember.Component.extend({
   layout,
   styles,
 
-  input() {
+  input(evt) {
+    evt.stopPropagation();
     // Force a style recalculation to get rid of placeholder text in safari
     const el = this.contentElem();
     el.style.cssText += ';-webkit-transform:rotateZ(0deg)';

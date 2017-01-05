@@ -1,7 +1,10 @@
 {{~#if block.isMultiPlaceholder~}}
     {{~#each block.blocks as |chunk|~}}
       {{~#if chunk.placeholder~}}
-        {{canvas-inline-editable chunk=chunk}}
+        {{canvas-inline-editable
+          chunk=chunk
+          symbolValue=(get symbolValues chunk.key)
+          onInput=(action 'chunkInput')}}
       {{~else~}}
         <span>{{concat '' chunk}}</span>
       {{~/if~}}

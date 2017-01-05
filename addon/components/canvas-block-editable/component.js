@@ -35,5 +35,11 @@ export default Ember.Component.extend(BlockEvents, ContentEditable, {
 
   focus() {
     this.set('isFocused', true);
+  },
+
+  actions: {
+    chunkInput() {
+      return this.get('onChunkInput')(...arguments);
+    }
   }
 });

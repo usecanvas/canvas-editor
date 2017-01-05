@@ -25,6 +25,12 @@ export default Ember.Component.extend({
     return new SelectionState(this.contentElem());
   }),
 
+  /**
+   * Handle an input event in the inline contenteditable.
+   *
+   * @method
+   * @param {jQuery.Event} evt The input event
+   */
   input(evt) {
     evt.stopPropagation();
     // Force a style recalculation to get rid of placeholder text in safari
@@ -32,6 +38,11 @@ export default Ember.Component.extend({
     el.style.cssText += ';-webkit-transform:rotateZ(0deg)';
     Ember.K(el.offsetHeight);
     el.style.cssText += ';-webkit-transform:none';
+
+    const elem = this.$().find(`.${this.styles.content}`).get(0);
+    const text = elem.innerText || elem.textContent;
+
+    this.get('onInput')(this.get('chunk'), text);
   },
 
   doubleClick(evt) {

@@ -132,6 +132,25 @@ export default CanvasBlock.extend({
       Ember.K();
     },
 
+    chunkInput({ key }, content) {
+      if (!this.get('block.meta.chunks')) {
+        this.set('block.meta.chunks', {});
+        this.get('onBlockMetaReplacedLocally')(
+          this.get('block'),
+          ['chunks'],
+          null,
+          this.get('block.meta.chunks'));
+      }
+
+      const oldContent = this.get(`block.meta.chunks.${key}`) || null;
+      this.set(`block.meta.chunks.${key}`, content);
+        this.get('onBlockMetaReplacedLocally')(
+          this.get('block'),
+          ['chunks', key],
+          oldContent,
+          this.get(`block.meta.chunks.${key}`));
+    },
+
     /**
      * Called when a user selects all twice.
      *

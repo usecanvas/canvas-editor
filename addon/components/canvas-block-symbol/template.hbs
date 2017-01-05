@@ -1,14 +1,15 @@
-{{#each blocks as |block|}}
-  {{component (concat 'canvas-block-' block.type)
-    block=block
+{{#each blocks as |childBlock|}}
+  {{component (concat 'canvas-block-' childBlock.type)
+    block=childBlock
     filterTerm=filterTerm
     canvasAPIURL=canvas.apiURL
     canvasID=canvas.id
     isMultiBlock=isMultiBlock
     isTemplate=canvas.isTemplate
     githubAuthComponent=githubAuthComponent
-    editingEnabled=block.isPlaceholder
+    editingEnabled=childBlock.isPlaceholder
     fetchUploadSignature=fetchUploadSignature
+    symbolValues=block.meta.chunks
     cardDidLoad=(action 'cardDidLoad')
     changeBlockType=(action 'changeBlockType')
     onBlockDeletedLocally=(action 'blockDeletedLocally')
@@ -18,6 +19,7 @@
     onDoubleSelectToStart=(action 'doubleSelectToStart')
     onRedo=(action 'redo')
     onUndo=(action 'undo')
+    onChunkInput=(action 'chunkInput')
     onMultiBlockSelectUp=(action 'multiBlockSelectUp')
     onMultiBlockSelectDown=(action 'multiBlockSelectDown')
     onNavigateDown=(action 'navigateDown')

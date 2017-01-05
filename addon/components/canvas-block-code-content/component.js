@@ -58,7 +58,8 @@ export default CanvasBlockEditable.extend({
           .replace(/</g, '&lt;')
           .replace(/"/g, '&quot;')
           .replace(/'/g, '&#x27;')
-          .replace(/\//g, '&#x2F;');
+          .replace(/\//g, '&#x2F;')
+          .replace(/\n/g, '<br data-restore-skip="true">');
       }
 
       this.$().html(html || '<br>');

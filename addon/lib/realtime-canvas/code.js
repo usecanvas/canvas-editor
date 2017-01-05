@@ -11,7 +11,7 @@ const { computed } = Ember;
  */
 export default ContentBlock.extend({
   type: 'code',
-  meta: computed(_ => Ember.Object.create({ language: null }))
+  meta: computed(_ => Ember.Object.create({ language: null, symbolName: null }))
 }).reopenClass({
   pattern: /^(`{3})(\S*)$/,
   createFromMarkdown(source) {

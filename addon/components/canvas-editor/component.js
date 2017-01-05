@@ -15,6 +15,7 @@ import nsEvent from 'canvas-editor/lib/ns-event';
 import styles from './styles';
 import testTemplates from 'canvas-editor/lib/templates';
 import { caretRangeFromPoint } from 'canvas-editor/lib/range-polyfill';
+import { task } from 'ember-concurrency';
 
 import Heading from 'canvas-editor/lib/realtime-canvas/heading';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
@@ -72,6 +73,11 @@ export default Ember.Component.extend(TypeChanges, {
   dropBar: inject.service(),
 
   /**
+   * @member {Ember.Service} A service for symbol data
+   * */
+  symbol: inject.service(),
+
+  /**
    * @member {boolean} Whether editing is enabled in the component
    */
   editingEnabled: true,
@@ -120,6 +126,17 @@ export default Ember.Component.extend(TypeChanges, {
       return filterBlocks(
         this.get('blocks').slice(1), this.get('filterTerm'));
     }),
+
+  fetchSymbols: task(function *() {
+    this.set('symbol.symbols', {});
+    const template = yield this.get('canvas.template');
+    if (!template) return;
+    template.get('blocks')
+      .filter(b => b.meta && b.meta.symbolName)
+      .forEach(({ content, meta: { symbolName } }) => {
+        this.get('symbol').updateSymbolDefinition(symbolName, content);
+      });
+  }).on('init'),
 
   /**
    * @member {boolean} Whether the canvas has non-title content.

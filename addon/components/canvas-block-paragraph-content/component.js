@@ -57,6 +57,11 @@ export default CanvasBlockEditable.extend({
         this.newBlockInsertedLocally('');
         this.blockReplacedLocally(urlBlock);
         return;
+      } else if (isSymbolDefn(textBeforeSelection)) {
+        const [_, symbolName] = isSymbolDefn(textBeforeSelection);
+        const code = Code.create({ meta: { language: 'symbol', symbolName } });
+        this.blockReplacedLocally(code, { focus: true });
+        return;
       } else if (isCode(textBeforeSelection)) {
         const [_, language] = isCode(textBeforeSelection);
         const code = Code.create({ meta: { language } });
@@ -95,6 +100,10 @@ function isUnorderedListItem(content) {
 
 function isCode(content) {
   return content.match(/^```(\S+)?$/);
+}
+
+function isSymbolDefn(content) {
+  return content.match(/^```symbol=(\S+)?$/);
 }
 
 function isHeading(text) {

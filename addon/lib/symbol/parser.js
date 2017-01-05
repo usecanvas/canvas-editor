@@ -74,7 +74,8 @@ function parseBlock(text) {
   const [first, ...rest] = lineParser(text);
   if (!first || typeof first === 'string' &&
       rest.length === 0) return JSON.parse(JSON.stringify(block));
-  if (isPlaceholderBlock([first, ...rest])) return parsePlaceholderBlock(first);
+  if (isPlaceholderBlock([first, ...rest])) return Object
+    .assign({ isMultiPlaceholder: true }, parsePlaceholderBlock(first));
   if (block.get('type') === 'list') {
     return { type: 'list', blocks: [parseListPlaceholderBlock(block, text)] };
   }
@@ -99,11 +100,11 @@ function parseMultiPlaceholderBlock(block) {
 
 function parsePlaceholderBlock({ key, placeholder }) {
   if (Image.pattern.test(placeholder)) {
-    return { isMultiPlaceholder: true, type: 'placeholder-image', key, placeholder };
+    return { type: 'placeholder-image', key, placeholder };
   } else if (URL.pattern.test(placeholder)) {
-    return { isMultiPlaceholder: true, type: 'placeholder-url', key, placeholder };
+    return { type: 'placeholder-url', key, placeholder };
   }
-  return { isMultiPlaceholder: true, type: 'paragraph', blocks: [{key, placeholder }] };
+  return { type: 'paragraph', blocks: [{ key, placeholder }] };
 }
 
 export function parseSymbolDefinition(defn) {
@@ -118,5 +119,5 @@ export function parseSymbolCommand(command) {
     if (key !== '') p[key] = val;
     return p;
   }, {});
-  return { name, args: argObj };
+  return { name, chunks: argObj };
 }

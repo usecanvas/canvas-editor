@@ -32,6 +32,25 @@ export default CanvasBlock.extend({
     });
   }.observes('checkboxBlocks').on('init'),
 
+  symbolMetaReplacedLocally(path, key, oldValue, newValue) {
+    const fullPath = `block.meta.${path}`;
+    if (!this.get(fullPath)) {
+      this.set(fullPath, {});
+      this.get('onBlockMetaReplacedLocally')(
+        this.get('block'),
+        [path],
+        null,
+        this.get(fullPath));
+    }
+
+    this.set(`${fullPath}.${key}`, newValue);
+    this.get('onBlockMetaReplacedLocally')(
+      this.get('block'),
+      [path, key],
+      oldValue,
+      newValue);
+  },
+
   click(evt) {
     evt.stopPropagation();
   },
@@ -55,7 +74,7 @@ export default CanvasBlock.extend({
      * @method
      * @param {CanvasEditor.CanvasRealtime.Block} block The updated block
      */
-    blockContentUpdatedLocally(block) {
+    blockContentUpdatedLocally(/* block */) {
       Ember.K();
     },
 
@@ -71,7 +90,7 @@ export default CanvasBlock.extend({
      * @param {boolean} opts.onlySelf Only remove the given block, do not join
      *   remaining content
      */
-    blockDeletedLocally(block, remainingContent = '', opts = {}) {
+    blockDeletedLocally(/* block, remainingContent = '', opts = {} */) {
       Ember.K();
     },
 
@@ -84,7 +103,7 @@ export default CanvasBlock.extend({
      * @param {*} oldValue The old meta value
      * @param {*} newValue The new meta value
      */
-    blockMetaReplacedLocally(block, metaPath, oldValue, newValue) {
+    blockMetaReplacedLocally(/* block, metaPath, oldValue, newValue */) {
       Ember.K();
     },
 
@@ -102,7 +121,7 @@ export default CanvasBlock.extend({
      * @param {object} [opts={}] Options object
      * @param {boolean} opts.focus Whether to focus the replacing block
      */
-    blockReplacedLocally(block, newBlock, opts = {}) {
+    blockReplacedLocally(/* block, newBlock, opts = {} */) {
       Ember.K();
     },
 
@@ -112,7 +131,7 @@ export default CanvasBlock.extend({
      * @method
      * @param {CanvasEditor.CanvasRealtime.Block} block The updated block
      */
-    blockTypeUpdatedLocally(block) {
+    blockTypeUpdatedLocally(/* block */) {
       Ember.K();
     },
 
@@ -139,45 +158,18 @@ export default CanvasBlock.extend({
      * @param {string} content The content for the block after the change (this
      *   is important for when we need to strip Markdown prefixes like "- [ ]")
      */
-    changeBlockType(typeChange, block, content) {
+    changeBlockType(/* typeChange, block, content */) {
       Ember.K();
     },
 
-    chunkInput({ key }, content) {
-      if (!this.get('block.meta.chunks')) {
-        this.set('block.meta.chunks', {});
-        this.get('onBlockMetaReplacedLocally')(
-          this.get('block'),
-          ['chunks'],
-          null,
-          this.get('block.meta.chunks'));
-      }
-
-      const oldContent = this.get(`block.meta.chunks.${key}`) || null;
-      this.set(`block.meta.chunks.${key}`, content);
-        this.get('onBlockMetaReplacedLocally')(
-          this.get('block'),
-          ['chunks', key],
-          oldContent,
-          this.get(`block.meta.chunks.${key}`));
+    chunkInput({ key }, newValue) {
+      const oldValue = this.get(`block.meta.chunks.${key}`) || null;
+      this.symbolMetaReplacedLocally('chunks', key, oldValue, newValue);
     },
 
-    checkboxToggle(key, oldContent) {
-      if (!this.get('block.meta.checkboxes')) {
-        this.set('block.meta.checkboxes', {});
-        this.get('onBlockMetaReplacedLocally')(
-          this.get('block'),
-          ['checkboxes'],
-          null,
-          this.get('block.meta.checkboxes'));
-      }
-
-      this.set(`block.meta.checkboxes.${key}`, !oldContent);
-      this.get('onBlockMetaReplacedLocally')(
-        this.get('block'),
-        ['checkboxes', key],
-        oldContent,
-        this.get(`block.meta.checkboxes.${key}`));
+    checkboxToggle(key, oldValue) {
+      const newValue = !oldValue;
+      this.symbolMetaReplacedLocally('checkboxes', key, oldValue, newValue);
     },
 
     /**
@@ -197,7 +189,7 @@ export default CanvasBlock.extend({
      *
      * @method
      */
-    doubleSelectToEnd(block) {
+    doubleSelectToEnd(/* block */) {
       Ember.K();
     },
 
@@ -206,7 +198,7 @@ export default CanvasBlock.extend({
      *
      * @method
      */
-    doubleSelectToStart(block) {
+    doubleSelectToStart(/* block */) {
       Ember.K();
     },
 
@@ -218,7 +210,7 @@ export default CanvasBlock.extend({
      * @param {CanvasEditor.RealtimeCanvas.Block} block The block to select down
      *   from
      */
-    multiBlockSelectDown(block) {
+    multiBlockSelectDown(/* block */) {
       Ember.K();
     },
 
@@ -230,7 +222,7 @@ export default CanvasBlock.extend({
      * @param {CanvasEditor.RealtimeCanvas.Block} block The block to select up
      *   from
      */
-    multiBlockSelectUp(block) {
+    multiBlockSelectUp(/* block */) {
       Ember.K();
     },
 
@@ -243,7 +235,7 @@ export default CanvasBlock.extend({
      *   wishes to navigate down *from*
      * @param {ClientRect} rangeRect The client rect for the current user range
      */
-    navigateDown(block, rangeRect) {
+    navigateDown(/* block, rangeRect */) {
       Ember.K();
     },
 
@@ -255,7 +247,7 @@ export default CanvasBlock.extend({
      * @param {CanvasEditor.CanvasRealtime.Block} block The block that the user
      *   wishes to navigate *from*
      */
-    navigateLeft(block) {
+    navigateLeft(/* block */) {
       Ember.K();
     },
 
@@ -267,7 +259,7 @@ export default CanvasBlock.extend({
      * @param {CanvasEditor.CanvasRealtime.Block} block The block that the user
      *   wishes to navigate *from*
      */
-    navigateRight(block) {
+    navigateRight(/* block */) {
       Ember.K();
     },
 
@@ -280,7 +272,7 @@ export default CanvasBlock.extend({
      *   wishes to navigate up *from*
      * @param {ClientRect} rangeRect The client rect for the current user range
      */
-    navigateUp(block, rangeRect) {
+    navigateUp(/* block , rangeRect */) {
       Ember.K();
     },
 
@@ -293,11 +285,8 @@ export default CanvasBlock.extend({
      *   new block should be inserted after
      * @param {CanvasEditor.CanvasRealtime.Block} newBlock The new block
      */
-    newBlockInsertedLocally(prevBlock, newBlock) {
-      const parent = prevBlock.get('parent.blocks') || this.get('blocks');
-      const idx = parent.indexOf(prevBlock) + 1;
-      parent.replace(idx, 0, [newBlock]);
-      run.scheduleOnce('afterRender', this, 'focusBlockStart', newBlock);
+    newBlockInsertedLocally(/* prevBlock, newBlock */) {
+      Ember.K();
     },
 
     /**
@@ -306,7 +295,7 @@ export default CanvasBlock.extend({
      * @method redo
      * @param {jQuery.Event} evt The `redo` event
      */
-    redo(evt) {
+    redo(/* evt */) {
       Ember.K();
     },
 
@@ -316,7 +305,7 @@ export default CanvasBlock.extend({
      * @method
      * @param {CanvasEditor.CanvasRealtime.Block} block The block to swap
      */
-    swapBlockUp(block) {
+    swapBlockUp(/* block */) {
       Ember.K();
     },
 
@@ -327,7 +316,7 @@ export default CanvasBlock.extend({
      * @param {CanvasEditor.RealtimeCanvas} template A template to apply to the
      *   canvas
      */
-    templateApply(template) {
+    templateApply(/* template */) {
       Ember.K();
     },
 
@@ -337,20 +326,8 @@ export default CanvasBlock.extend({
      * @method
      * @param {jQuery.Event} evt The `undo` event
      */
-    undo(evt) {
+    undo(/* evt */) {
       Ember.K();
-    },
-
-    /**
-     * Called when a card block is rendered to unfurl it.
-     *
-     * @method
-     * @param {CanvasEditor.CanvasRealtime.Block} block The block to unfurl
-     * @returns {Promise<object>} A promise resolving when the unfurl is
-     *   complete
-     */
-    unfurl(block) {
-      return Ember.RSVP.Promise.resolve({});
     }
   },
 });

@@ -3,7 +3,6 @@ import Ember from 'ember';
 import Highlight from 'highlight';
 import SelectionState from 'canvas-editor/lib/selection-state';
 import styles from './styles';
-import { parseSymbolDefinition } from 'canvas-editor/lib/symbol/parser';
 
 const { computed, inject, observer, on, run } = Ember;
 const isFirefox = window.navigator.userAgent.includes('Firefox');
@@ -45,6 +44,7 @@ export default CanvasBlockEditable.extend({
       try {
         highlighted = Highlight.highlight(language, content);
       } catch (_err) {
+        // Continue if highlighting failed
       }
 
       let html;

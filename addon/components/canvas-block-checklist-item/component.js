@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import IndentableLevels from 'canvas-editor/mixins/indentable-levels';
 import layout from './template';

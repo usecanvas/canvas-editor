@@ -21,6 +21,17 @@ export default CanvasBlock.extend({
     return parseSymbolDefinition(this.get('symbolPath') || '');
   }),
 
+  checkboxBlocks: Ember.computed('blocks.[]', function() {
+    return flatMapBy(this.get('blocks').filterBy('type', 'list'), 'blocks')
+      .filterBy('type', 'checklist-item');
+  }),
+
+  applyCheckboxIndexes: function() {
+    this.get('checkboxBlocks').forEach((b, i) => {
+      b.set('idx_i', i);
+    });
+  }.observes('checkboxBlocks').on('init'),
+
   click(evt) {
     evt.stopPropagation();
   },
@@ -149,6 +160,28 @@ export default CanvasBlock.extend({
           ['chunks', key],
           oldContent,
           this.get(`block.meta.chunks.${key}`));
+    },
+
+    checkboxToggle(block, oldContent) {
+      if (!this.get('block.meta.checkboxes')) {
+        this.set('block.meta.checkboxes', {});
+        this.get('onBlockMetaReplacedLocally')(
+          this.get('block'),
+          ['checkboxes'],
+          null,
+          this.get('block.meta.checkboxes'));
+      }
+
+      const idx = this.get('checkboxBlocks').indexOf(block);
+      const key = `idx_${idx}`;
+
+      this.set(`block.meta.checkboxes.${key}`, !oldContent);
+      debugger;
+      this.get('onBlockMetaReplacedLocally')(
+        this.get('block'),
+        ['checkboxes', key],
+        oldContent,
+        this.get(`block.meta.checkboxes.${key}`));
     },
 
     /**
@@ -325,3 +358,7 @@ export default CanvasBlock.extend({
     }
   },
 });
+
+function flatMapBy(arr, prop) {
+  return [].concat(...arr.mapBy(prop));
+}

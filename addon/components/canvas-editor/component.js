@@ -1833,3 +1833,4 @@ export default Ember.Component.extend(TypeChanges, {
    */
   unfurlBlock() { return RSVP.resolve({}); }
 });
+

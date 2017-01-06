@@ -8,7 +8,7 @@
 
 <div class={{levelClass}} local-class="container">
   <div local-class="checkbox">
-    {{ui-checkbox checked=block.meta.checked onToggle=(action 'onToggleChecked')}}
+    {{ui-checkbox checked=checked onToggle=(action 'onToggleChecked')}}
   </div>
 
   <div local-class="content">
@@ -20,10 +20,13 @@
       isMultiBlock=isMultiBlock
       isFocused=(mut isFocused)
       isTemplate=isTemplate
+      symbolValues=symbolValues
       indentBlock=(action offsetLevel 1)
       unindentBlock=(action offsetLevel -1)
       onBlockDeletedLocally=onBlockDeletedLocally
       onBlockReplacedLocally=onBlockReplacedLocally
+      onChunkInput=onChunkInput
+      onCheckboxToggle=onCheckboxToggle
       onDoubleSelectAll=onDoubleSelectAll
       onDoubleSelectToEnd=onDoubleSelectToEnd
       onDoubleSelectToStart=onDoubleSelectToStart

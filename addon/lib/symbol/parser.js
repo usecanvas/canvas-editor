@@ -119,5 +119,5 @@ export function parseSymbolCommand(command) {
     if (key !== '') p[key] = val;
     return p;
   }, {});
-  return { name, chunks: argObj };
+  return { name, chunks: argObj, checkboxes: {} };
 }

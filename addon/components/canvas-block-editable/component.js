@@ -2,6 +2,7 @@ import BlockEvents from 'canvas-editor/mixins/block-events';
 import Ember from 'ember';
 import ContentEditable from 'canvas-editor/mixins/content-editable';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
+import layout from './template';
 import styles from './styles';
 
 const { computed, run } = Ember;
@@ -20,6 +21,7 @@ export default Ember.Component.extend(BlockEvents, ContentEditable, {
   localClassNameBindings: ['isEmpty', 'isFocused', 'isSelected'],
   nextBlockConstructor: Paragraph,
   placeholder: computed.oneWay('block.meta.placeholder'),
+  layout,
   styles,
 
   didInsertElement() {
@@ -33,5 +35,11 @@ export default Ember.Component.extend(BlockEvents, ContentEditable, {
 
   focus() {
     this.set('isFocused', true);
+  },
+
+  actions: {
+    chunkInput() {
+      return this.get('onChunkInput')(...arguments);
+    }
   }
 });

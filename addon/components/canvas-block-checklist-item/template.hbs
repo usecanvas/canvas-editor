@@ -6,9 +6,12 @@
     filter=filterTerm}}
 {{/if}}
 
+
 <div class={{levelClass}} local-class="container">
   <div local-class="checkbox">
-    {{ui-checkbox checked=checked onToggle=(action 'onToggleChecked')}}
+    {{ui-checkbox checked=(if (and checkboxes (not-eq (get checkboxes block.idx_i) undefined))
+    (get checkboxes block.idx_i) block.meta.checked)
+    onToggle=(if onCheckboxToggle (action onCheckboxToggle block.idx_i) (action 'onToggleChecked'))}}
   </div>
 
   <div local-class="content">

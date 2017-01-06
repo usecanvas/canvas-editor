@@ -20,7 +20,7 @@ export default Ember.Component.extend({
   styles,
 
   click() {
-    this.get('onToggle')();
+    this.get('onToggle')(this.get('checked'));
   },
 
   setAnimateable: on('willUpdate', function() {

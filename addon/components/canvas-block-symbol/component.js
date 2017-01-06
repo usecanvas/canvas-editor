@@ -28,7 +28,7 @@ export default CanvasBlock.extend({
 
   applyCheckboxIndexes: function() {
     this.get('checkboxBlocks').forEach((b, i) => {
-      b.set('idx_i', i);
+      b.set('idx_i', `_${i}`);
     });
   }.observes('checkboxBlocks').on('init'),
 
@@ -162,7 +162,7 @@ export default CanvasBlock.extend({
           this.get(`block.meta.chunks.${key}`));
     },
 
-    checkboxToggle(block, oldContent) {
+    checkboxToggle(key, oldContent) {
       if (!this.get('block.meta.checkboxes')) {
         this.set('block.meta.checkboxes', {});
         this.get('onBlockMetaReplacedLocally')(
@@ -172,11 +172,7 @@ export default CanvasBlock.extend({
           this.get('block.meta.checkboxes'));
       }
 
-      const idx = this.get('checkboxBlocks').indexOf(block);
-      const key = `idx_${idx}`;
-
       this.set(`block.meta.checkboxes.${key}`, !oldContent);
-      debugger;
       this.get('onBlockMetaReplacedLocally')(
         this.get('block'),
         ['checkboxes', key],

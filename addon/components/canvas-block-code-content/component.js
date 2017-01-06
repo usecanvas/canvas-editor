@@ -40,7 +40,8 @@ export default CanvasBlockEditable.extend({
       try {
         highlighted = Highlight.highlight(language, content);
       } catch (_err) {
-        highlighted = { value: content };
+        const escapedContent = Ember.Handlebars.Utils.escapeExpression(content);
+        highlighted = { value: escapedContent };
       }
 
       let html;

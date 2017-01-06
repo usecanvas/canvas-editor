@@ -4,7 +4,7 @@ import Highlight from 'highlight';
 import SelectionState from 'canvas-editor/lib/selection-state';
 import styles from './styles';
 
-const { computed, inject, observer, on, run } = Ember;
+const { computed, observer, on, run } = Ember;
 const isFirefox = window.navigator.userAgent.includes('Firefox');
 
 /**
@@ -21,7 +21,6 @@ export default CanvasBlockEditable.extend({
   styles,
   tagName: 'code',
   usesMarkdown: false,
-  symbol: inject.service(),
 
   selectionState: computed(function() {
     return new SelectionState(this.get('element'));
@@ -30,36 +29,24 @@ export default CanvasBlockEditable.extend({
   highlight: on('didInsertElement',
              observer('block.content', 'block.meta.language', function() {
     if (isFirefox) return;
-    if (this.get('block.meta.language') === 'symbol') {
-      this.get('symbol')
-        .updateSymbolDefinition('symbol', this.get('block.content'));
-    }
+
     run.scheduleOnce('afterRender', _ => {
       this.get('selectionState').capture();
 
       const content = this.get('block.content');
       const language = this.get('block.meta.language');
 
-      let highlighted = {};
+      let highlighted;
       try {
         highlighted = Highlight.highlight(language, content);
       } catch (_err) {
-        // Continue if highlighting failed
+        highlighted = { value: content };
       }
 
       let html;
       if (highlighted.value) {
         html = highlighted.value.replace(
           /\n/g, '<br data-restore-skip="true">');
-      } else {
-        html = content
-          .replace(/&/g, '&amp;')
-          .replace(/>/g, '&gt;')
-          .replace(/</g, '&lt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#x27;')
-          .replace(/\//g, '&#x2F;')
-          .replace(/\n/g, '<br data-restore-skip="true">');
       }
 
       this.$().html(html || '<br>');

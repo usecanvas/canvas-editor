@@ -307,7 +307,6 @@ export default Ember.Mixin.create(Selection, SelectionState, {
    */
   renderBlockContent: observer('editedContent', on('didInsertElement',
     function renderBlockContent() {
-      if (this.get('block.isMultiPlaceholder')) return;
       if (this.get('isUpdatingBlockContent')) return;
 
       const content = getWithDefault(this, 'editedContent', '');

@@ -25,6 +25,8 @@ export default CanvasBlock.extend({
     switch (this.get('unfurled.providerName')) {
       case 'GitHub':
         return this.get('githubAuthComponent');
+      case 'Slack':
+        return this.get('slackAuthComponent');
       default:
         return null;
     }
@@ -33,7 +35,7 @@ export default CanvasBlock.extend({
   showAuthComponent: computed('unfurled.providerName',
                               'unfurled.fetched', function() {
     return !this.get('unfurled.fetched') &&
-      this.get('unfurled.providerName') === 'GitHub';
+      ['GitHub', 'Slack'].includes(this.get('unfurled.providerName'));
   }),
 
   /**

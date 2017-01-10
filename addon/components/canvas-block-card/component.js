@@ -1,7 +1,6 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import DS from 'ember-data';
 import Ember from 'ember';
-import RSVP from 'rsvp';
 import layout from './template';
 import styles from './styles';
 
@@ -52,15 +51,15 @@ export default CanvasBlock.extend({
 
   unfurled: computed('block', function() {
     const block = this.get('block');
-
-    return DS.PromiseObject.create({
-      promise: new RSVP.Promise((resolve, reject) => {
-        this.get('unfurl')(block).then(unfurled => {
-          this.get('cardDidLoad')();
-          block.set('unfurled', unfurled);
-          resolve(unfurled);
-        }).catch(reject);
+    const promise =  DS.PromiseObject.create({
+      promise: this.get('unfurl')(block).then(unfurled => {
+        this.get('cardDidLoad')();
+        block.set('unfurled', unfurled);
+        return unfurled;
       })
     });
+    // Catch error thrown by the PromiseProxy to not trigger error notification
+    promise.catch(Ember.K);
+    return promise;
   })
 });

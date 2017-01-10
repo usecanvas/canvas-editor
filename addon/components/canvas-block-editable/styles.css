@@ -32,11 +32,23 @@
       color: var(--dark-gray, default-dark-gray);
       font-family: var(--editor-monospace-font-family, default-editor-monospace-font-family);
       font-size: 0.9375em;
+    }
 
-      a {
-        color: inherit;
-        text-decoration: underline;
-      }
+    /**
+     * 1. Inline code in a Markdown link should be underlined.
+     * 2. Auto-linked URLs in inline code should look the same as 1.
+     */
+    a .md-inline-code, /* 1 */
+    .md-inline-code a { /* 2 */
+      text-decoration: underline;
+    }
+
+    /**
+     * 1. Auto-linked URLs in inline code should have the same color as regular
+     *    inline code.
+     */
+    .md-inline-code a {
+      color: inherit;
     }
 
     .md-strong {

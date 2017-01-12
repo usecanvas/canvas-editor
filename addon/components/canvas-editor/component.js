@@ -461,7 +461,7 @@ export default Ember.Component.extend(TypeChanges, {
     } else if (key.is('meta', 'a')) {
       evt.preventDefault();
       this.get('multiBlockSelect').selectAll();
-    } else if (key.is('meta')) {
+    } else if (key.meta) {
       // Insert temporary element to catch clipboard events for Safari & FF
       this.insertTempElem();
     }

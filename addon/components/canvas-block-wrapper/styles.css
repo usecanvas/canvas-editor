@@ -1,0 +1,20 @@
+.canvas-block-wrapper {
+  margin: 0 0 1.5rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.heading {
+    margin: 2rem 0 0.5rem;
+  }
+
+  &.heading + &.heading {
+    margin-top: 1rem;
+  }
+
+  &.unordered-list-item,
+  &.checklist-item {
+    margin: 0;
+  }
+}

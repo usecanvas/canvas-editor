@@ -1,32 +1,34 @@
 {{#each filteredBlocks as |child|~}}
-  {{component (block-component-name child.type)
-    block=child
-    canvasID=canvasID
-    canvasLinkComponent=canvasLinkComponent
-    editingEnabled=editingEnabled
-    changeBlockType=changeBlockType
-    isMultiBlock=isMultiBlock
-    isTemplate=isTemplate
-    onBlockDeletedLocally=onBlockDeletedLocally
-    onDoubleSelectAll=onDoubleSelectAll
-    onDoubleSelectToEnd=onDoubleSelectToEnd
-    onDoubleSelectToStart=onDoubleSelectToStart
-    onRedo=onRedo
-    onUndo=onUndo
-    onMultiBlockSelectUp=onMultiBlockSelectUp
-    onMultiBlockSelectDown=onMultiBlockSelectDown
-    onNavigateDown=onNavigateDown
-    onNavigateLeft=onNavigateLeft
-    onNavigateRight=onNavigateRight
-    onNavigateUp=onNavigateUp
-    onBlockMetaReplacedLocally=onBlockMetaReplacedLocally
-    onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
-    onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
-    onNewBlockInsertedLocally=onNewBlockInsertedLocally
-    onSwapBlockUp=onSwapBlockUp
-    onSwapBlockDown=onSwapBlockDown
-    pasteBlocksAfter=pasteBlocksAfter
-    unfurl=unfurl}}
+  {{#canvas-block-wrapper block=child}}
+    {{component (block-component-name child.type)
+      block=child
+      canvasID=canvasID
+      canvasLinkComponent=canvasLinkComponent
+      editingEnabled=editingEnabled
+      changeBlockType=changeBlockType
+      isMultiBlock=isMultiBlock
+      isTemplate=isTemplate
+      onBlockDeletedLocally=onBlockDeletedLocally
+      onDoubleSelectAll=onDoubleSelectAll
+      onDoubleSelectToEnd=onDoubleSelectToEnd
+      onDoubleSelectToStart=onDoubleSelectToStart
+      onRedo=onRedo
+      onUndo=onUndo
+      onMultiBlockSelectUp=onMultiBlockSelectUp
+      onMultiBlockSelectDown=onMultiBlockSelectDown
+      onNavigateDown=onNavigateDown
+      onNavigateLeft=onNavigateLeft
+      onNavigateRight=onNavigateRight
+      onNavigateUp=onNavigateUp
+      onBlockMetaReplacedLocally=onBlockMetaReplacedLocally
+      onBlockContentUpdatedLocally=onBlockContentUpdatedLocally
+      onBlockTypeUpdatedLocally=onBlockTypeUpdatedLocally
+      onNewBlockInsertedLocally=onNewBlockInsertedLocally
+      onSwapBlockUp=onSwapBlockUp
+      onSwapBlockDown=onSwapBlockDown
+      pasteBlocksAfter=pasteBlocksAfter
+      unfurl=unfurl}}
+  {{/canvas-block-wrapper}}
 
   {{canvas-drop-bar afterBlockId=child.id}}
 {{~/each}}

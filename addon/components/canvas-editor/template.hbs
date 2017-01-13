@@ -27,41 +27,43 @@
 {{canvas-drop-bar afterBlockId=titleBlock.id}}
 
 {{#each contentBlocks as |block|}}
-  {{component (block-component-name block.type)
-    block=block
-    cardDidLoad=(action 'cardDidLoad')
-    filterTerm=filterTerm
-    canvasAPIURL=canvas.apiURL
-    canvasID=canvas.id
-    isMultiBlock=isMultiBlock
-    isTemplate=canvas.isTemplate
-    canvasLinkComponent=canvasLinkComponent
-    githubAuthComponent=githubAuthComponent
-    slackAuthComponent=slackAuthComponent
-    editingEnabled=editingEnabled
-    changeBlockType=(action 'changeBlockType')
-    fetchUploadSignature=fetchUploadSignature
-    onBlockDeletedLocally=(action 'blockDeletedLocally')
-    onBlockReplacedLocally=(action 'blockReplacedLocally')
-    onDoubleSelectAll=(action 'doubleSelectAll')
-    onDoubleSelectToEnd=(action 'doubleSelectToEnd')
-    onDoubleSelectToStart=(action 'doubleSelectToStart')
-    onRedo=(action 'redo')
-    onUndo=(action 'undo')
-    onMultiBlockSelectUp=(action 'multiBlockSelectUp')
-    onMultiBlockSelectDown=(action 'multiBlockSelectDown')
-    onNavigateDown=(action 'navigateDown')
-    onNavigateLeft=(action 'navigateLeft')
-    onNavigateRight=(action 'navigateRight')
-    onNavigateUp=(action 'navigateUp')
-    onBlockMetaReplacedLocally=(action 'blockMetaReplacedLocally')
-    onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
-    onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
-    onSwapBlockUp=(action 'swapBlockUp')
-    onSwapBlockDown=(action 'swapBlockDown')
-    onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
-    pasteBlocksAfter=(action pasteBlocksAfter)
-    unfurl=(action 'unfurl')}}
+  {{#canvas-block-wrapper block=block}}
+    {{component (block-component-name block.type)
+      block=block
+      cardDidLoad=(action 'cardDidLoad')
+      filterTerm=filterTerm
+      canvasAPIURL=canvas.apiURL
+      canvasID=canvas.id
+      isMultiBlock=isMultiBlock
+      isTemplate=canvas.isTemplate
+      canvasLinkComponent=canvasLinkComponent
+      githubAuthComponent=githubAuthComponent
+      slackAuthComponent=slackAuthComponent
+      editingEnabled=editingEnabled
+      changeBlockType=(action 'changeBlockType')
+      fetchUploadSignature=fetchUploadSignature
+      onBlockDeletedLocally=(action 'blockDeletedLocally')
+      onBlockReplacedLocally=(action 'blockReplacedLocally')
+      onDoubleSelectAll=(action 'doubleSelectAll')
+      onDoubleSelectToEnd=(action 'doubleSelectToEnd')
+      onDoubleSelectToStart=(action 'doubleSelectToStart')
+      onRedo=(action 'redo')
+      onUndo=(action 'undo')
+      onMultiBlockSelectUp=(action 'multiBlockSelectUp')
+      onMultiBlockSelectDown=(action 'multiBlockSelectDown')
+      onNavigateDown=(action 'navigateDown')
+      onNavigateLeft=(action 'navigateLeft')
+      onNavigateRight=(action 'navigateRight')
+      onNavigateUp=(action 'navigateUp')
+      onBlockMetaReplacedLocally=(action 'blockMetaReplacedLocally')
+      onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
+      onBlockTypeUpdatedLocally=(action 'blockTypeUpdatedLocally')
+      onSwapBlockUp=(action 'swapBlockUp')
+      onSwapBlockDown=(action 'swapBlockDown')
+      onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
+      pasteBlocksAfter=(action pasteBlocksAfter)
+      unfurl=(action 'unfurl')}}
+  {{/canvas-block-wrapper}}
 
   {{#unless block.blocks}}
     {{canvas-drop-bar afterBlockId=block.id adjustSpacing=true}}

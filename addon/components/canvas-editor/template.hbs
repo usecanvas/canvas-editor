@@ -64,6 +64,7 @@
     unfurl=(action 'unfurl')}}
 
   {{#unless block.blocks}}
+    {{component commentThread}}
     {{canvas-drop-bar afterBlockId=block.id adjustSpacing=true}}
   {{/unless}}
 {{/each}}

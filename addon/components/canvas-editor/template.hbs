@@ -66,7 +66,7 @@
   {{/canvas-block-wrapper}}
 
   {{#unless block.blocks}}
-    {{component commentThreadComponent}}
+    {{component commentThreadComponent blockId=block.id}}
     {{canvas-drop-bar afterBlockId=block.id adjustSpacing=true}}
   {{/unless}}
 {{/each}}

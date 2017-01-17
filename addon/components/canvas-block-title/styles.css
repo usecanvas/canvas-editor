@@ -3,6 +3,7 @@
 
 .canvas-block-title {
   composes: canvas-block from 'canvas-editor/components/canvas-block/styles';
+  margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   position: relative;
 }

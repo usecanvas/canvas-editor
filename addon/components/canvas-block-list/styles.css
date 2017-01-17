@@ -1,4 +1,3 @@
 .canvas-block-list {
-  composes: block-spacing from 'canvas-editor/components/canvas-block/styles';
   padding: 0;
 }

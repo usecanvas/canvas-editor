@@ -1,16 +1,7 @@
 @value default-blue from 'canvas-editor/styles/theme';
 @value default-light-gray from 'canvas-editor/styles/theme';
 
-.block-spacing {
-  margin: 0 0 1.5rem;
-}
-
-.block-spacing:last-child {
-  margin-bottom: 0;
-}
-
 .canvas-block {
-  composes: block-spacing;
   position: relative;
 }
 

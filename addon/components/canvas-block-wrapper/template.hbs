@@ -1,12 +1,14 @@
 {{#if block.blocks}}
   {{yield}}
 {{else}}
-    <div local-class="block">
-      {{yield}}
-    </div>
+  <div local-class="block">
+    {{yield}}
+  </div>
 
   {{#with (hash blockComments=(filter-by 'block.id' block.id comments)) as |scope|}}
-    <button onclick={{toggle-action 'block.showCommentThread' this}} local-class="comment-thread-indicator {{if scope.blockComments 'has-comments'}}">
+    <button
+      local-class="comment-thread-indicator {{if scope.blockComments 'has-comments'}}"
+      onclick={{toggle-action 'block.showCommentThread' this}}>
       {{#if block.showCommentThread}}
         Hide Comments
       {{else}}

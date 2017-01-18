@@ -1,27 +1,24 @@
 {{#if block.blocks}}
   {{yield}}
 {{else}}
-  {{#with (filter-by 'blockId' block.id comments) as |blockComments|}}
     <div local-class="block">
       {{yield}}
     </div>
 
-    {{blockComments.length}}
-    {{!--  {{#if blockComments.length}}  --}}
-      <button onclick={{toggle-action 'block.showCommentThread' this}} local-class="comment-thread-indicator">
-        {{#if block.showCommentThread}}
-          Hide Comments
-        {{else}}
-          Show Comments
-        {{/if}}
-      </button>
-    {{!--  {{/if}}  --}}
+  {{#with (hash blockComments=(filter-by 'block.id' block.id comments)) as |scope|}}
+    <button onclick={{toggle-action 'block.showCommentThread' this}} local-class="comment-thread-indicator {{if scope.blockComments 'has-comments'}}">
+      {{#if block.showCommentThread}}
+        Hide Comments
+      {{else}}
+        Show Comments
+      {{/if}}
+    </button>
 
     {{#if block.showCommentThread}}
       <div local-class="comment-thread">
         {{component commentThreadComponent
           blockId=block.id
-          blockComments=blockComments
+          blockComments=scope.blockComments
           comments=comments}}
       </div>
     {{/if}}

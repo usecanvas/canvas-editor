@@ -6,8 +6,10 @@ const { computed } = Ember;
 
 export default Ember.Component.extend({
   classNameBindings: ['typeClassName'],
+  withoutChildren: computed.not('block.blocks'),
   layout,
   localClassNames: ['canvas-block-wrapper'],
+  localClassNameBindings: ['withoutChildren'],
   styles,
 
   typeClassName: computed('block.type', function() {

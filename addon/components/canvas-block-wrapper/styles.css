@@ -21,7 +21,7 @@
     margin: 0;
   }
 
-  &:hover .comment-thread-indicator {
+  &.without-children:hover .comment-thread-indicator {
     background: var(--gray, default-gray);
   }
 }
@@ -32,10 +32,11 @@
   border: none;
   display: block;
   height: 0.625rem;
-  text-indent: -99999em;
+  outline: none;
   padding: 0;
   position: absolute;
   right: -1.5rem;
+  text-indent: -99999em;
   top: 0.4375rem;
   width: 0.625rem;
 

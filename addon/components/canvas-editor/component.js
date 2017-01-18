@@ -380,21 +380,6 @@ export default Ember.Component.extend(TypeChanges, {
     } else if (key.is('meta', 'shift', 'z')) {
       this.send('redo', evt);
       return;
-    } else if (key.is('meta', 'ctrl', 'up') && selectedCardBlockElement) {
-      evt.preventDefault();
-      const block = this.getNavigableBlocks()
-        .findBy('id', selectedCardBlockElement.id);
-      this.send('swapBlockUp', block);
-    } else if (key.is('meta', 'ctrl', 'down') && selectedCardBlockElement) {
-      evt.preventDefault();
-      const block = this.getNavigableBlocks()
-        .findBy('id', selectedCardBlockElement.id);
-      this.send('swapBlockDown', block);
-    } else if (key.is('meta', 'slash') && selectedCardBlockElement) {
-      evt.preventDefault();
-      const block = this.getNavigableBlocks()
-        .findBy('id', selectedCardBlockElement.id);
-      block.set('showCommentThread', true);
     }
 
     // Below handles only navigation/editing of card blocks.
@@ -407,11 +392,21 @@ export default Ember.Component.extend(TypeChanges, {
    *
    * @method
    */
+  /* eslint-disable max-statements */
   keydownCard(evt, selectedCardBlockElement) {
     const cardBlock = this.getBlockForElement(selectedCardBlockElement);
     const key = new Key(evt.originalEvent);
 
-    if (key.is('up') || key.is('left')) {
+    if (key.is('meta', 'ctrl', 'up')) {
+      evt.preventDefault();
+      this.send('swapBlockUp', cardBlock);
+    } else if (key.is('meta', 'ctrl', 'down')) {
+      evt.preventDefault();
+      this.send('swapBlockDown', cardBlock);
+    } else if (key.is('meta', 'slash')) {
+      evt.preventDefault();
+      cardBlock.set('showCommentThread', true);
+    } else if (key.is('up') || key.is('left')) {
       evt.preventDefault();
       selectedCardBlockElement.setAttribute(CARD_BLOCK_SELECTED_ATTR, false);
       this.send('navigateUp', cardBlock);

@@ -390,6 +390,11 @@ export default Ember.Component.extend(TypeChanges, {
       const block = this.getNavigableBlocks()
         .findBy('id', selectedCardBlockElement.id);
       this.send('swapBlockDown', block);
+    } else if (key.is('meta', 'slash') && selectedCardBlockElement) {
+      evt.preventDefault();
+      const block = this.getNavigableBlocks()
+        .findBy('id', selectedCardBlockElement.id);
+      block.set('showCommentThread', true);
     }
 
     // Below handles only navigation/editing of card blocks.

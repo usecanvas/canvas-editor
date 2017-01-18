@@ -146,6 +146,10 @@ export default Ember.Mixin.create(Selection, SelectionState, {
       evt.preventDefault();
       evt.stopPropagation();
       this.get('onSwapBlockDown')(this.get('block'));
+    } else if (key.is('meta', 'slash')) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      this.set('block.showCommentThread', true);
     }
   },
 

@@ -1,1 +1,23 @@
-{{yield}}
+{{#if block.blocks}}
+  {{yield}}
+{{else}}
+  <div local-class="block">
+    {{yield}}
+  </div>
+
+  {{!--  {{#if block.hasComments}}  --}}
+    <button onclick={{toggle-action 'block.showCommentThread' this}} local-class="comment-thread-indicator">
+      {{#if block.showCommentThread}}
+        Hide Comments
+      {{else}}
+        Show Comments
+      {{/if}}
+    </button>
+  {{!--  {{/if}}  --}}
+
+  {{#if block.showCommentThread}}
+    <div local-class="comment-thread">
+      {{component commentThreadComponent blockId=block.id}}
+    </div>
+  {{/if}}
+{{/if}}

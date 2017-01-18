@@ -66,6 +66,8 @@ export default Ember.Component.extend(TypeChanges, {
    */
   classNames: 'canvas-editor'.w(),
 
+  comments: computed(_ => []),
+
   /**
    * @member {Ember.Service} A service for tracking ID of the insert-after block
    */

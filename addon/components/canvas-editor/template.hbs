@@ -29,6 +29,7 @@
 {{#each contentBlocks as |block|}}
   {{#canvas-block-wrapper
     block=block
+    comments=(filter-by 'blockId' block.id comments)
     commentThreadComponent=commentThreadComponent}}
     {{component (block-component-name block.type)
       block=block

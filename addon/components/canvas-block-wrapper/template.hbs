@@ -17,7 +17,9 @@
 
   {{#if block.showCommentThread}}
     <div local-class="comment-thread">
-      {{component commentThreadComponent blockId=block.id comments=comments}}
+      {{component commentThreadComponent
+        blockId=block.id
+        comments=comments}}
     </div>
   {{/if}}
 {{/if}}

@@ -1,9 +1,7 @@
 {{#if block.blocks}}
   {{yield}}
 {{else}}
-  <div local-class="block">
-    {{yield}}
-  </div>
+  {{yield}}
 
   {{#with (hash blockComments=(filter-by 'block.id' block.id comments)) as |scope|}}
     <button

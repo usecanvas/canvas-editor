@@ -6,11 +6,11 @@ const { computed } = Ember;
 
 export default Ember.Component.extend({
   classNameBindings: ['typeClassName'],
-  withoutChildren: computed.not('block.blocks'),
   layout,
   localClassNames: ['canvas-block-wrapper'],
-  localClassNameBindings: ['withoutChildren'],
+  localClassNameBindings: ['withActions'],
   styles,
+  withActions: computed.not('block.blocks'),
 
   typeClassName: computed('block.type', function() {
     const type = this.get('block.type');

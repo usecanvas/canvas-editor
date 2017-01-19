@@ -79,6 +79,11 @@ export default Ember.Component.extend(TypeChanges, {
   editingEnabled: true,
 
   /**
+   * @member {boolean} Whether comments is enabled in the component
+   */
+  commentsEnabled: computed.readOnly('canvas.team.isInTeam'),
+
+  /**
    * @member {string} A term used to filter the canvas's blocks
    */
   filterTerm: '',

@@ -12,9 +12,13 @@ const { computed } = Ember;
 export default Ember.Object.extend({
   id: computed(_ => Base62UUID.generate()),
   meta: computed(_ => Ember.Object.create()),
-  toJSON() {
-    return this.getProperties('blocks', 'isGroup', 'meta', 'type', 'isCard',
-                              'content');
+  toJSON({ serializeId = false }) {
+    const properties = ['blocks', 'isGroup', 'meta', 'type', 'isCard',
+      'content'];
+    if (serializeId) {
+      return this.getProperties('id', ...properties);
+    }
+    return this.getProperties(...properties);
   }
 }).reopenClass({
   /* eslint-disable no-unused-vars */

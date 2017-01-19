@@ -66,6 +66,8 @@ export default Ember.Component.extend(TypeChanges, {
    */
   classNames: 'canvas-editor'.w(),
 
+  comments: computed(_ => []),
+
   /**
    * @member {Ember.Service} A service for tracking ID of the insert-after block
    */
@@ -75,6 +77,11 @@ export default Ember.Component.extend(TypeChanges, {
    * @member {boolean} Whether editing is enabled in the component
    */
   editingEnabled: true,
+
+  /**
+   * @member {boolean} Whether comments is enabled in the component
+   */
+  commentsEnabled: computed.readOnly('canvas.team.isInTeam'),
 
   /**
    * @member {string} A term used to filter the canvas's blocks
@@ -378,16 +385,6 @@ export default Ember.Component.extend(TypeChanges, {
     } else if (key.is('meta', 'shift', 'z')) {
       this.send('redo', evt);
       return;
-    } else if (key.is('meta', 'ctrl', 'up') && selectedCardBlockElement) {
-      evt.preventDefault();
-      const block = this.getNavigableBlocks()
-        .findBy('id', selectedCardBlockElement.id);
-      this.send('swapBlockUp', block);
-    } else if (key.is('meta', 'ctrl', 'down') && selectedCardBlockElement) {
-      evt.preventDefault();
-      const block = this.getNavigableBlocks()
-        .findBy('id', selectedCardBlockElement.id);
-      this.send('swapBlockDown', block);
     }
 
     // Below handles only navigation/editing of card blocks.
@@ -400,11 +397,21 @@ export default Ember.Component.extend(TypeChanges, {
    *
    * @method
    */
+  /* eslint-disable max-statements */
   keydownCard(evt, selectedCardBlockElement) {
     const cardBlock = this.getBlockForElement(selectedCardBlockElement);
     const key = new Key(evt.originalEvent);
 
-    if (key.is('up') || key.is('left')) {
+    if (key.is('meta', 'ctrl', 'up')) {
+      evt.preventDefault();
+      this.send('swapBlockUp', cardBlock);
+    } else if (key.is('meta', 'ctrl', 'down')) {
+      evt.preventDefault();
+      this.send('swapBlockDown', cardBlock);
+    } else if (key.is('meta', 'slash')) {
+      evt.preventDefault();
+      cardBlock.set('showCommentThread', true);
+    } else if (key.is('up') || key.is('left')) {
       evt.preventDefault();
       selectedCardBlockElement.setAttribute(CARD_BLOCK_SELECTED_ATTR, false);
       this.send('navigateUp', cardBlock);

@@ -8,7 +8,9 @@ export default Ember.Component.extend({
   classNameBindings: ['typeClassName'],
   layout,
   localClassNames: ['canvas-block-wrapper'],
+  localClassNameBindings: ['withActions'],
   styles,
+  withActions: computed.not('block.blocks'),
 
   typeClassName: computed('block.type', function() {
     const type = this.get('block.type');

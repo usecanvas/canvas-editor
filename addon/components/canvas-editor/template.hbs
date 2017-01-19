@@ -27,9 +27,16 @@
 {{canvas-drop-bar afterBlockId=titleBlock.id}}
 
 {{#each contentBlocks as |block|}}
-  {{#canvas-block-wrapper block=block}}
+  {{#canvas-block-wrapper
+    block=block
+    comments=(if commentsEnabled canvas.comments)
+    commentsEnabled=commentsEnabled
+    commentThreadComponent=commentThreadComponent}}
     {{component (block-component-name block.type)
       block=block
+      comments=(if commentsEnabled canvas.comments)
+      commentsEnabled=commentsEnabled
+      commentThreadComponent=commentThreadComponent
       cardDidLoad=(action 'cardDidLoad')
       filterTerm=filterTerm
       canvasAPIURL=canvas.apiURL
@@ -63,9 +70,9 @@
       onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
       pasteBlocksAfter=(action pasteBlocksAfter)
       unfurl=(action 'unfurl')}}
-  {{/canvas-block-wrapper}}
 
-  {{#unless block.blocks}}
-    {{canvas-drop-bar afterBlockId=block.id adjustSpacing=true}}
-  {{/unless}}
+    {{#unless block.blocks}}
+      {{canvas-drop-bar afterBlockId=block.id adjustSpacing=true}}
+    {{/unless}}
+  {{/canvas-block-wrapper}}
 {{/each}}

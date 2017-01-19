@@ -1,5 +1,9 @@
+@value default-gray from 'canvas-editor/styles/theme';
+@value default-dark-gray from 'canvas-editor/styles/theme';
+
 .canvas-block-wrapper {
   margin: 0 0 1.5rem;
+  position: relative;
 
   &:last-child {
     margin-bottom: 0;
@@ -17,4 +21,32 @@
   &.checklist-item {
     margin: 0;
   }
+}
+
+.comment-thread-indicator {
+  background: transparent;
+  border-radius: 50%;
+  border: none;
+  display: block;
+  height: 0.625rem;
+  outline: none;
+  padding: 0;
+  position: absolute;
+  right: -1.5rem;
+  text-indent: -99999em;
+  top: 0.4375rem;
+  width: 0.625rem;
+}
+
+.canvas-block-wrapper.with-actions:hover .comment-thread-indicator {
+  background-color: var(--gray, default-gray);
+}
+
+.comment-thread-indicator.has-comments,
+.canvas-block-wrapper.with-actions:hover .comment-thread-indicator.has-comments {
+  background-color: var(--dark-gray, default-dark-gray);
+}
+
+.comment-thread {
+  margin-top: 1rem;
 }

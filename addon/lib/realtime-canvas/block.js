@@ -12,7 +12,7 @@ const { computed } = Ember;
 export default Ember.Object.extend({
   id: computed(_ => Base62UUID.generate()),
   meta: computed(_ => Ember.Object.create()),
-  toJSON({ serializeId = false }) {
+  toJSON({ serializeId = false } = {}) {
     const properties = ['blocks', 'isGroup', 'meta', 'type', 'isCard',
       'content'];
     if (serializeId) {

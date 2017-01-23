@@ -14,7 +14,6 @@ export default Ember.Component.extend(BlockEvents, {
   attributeBindings: ['block.id:data-block-id'],
   classNames: ['canvas-block'],
   isEditingPlaceholder: false,
-  isFocused: false,
   localClassNames: ['canvas-block'],
   localClassNameBindings: ['isFocused', 'isSelected'],
   isSelected: computed.readOnly('block.isSelected'),

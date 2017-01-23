@@ -41,6 +41,7 @@
       filterTerm=filterTerm
       canvasAPIURL=canvas.apiURL
       canvasID=canvas.id
+      isFocused=wrapper.isFocused
       isMultiBlock=isMultiBlock
       isTemplate=canvas.isTemplate
       canvasLinkComponent=canvasLinkComponent
@@ -68,8 +69,8 @@
       onSwapBlockUp=(action 'swapBlockUp')
       onSwapBlockDown=(action 'swapBlockDown')
       onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
-      onBlockBlur=wrapper.onBlur
-      onBlockFocus=wrapper.onFocus
+      onBlurBlock=wrapper.onBlurBlock
+      onFocusBlock=wrapper.onFocusBlock
       pasteBlocksAfter=(action pasteBlocksAfter)
       unfurl=(action 'unfurl')}}
 

@@ -15,6 +15,8 @@ export default CanvasBlockEditable.extend({
   localClassNames: ['canvas-block-title-content'],
   styles,
 
+  onBlurBlock: Ember.K,
+  onFocusBlock: Ember.K,
   onSwapBlockDown: Ember.K,
   onSwapBlockUp: Ember.K,
 

@@ -16,17 +16,5 @@ export default Ember.Component.extend({
   typeClassName: computed('block.type', function() {
     const type = this.get('block.type');
     return this.get(`styles.${type}`);
-  }),
-
-  actions: {
-    onBlur() {
-      console.log('Blurring...');
-      // this.set('isFocused', false);
-    },
-
-    onFocus() {
-      console.log('Focusing...');
-      // this.set('isFocused', true);
-    }
-  }
+  })
 });

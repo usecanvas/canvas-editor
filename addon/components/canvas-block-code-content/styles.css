@@ -9,10 +9,15 @@
 .canvas-block-code-content {
   composes: canvas-block-editable from 'canvas-editor/components/canvas-block-editable/styles';
   color: inherit;
-  display: block;
   font-family: inherit;
   font-size: inherit;
-  white-space: pre;
+  white-space: nowrap;
+
+  &.is-firefox {
+    white-space: pre;
+    display: block;
+  }
+
 
   :global {
     .hljs-comment,

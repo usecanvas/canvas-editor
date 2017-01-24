@@ -16,13 +16,11 @@ const isFirefox = window.navigator.userAgent.includes('Firefox');
 export default CanvasBlockEditable.extend({
   attributeBindings: ['spellcheck'],
   classNames: ['canvas-block-code-content'],
-  localClassNameBindings: ['isFirefox'],
   localClassNames: ['canvas-block-code-content'],
   spellcheck: false,
   styles,
   tagName: 'code',
   usesMarkdown: false,
-  isFirefox,
 
   selectionState: computed(function() {
     return new SelectionState(this.get('element'));

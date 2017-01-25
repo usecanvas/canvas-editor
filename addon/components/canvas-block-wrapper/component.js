@@ -1,12 +1,12 @@
 import Ember from 'ember';
+import FocusBlur from 'canvas-editor/mixins/focus-blur';
 import layout from './template';
 import styles from './styles';
 
 const { computed } = Ember;
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(FocusBlur, {
   classNameBindings: ['typeClassName'],
-  isFocused: false,
   layout,
   localClassNames: ['canvas-block-wrapper'],
   localClassNameBindings: ['withActions'],

@@ -3,8 +3,8 @@
 {{else}}
   {{yield (hash
             isFocused=isFocused
-            onBlurBlock=(action (mut isFocused) false)
-            onFocusBlock=(action (mut isFocused) true))}}
+            onBlurBlock=(action 'onBlur')
+            onFocusBlock=(action 'onFocus'))}}
 
   {{#if commentsEnabled}}
     {{#with (hash blockComments=(filter-by 'block.id' block.id comments)) as |scope|}}

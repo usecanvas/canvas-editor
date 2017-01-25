@@ -13,11 +13,3 @@
 .canvas-block-image[data-card-block-selected=true] img {
   box-shadow: 0 0 0 2px var(--blue, default-blue);
 }
-
-.block-link {
-  composes: block-link from 'canvas-editor/components/canvas-block/styles';
-}
-
-.is-selected {
-  composes: is-selected from 'canvas-editor/components/canvas-block/styles';
-}

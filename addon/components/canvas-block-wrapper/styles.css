@@ -4,7 +4,6 @@
 @value default-light-gray from 'canvas-editor/styles/theme';
 
 .canvas-block-wrapper {
-  background: rgba(255, 0, 0, 0.5);
   margin: 0 0 1.5rem;
   position: relative;
 
@@ -48,7 +47,7 @@
   width: 3px;
 }
 
-.canvas-block-wrapper:hover .block-link,
+.canvas-block-wrapper.is-leaf:hover .block-link,
 .block-link:active,
 .block-link:focus,
 .is-focused .block-link,
@@ -78,12 +77,12 @@
   width: 0.625rem;
 }
 
-.canvas-block-wrapper.with-actions:hover .comment-thread-indicator {
+.canvas-block-wrapper.is-leaf:hover .comment-thread-indicator {
   background-color: var(--gray, default-gray);
 }
 
 .comment-thread-indicator.has-comments,
-.canvas-block-wrapper.with-actions:hover .comment-thread-indicator.has-comments {
+.canvas-block-wrapper.is-leaf:hover .comment-thread-indicator.has-comments {
   background-color: var(--dark-gray, default-dark-gray);
 }
 

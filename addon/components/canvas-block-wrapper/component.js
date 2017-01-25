@@ -9,9 +9,9 @@ export default Ember.Component.extend(FocusBlur, {
   classNameBindings: ['typeClassName'],
   layout,
   localClassNames: ['canvas-block-wrapper'],
-  localClassNameBindings: ['withActions'],
+  localClassNameBindings: ['isLeaf'],
   styles,
-  withActions: computed.not('block.blocks'),
+  isLeaf: computed.not('block.blocks'),
 
   typeClassName: computed('block.type', function() {
     const type = this.get('block.type');

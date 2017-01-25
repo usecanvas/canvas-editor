@@ -1,7 +1,10 @@
 {{#if block.blocks}}
   {{yield}}
 {{else}}
-  {{yield}}
+  {{yield (hash
+            isFocused=isFocused
+            onBlurBlock=(action 'onBlur')
+            onFocusBlock=(action 'onFocus'))}}
 
   {{#if commentsEnabled}}
     {{#with (hash blockComments=(filter-by 'block.id' block.id comments)) as |scope|}}

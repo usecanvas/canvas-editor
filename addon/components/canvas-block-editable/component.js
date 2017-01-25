@@ -28,10 +28,10 @@ export default Ember.Component.extend(BlockEvents, ContentEditable, {
   },
 
   blur() {
-    this.set('isFocused', false);
+    this.get('onBlurBlock')();
   },
 
   focus() {
-    this.set('isFocused', true);
+    this.get('onFocusBlock')();
   }
 });

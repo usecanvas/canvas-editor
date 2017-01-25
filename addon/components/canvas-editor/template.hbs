@@ -31,7 +31,7 @@
     block=block
     comments=(if commentsEnabled canvas.comments)
     commentsEnabled=commentsEnabled
-    commentThreadComponent=commentThreadComponent}}
+    commentThreadComponent=commentThreadComponent as |wrapper|}}
     {{component (block-component-name block.type)
       block=block
       comments=(if commentsEnabled canvas.comments)
@@ -41,6 +41,7 @@
       filterTerm=filterTerm
       canvasAPIURL=canvas.apiURL
       canvasID=canvas.id
+      isFocused=wrapper.isFocused
       isMultiBlock=isMultiBlock
       isTemplate=canvas.isTemplate
       canvasLinkComponent=canvasLinkComponent
@@ -51,9 +52,11 @@
       fetchUploadSignature=fetchUploadSignature
       onBlockDeletedLocally=(action 'blockDeletedLocally')
       onBlockReplacedLocally=(action 'blockReplacedLocally')
+      onBlurBlock=wrapper.onBlurBlock
       onDoubleSelectAll=(action 'doubleSelectAll')
       onDoubleSelectToEnd=(action 'doubleSelectToEnd')
       onDoubleSelectToStart=(action 'doubleSelectToStart')
+      onFocusBlock=wrapper.onFocusBlock
       onRedo=(action 'redo')
       onUndo=(action 'undo')
       onMultiBlockSelectUp=(action 'multiBlockSelectUp')

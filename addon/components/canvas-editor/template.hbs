@@ -1,28 +1,33 @@
-{{canvas-block-title
-  block=titleBlock
-  editingEnabled=editingEnabled
-  hasContent=hasContent
-  isMultiBlock=isMultiBlock
-  fetchTemplates=fetchTemplates
-  actionsComponent=titleActionsComponent
-  bylineComponent=titleBylineComponent
-  onBlockDeletedLocally=(action 'blockDeletedLocally')
-  onBlockMetaReplacedLocally=(action 'blockMetaReplacedLocally')
-  onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
-  onDoubleSelectAll=(action 'doubleSelectAll')
-  onDoubleSelectToEnd=(action 'doubleSelectToEnd')
-  onDoubleSelectToStart=(action 'doubleSelectToStart')
-  onRedo=(action 'redo')
-  onUndo=(action 'undo')
-  onMultiBlockSelectUp=(action 'multiBlockSelectUp')
-  onMultiBlockSelectDown=(action 'multiBlockSelectDown')
-  onNavigateDown=(action 'navigateDown')
-  onNavigateLeft=(action 'navigateLeft')
-  onNavigateRight=(action 'navigateRight')
-  onNavigateUp=(action 'navigateUp')
-  onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
-  pasteBlocksAfter=(action pasteBlocksAfter)
-  onTemplateApply=(action 'templateApply')}}
+{{#canvas-block-wrapper as |wrapper|}}
+  {{canvas-block-title
+    block=titleBlock
+    editingEnabled=editingEnabled
+    hasContent=hasContent
+    isFocused=wrapper.isFocused
+    isMultiBlock=isMultiBlock
+    fetchTemplates=fetchTemplates
+    actionsComponent=titleActionsComponent
+    bylineComponent=titleBylineComponent
+    onBlockDeletedLocally=(action 'blockDeletedLocally')
+    onBlockMetaReplacedLocally=(action 'blockMetaReplacedLocally')
+    onBlurBlock=wrapper.onBlurBlock
+    onBlockContentUpdatedLocally=(action 'blockContentUpdatedLocally')
+    onDoubleSelectAll=(action 'doubleSelectAll')
+    onDoubleSelectToEnd=(action 'doubleSelectToEnd')
+    onDoubleSelectToStart=(action 'doubleSelectToStart')
+    onFocusBlock=wrapper.onFocusBlock
+    onRedo=(action 'redo')
+    onUndo=(action 'undo')
+    onMultiBlockSelectUp=(action 'multiBlockSelectUp')
+    onMultiBlockSelectDown=(action 'multiBlockSelectDown')
+    onNavigateDown=(action 'navigateDown')
+    onNavigateLeft=(action 'navigateLeft')
+    onNavigateRight=(action 'navigateRight')
+    onNavigateUp=(action 'navigateUp')
+    onNewBlockInsertedLocally=(action 'newBlockInsertedLocally')
+    pasteBlocksAfter=(action pasteBlocksAfter)
+    onTemplateApply=(action 'templateApply')}}
+{{/canvas-block-wrapper}}
 
 {{canvas-drop-bar afterBlockId=titleBlock.id}}
 

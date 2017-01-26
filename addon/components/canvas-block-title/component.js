@@ -13,10 +13,9 @@ const { computed, get, observer } = Ember;
  * @class CanvasEditor.CanvasBlockTitleComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
-export default CanvasBlock.extend(FocusBlur, {
+export default CanvasBlock.extend({
   classNames: ['canvas-block-title'],
   filteredTemplates: computed(_ => []),
-  isFocused: false,
   isShowingSelect: false,
   layout,
   localClassNames: ['canvas-block-title'],

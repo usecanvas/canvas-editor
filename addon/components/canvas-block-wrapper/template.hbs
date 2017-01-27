@@ -17,7 +17,7 @@
   </div>
 
   {{#if commentsEnabled}}
-    {{#with (hash blockComments=(filter-by 'block.id' block.id comments)) as |scope|}}
+    {{#with (hash blockComments=(filter-by 'blockID' block.id comments)) as |scope|}}
       <button
         local-class="comment-thread-indicator {{if scope.blockComments 'has-comments'}}"
         onclick={{toggle-action 'block.showCommentThread' this}}>

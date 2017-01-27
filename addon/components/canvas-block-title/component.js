@@ -1,6 +1,5 @@
 import CanvasBlock from 'canvas-editor/components/canvas-block/component';
 import Ember from 'ember';
-import FocusBlur from 'canvas-editor/mixins/focus-blur';
 import RSVP from 'rsvp';
 import layout from './template';
 import styles from './styles';
@@ -13,10 +12,9 @@ const { computed, get, observer } = Ember;
  * @class CanvasEditor.CanvasBlockTitleComponent
  * @extends CanvasEditor.CanvasBlockComponent
  */
-export default CanvasBlock.extend(FocusBlur, {
+export default CanvasBlock.extend({
   classNames: ['canvas-block-title'],
   filteredTemplates: computed(_ => []),
-  isFocused: false,
   isShowingSelect: false,
   layout,
   localClassNames: ['canvas-block-title'],

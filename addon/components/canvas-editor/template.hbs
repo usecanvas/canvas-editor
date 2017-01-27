@@ -35,13 +35,9 @@
     comments=(if commentsEnabled canvas.comments)
     commentsEnabled=commentsEnabled
     commentThreadComponent=commentThreadComponent
-    filter=filterTerm
-    as |wrapper|}}
+    filter=filterTerm as |wrapper|}}
     {{component (block-component-name block.type)
       block=block
-      comments=(if commentsEnabled canvas.comments)
-      commentsEnabled=commentsEnabled
-      commentThreadComponent=commentThreadComponent
       cardDidLoad=(action 'cardDidLoad')
       filterTerm=filterTerm
       canvasAPIURL=canvas.apiURL
@@ -49,7 +45,6 @@
       isFocused=wrapper.isFocused
       isMultiBlock=isMultiBlock
       isTemplate=canvas.isTemplate
-      canvasLinkComponent=canvasLinkComponent
       githubAuthComponent=githubAuthComponent
       slackAuthComponent=slackAuthComponent
       editingEnabled=editingEnabled

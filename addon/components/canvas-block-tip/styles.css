@@ -36,11 +36,3 @@
 .title {
   font-weight: 600;
 }
-
-.block-link {
-  composes: block-link from 'canvas-editor/components/canvas-block/styles';
-}
-
-.is-selected {
-  composes: is-selected from 'canvas-editor/components/canvas-block/styles';
-}

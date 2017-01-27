@@ -4,7 +4,7 @@ import ContentEditable from 'canvas-editor/mixins/content-editable';
 import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import styles from './styles';
 
-const { computed, run } = Ember;
+const { computed } = Ember;
 
 /**
  * A component representing a user-editable canvas block.
@@ -22,16 +22,11 @@ export default Ember.Component.extend(BlockEvents, ContentEditable, {
   placeholder: computed.oneWay('block.meta.placeholder'),
   styles,
 
-  didInsertElement() {
-    this.$().on('focus', run.bind(this, 'focus'));
-    this.$().on('blur', run.bind(this, 'blur'));
-  },
-
-  blur() {
+  focusOut() {
     this.get('onBlurBlock')();
   },
 
-  focus() {
+  focusIn() {
     this.get('onFocusBlock')();
   }
 });

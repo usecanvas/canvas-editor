@@ -21,9 +21,9 @@ import Paragraph from 'canvas-editor/lib/realtime-canvas/paragraph';
 import List from 'canvas-editor/lib/realtime-canvas/list';
 import Upload from 'canvas-editor/lib/realtime-canvas/upload';
 
-const { $, computed, inject, observer, on, run } = Ember;
+const { $, computed, inject, observer, on, run, String: { w } } = Ember;
 const CARD_BLOCK_SELECTED_ATTR = 'data-card-block-selected';
-const MULTI_BLOCK_EVENTS = 'keydown keypress keyup'.w();
+const MULTI_BLOCK_EVENTS = w('keydown keypress keyup');
 const SELECT_BLOCK = '.canvas-block';
 const SELECT_CARD_BLOCK = '.canvas-block-card';
 const SELECT_EDITABLE = '.canvas-block-editable';
@@ -64,7 +64,7 @@ export default Ember.Component.extend(TypeChanges, {
   /**
    * @member {Array<string>} Non-localized class names for debugging
    */
-  classNames: 'canvas-editor'.w(),
+  classNames: w('canvas-editor'),
 
   comments: computed(_ => []),
 
@@ -101,7 +101,7 @@ export default Ember.Component.extend(TypeChanges, {
   /**
    * @member {Array<string>} Localized class names for styling
    */
-  localClassNames: 'canvas-editor'.w(),
+  localClassNames: w('canvas-editor'),
 
   /**
    * @member {?CanvasEditor.MultiBLockSelect} A manager for multi-block select

@@ -39,7 +39,8 @@
     commentThreadComponent=commentThreadComponent
     comments=(if commentsEnabled canvas.comments)
     commentsEnabled=commentsEnabled
-    commentThreadComponent=commentThreadComponent
+    isMultiBlock=isMultiBlock
+    subscribeProps=subscribeProps
     filter=filterTerm as |wrapper|}}
     {{component (block-component-name block.type)
       block=block
@@ -52,6 +53,7 @@
       isTemplate=canvas.isTemplate
       githubAuthComponent=githubAuthComponent
       slackAuthComponent=slackAuthComponent
+      subscribeProps=subscribeProps
       editingEnabled=editingEnabled
       changeBlockType=(action 'changeBlockType')
       fetchUploadSignature=fetchUploadSignature

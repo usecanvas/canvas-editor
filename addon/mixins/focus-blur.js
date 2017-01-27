@@ -6,7 +6,12 @@ export default Ember.Mixin.create({
 
   actions: {
     onBlur() {
-      this.set('isFocused', false);
+      // If the blur event fires in the same the run loop as the
+      // contenteditable=false gets set then this will trigger a
+      // rerender in the render queue which is not allowed anymore.
+      Ember.run.schedule('afterRender', _ => {
+        this.set('isFocused', false);
+      });
     },
 
     onFocus() {

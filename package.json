@@ -44,7 +44,7 @@
     "ember-percy": "1.2.3",
     "ember-resolver": "^2.0.3",
     "ember-svg-jar": "0.9.3",
-    "ember-truth-helpers": "1.2.0",
+    "ember-truth-helpers": "1.3.0",
     "loader.js": "^4.0.1",
     "postcss-custom-properties": "^5.0.1",
     "postcss-nested": "^1.0.0",
@@ -61,7 +61,7 @@
   "peerDependencies": {
     "canvas-colors": "^1.0.1",
     "ember-svg-jar": "0.9.3",
-    "ember-truth-helpers": "1.2.0",
+    "ember-truth-helpers": "1.3.0",
     "ember-concurrency": "^0.7.15",
     "postcss-custom-properties": "^5.0.1"
   },

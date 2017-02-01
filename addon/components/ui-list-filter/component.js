@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from './template';
+import { task } from 'ember-concurrency';
 
 const { computed, observer, on, NativeArray } = Ember;
 
@@ -16,10 +17,12 @@ export default Ember.Component.extend({
   onResolveFilter: Ember.K,
 
   onValueChange: observer('value', function() {
-    const value = this.get('value');
-    this.get('onFilter')(value).then(results => {
-      this.set('results', results);
-      this.get('onResolveFilter')(results);
-    });
-  })
+    this.get('handleValueChange').perform(this.get('value'));
+  }),
+
+  handleValueChange: task(function *(value) {
+    const results = yield this.get('onFilter')(value);
+    this.set('results', results);
+    this.get('onResolveFilter')(results);
+  }).keepLatest()
 });

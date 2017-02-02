@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+const { get } = Ember;
+
 /**
  * @module
  */
@@ -19,8 +21,8 @@ import Ember from 'ember';
  */
 export default function flattenBy(list, flattenProp, listProp) {
   return list.reduce((acc, item) => {
-    if (item.get(flattenProp)) {
-      return acc.pushObjects(item.get(listProp));
+    if (get(item, flattenProp)) {
+      return acc.pushObjects(get(item, listProp));
     }
 
     acc.pushObject(item);

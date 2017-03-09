@@ -34,6 +34,14 @@
       font-size: 0.9375em;
     }
 
+    .md-highlight {
+      background: yellow;
+    }
+
+    .md-strikethrough-text {
+      text-decoration: line-through;
+    }
+
     /**
      * 1. Inline code in a Markdown link should be underlined.
      * 2. Auto-linked URLs in inline code should look the same as 1.

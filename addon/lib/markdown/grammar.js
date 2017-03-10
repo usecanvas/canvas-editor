@@ -24,6 +24,29 @@ GRAMMAR['inline-code'] = {
   }
 };
 
+GRAMMAR.highlight = {
+  classes: ['highlight', 'has-folding'],
+  pattern: /(^|[^\\])(\=)([^\r]*?[^\=])\2(?!\=)/,
+  lookbehind: true,
+  inside: {
+    'highlight-marker folding': /(?:^(?:\=))|(?:(?:\=)$)/,
+    inlines: {}
+  }
+};
+
+GRAMMAR.strikethrough = {
+  classes: ['strikethrough', 'has-folding'],
+  pattern: /(^|[^\\])(~)([^\r]*?[^~])\2(?!~)/,
+  lookbehind: true,
+  inside: {
+    'strikethrough-marker folding': /(?:^(?:~))|(?:(?:~)$)/,
+    'strikethrough-text': {
+      pattern: /.*/,
+      inside: { inlines: {} }
+    }
+  }
+};
+
 GRAMMAR.link = {
   classes: ['link', 'has-folding'],
   pattern: /\[(?:(?:\\.)|[^[\]])+]\([^()\s]+(?:\(\S*?\))??[^()\s]*?(?:\s+(?:['‘][^'’]*['’]|["“][^"”]*["”]))?\)/gm,
@@ -100,10 +123,15 @@ GRAMMAR.em_underscore = {
 GRAMMAR['inline-code'].inside.url = GRAMMAR.url;
 
 GRAMMAR.link.inside.ref.inside.inlines = GRAMMAR.link.inside.ref.inside.inlines || {};
+GRAMMAR.strikethrough.inside['strikethrough-text'].inside.inlines.link = GRAMMAR.link;
+GRAMMAR.highlight.inside.inlines.link = GRAMMAR.link;
 
 ['inline-code', 'strong_star', 'em_star', 'strong_underscore',  'em_underscore'].forEach(emStrong => {
   GRAMMAR.link.inside.ref.inside.inlines[emStrong] = GRAMMAR[emStrong];
+  GRAMMAR.strikethrough.inside['strikethrough-text'].inside.inlines[emStrong] = GRAMMAR[emStrong];
+  GRAMMAR.highlight.inside.inlines[emStrong] = GRAMMAR[emStrong];
 });
+
 
 GRAMMAR.em_star.inside.inlines.strong_star = GRAMMAR.strong_star;
 GRAMMAR.strong_star.inside.inlines.em_star = GRAMMAR.em_star;

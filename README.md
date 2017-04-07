@@ -1,4 +1,6 @@
-# CanvasEditor [![CircleCI](https://circleci.com/gh/usecanvas/canvas-editor/tree/master.svg?style=svg&circle-token=ab0f7f55d447b8a22904e7a438fc203ddde663c0)](https://circleci.com/gh/usecanvas/canvas-editor/tree/master)
+# CanvasEditor 
+
+[![Travis](https://api.travis-ci.org/usecanvas/canvas-editor.svg?branch=master)](https://travis-ci.org/usecanvas/canvas-editor)
 
 This README outlines the details of collaborating on this Ember addon.
 
@@ -23,7 +25,7 @@ There are a number of callbacks that can be passed to the editor:
   new block was inserted locally.
 - `onBlockDeletedLocally`: Receives an index and a block after the block was
   deleted locally.
-  
+
 ## Versioning
 
 To release a new version of CanvasEditor:

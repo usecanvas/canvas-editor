@@ -27,7 +27,7 @@ export default Ember.Component.extend(ContentEditable, {
    *
    * @method
    */
-  click: Ember.K,
+  click() {},
 
   /**
    * Only listen for the placeholder toggle keyboard event.

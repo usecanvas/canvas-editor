@@ -18,7 +18,7 @@ export default CanvasBlock.extend({
   localClassNames: ['canvas-block-card'],
   styles,
 
-  cardDidLoad: Ember.K,
+  cardDidLoad() {},
 
   authComponent: computed('unfurled.providerName', function() {
     switch (this.get('unfurled.providerName')) {
@@ -59,7 +59,7 @@ export default CanvasBlock.extend({
       })
     });
     // Catch error thrown by the PromiseProxy to not trigger error notification
-    promise.catch(Ember.K);
+    promise.catch(function() {});
     return promise;
   })
 });

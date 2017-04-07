@@ -1,7 +1,7 @@
 import Ember from 'ember';
 export default Ember.Mixin.create({
-  indentBlock: Ember.K,
-  unindentBlock: Ember.K,
+  indentBlock() {},
+  unindentBlock() {},
 
   keyDown(evt) {
     if (evt.keyCode === 9) {

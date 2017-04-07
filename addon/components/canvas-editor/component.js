@@ -267,9 +267,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `copy` event
    */
-  copyMultiBlock(_evt) {
-    Ember.K();
-  },
+  copyMultiBlock(_evt) {},
 
   /**
    * Handle a `cut` event when in multi-block.
@@ -507,9 +505,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `keyup` event
    */
-  keyupMultiBlock(_evt) {
-    Ember.K();
-  },
+  keyupMultiBlock(_evt) {},
 
   /**
    * Ignore `mousedown` events with meta+shift for filter word selection.
@@ -571,9 +567,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `paste` event
    */
-  pasteMultiBlock(_evt) {
-    Ember.K();
-  },
+  pasteMultiBlock(_evt) {},
 
   /*
    * Lifecycle Hooks
@@ -1734,7 +1728,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {CanvasEditor.RealtimeCanvas.Block} block The updated block
    */
-  onBlockContentUpdatedLocally: Ember.K,
+  onBlockContentUpdatedLocally() {},
 
   /**
    * A dummy handler for an action that receives a block, meta path, old value,
@@ -1747,7 +1741,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {*} oldValue The old meta value
    * @param {*} newValue The new meta value
    */
-  onBlockMetaReplacedLocally: Ember.K,
+  onBlockMetaReplacedLocally() {},
 
   /**
    * A dummy handler for an action that receives an index in the block's parent
@@ -1757,7 +1751,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {number} index The index the block was deleted from in its parent
    * @param {CanvasEditor.RealtimeCanvas.Block} block The deleted block
    */
-  onBlockDeletedLocally: Ember.K,
+  onBlockDeletedLocally() {},
 
   /**
    * A dummy handler for a user meta+shift+clicking on text.
@@ -1765,7 +1759,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `click` event
    */
-  onMetaSelectText: Ember.K,
+  onMetaSelectText() {},
 
   /**
    * A dummy handler for an action that receives an index and a block after the
@@ -1775,7 +1769,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {number} index The index the new block was inserted at in its parent
    * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The new block
    */
-  onNewBlockInsertedLocally: Ember.K,
+  onNewBlockInsertedLocally() {},
 
   /**
    * A dummy handler for an action that receives a replaced block and a block
@@ -1786,7 +1780,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @param {CanvasEditor.RealtimeCanvas.Block} block The replaced block
    * @param {CanvasEditor.RealtimeCanvas.Block} newBlock The replacing block
    */
-  onBlockReplacedLocally: Ember.K,
+  onBlockReplacedLocally() {},
 
   /**
    * A dummy handler for an action called when the user wants to "redo" the last
@@ -1795,7 +1789,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `redo` event
    */
-  onRedo: Ember.K,
+  onRedo() {},
 
   /**
    * A dummy handler for an action called when a template is applied.
@@ -1803,7 +1797,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {string} templateID The ID of the applied template
    */
-  onTemplateApplied: Ember.K,
+  onTemplateApplied() {},
 
   /**
    * A dummy handler for an action called when the user wants to "undo" the last
@@ -1812,7 +1806,7 @@ export default Ember.Component.extend(TypeChanges, {
    * @method
    * @param {jQuery.Event} evt The `undo` event
    */
-  onUndo: Ember.K,
+  onUndo() {},
 
   /**
    * A dummy handler for a function that is passed in in order to unfurl a

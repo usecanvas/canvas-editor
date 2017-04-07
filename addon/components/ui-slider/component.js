@@ -46,5 +46,5 @@ export default Ember.Component.extend({
    * @param {number} oldValue The old value
    * @param {number} newValue The new value
    */
-  onChange: Ember.K,
+  onChange() {},
 });

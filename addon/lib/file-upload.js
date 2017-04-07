@@ -9,7 +9,7 @@ export default class FileUpload {
   upload(url, onprogress) {
     return new Ember.RSVP.Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      xhr.upload.onprogress = onprogress || Ember.K;
+      xhr.upload.onprogress = onprogress || function() {};
 
       xhr.addEventListener('load', () => {
         if (/^2\d{2}$/.test(xhr.status)) {

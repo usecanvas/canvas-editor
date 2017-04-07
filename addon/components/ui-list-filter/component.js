@@ -14,7 +14,7 @@ export default Ember.Component.extend({
     this.get('onResolveFilter')([]);
   }),
 
-  onResolveFilter: Ember.K,
+  onResolveFilter() {},
 
   handleValueChange: task(function *() {
     const value = this.get('value');
